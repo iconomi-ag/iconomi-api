@@ -1,0 +1,16 @@
+{
+  "name": "iconomi-openapi-spec",
+  "version": "0.0.1",
+  "dependencies": {
+    "json-merge-patch": "^0.2.3",
+    "json-pointer": "^0.6.0",
+    "swagger-repo": "2.0.0-rc.15"
+  },
+  "private": true,
+  "scripts": {
+    "start": "swagger-repo serve",
+    "build": "swagger-repo build -o web_deploy",
+    "test": "swagger-repo validate",
+    "gh-pages": "swagger-repo gh-pages"
+  }
+}

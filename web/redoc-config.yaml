@@ -1,0 +1,60 @@
+showConsole: true
+hideDownloadButton: true
+nativeScrollbars: true
+#layout:
+#  scope: section
+theme:
+  #logo:
+  #  gutter: 20px 30px 14px 30px
+  spacing:
+    unit: 5
+    sectionVertical: 10
+  colors:
+    primary:
+      main: '#4C6F8C'
+    text:
+      primary: '#747B85'
+    success:
+      main: '#4CD964'
+    warning:
+      main: '#FF9500'
+    error:
+      main: '#FF3B30'
+    responses:
+      success:
+        color: '#4CD964'
+      error:
+        color: '#FF3B30'
+      redirect:
+        color: '#FF9500'
+      info:
+        color: '#0D79BE'
+  typography:
+    headings:
+      fontFamily: "Libre Franklin"
+    fontFamily: '"Libre Franklin", sans-serif'
+    fontSize: '14px'
+    code:
+      fontFamily: '"Courier New",monospace'
+      tokens:
+        'token.property':
+          color: "#aofbaa"
+        string:
+          color: "#aofbaa"
+    #rightPanelHeading:
+    #  color: white
+  menu:
+    backgroundColor: '#F3F6F8'
+    groupItems:
+      textTransform: 'uppercase'
+    level1Items:
+      textTransform: 'none'
+  #rightPanel:
+  #  backgroundColor: "#F3F6F8"
+  #  textColor: '#F7F9FA'
+  links:
+    color: "#F7F9FA"
+
+redocURL: https://redocpro-cdn.redoc.ly/v1.0.0-beta.34/redocpro-standalone.min.js
+redocExport: RedocPro
+unstable_externalDescription: description.md

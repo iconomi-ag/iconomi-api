@@ -3,10 +3,23 @@
 * Any issues with documentation or the api can be reported under this project
 * There is a sample library available for java at **https://github.com/iconomi-ag/iconomi-java**
 
+## Change log
 
-# Change Log
-* 2019 September 20th: two new endpoints added
+ [Change log](CHANGELOG.md) 
+ 
+## Working on specification
+### Install
 
-  * Submitting a new structure, find it [**here**](https://api.iconomi.com/#tag/REST-API/paths/~1v1~1daa~1{ticker}~1structure/post)
+1. Install [Node JS](https://nodejs.org/)
+2. Clone repo and run `yarn install` in the repo root
 
-  * Getting the live underlying balances of crypto funds (avaiable only to institutional clients), find it [**here**](https://api.iconomi.com/#tag/REST-API/paths/~1v1~1daa~1{ticker}~1balance/get)
+### Usage
+
+#### `yarn start`
+Starts the development server.
+ #### `yarn build`
+Bundles the spec and prepares web_deploy folder with static assets.
+ #### `yarn test`
+Validates the spec.
+ #### `yarn gh-pages`
+Deploys docs to GitHub Pages. You don't need to run it manually if you have Travis CI configured.
