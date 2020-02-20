@@ -1,0 +1,720 @@
+
+
+@brandColor: #4c6f8c;
+
+@mainTextColor:         #4d4d4d;
+@footerGray:            #b5bcc5;
+@footerLightBg:         #f7f9fa;
+@footerDarkBg:          rgba(0, 0, 0, 0.1);
+@footerDarkTextColor:   #747b85;
+@white:                 #ffffff;
+@black:                 #000000;
+@pagesBg:               @brandColor;
+@labelTextColor:        #9b9b9b;
+@placeholderTextColor:  #b5bcc5;
+@formCopyTextColor:     #4a4a4a;
+@formLinkTextColor:     @brandColor;
+@separatorLineColor:    #d4d7de;
+@mainContentBg:         #eef1f3;
+@pale-grey:             #f0f3f5;
+@greyish:               #b3b3b3;
+@darkGrey:              #333333;
+@subNavigationBg:       #6a8ba6;
+@seashell:              #f1f1f1;
+@aquaHaze:              #f3f6f8;
+
+@btnGreenBgDefault:     #9dc862;
+@btnFacebookBgDefault:  #3b5998;
+@btnTwitterBgDefault:   #2695e9;
+@btnGoogleBgDefault:    #4285f4;
+
+@positiveBgColor:       #26bf40;
+@negativeBgColor:       #e2644e;
+
+// status colors
+@statusGreen:           #1ccc66;
+@dark-mint:             #57c455;
+@coral-pink:            #ff5a60;
+
+@errorText:             #d55161;
+@successText:           #7ed321;
+
+// notification banner
+@infoBannerBg:          #6597e0;
+@infoLighterBannerBg:   #61bade;
+@waringBannerBg:        #f1c253;
+@successBannerBg:       #9dc862;
+@dangerBannerBg:        #d55161;
+@landingBannerBg:       #1c8b6f;
+
+@positiveTrend:         #00b34a;
+@negativeTrend:         #e2644e;
+
+
+
+@footerHeight:         230px;
+
+@body-bg:               @white;
+
+
+// font sizes
+@fs10:                  10px;
+@fs12:                  12px;
+@fs14:                  14px;
+@fs16:                  16px;
+@fs18:                  18px;
+
+@content-padding:       55px;
+
+
+
+body {
+  font-family: 'Open Sans', sans-serif !important;
+  font-weight: normal !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: @body-bg;
+
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 387px;
+
+  @media screen and (min-width: 480px) {
+    padding-bottom: 264px;
+  }
+}
+
+a {
+  cursor: pointer !important;
+}
+
+
+.page-index {
+  text-align: left;
+  @media screen and (min-width: 768px) {
+    text-align: center;
+  }
+  padding-top: 0;
+}
+// Index page
+.navbar {
+  border-bottom: 1px solid @formLinkTextColor !important;
+
+  .page-title {
+    display: none;
+    margin: 0;
+    font-size: 22px;
+    padding: 18px;
+    color: @formLinkTextColor;
+
+    @media screen and (min-width: 768px) {
+      display: block;
+    }
+  }
+}
+.navbar.home {
+  -webkit-transition: 0.25s; /* Safari */
+  transition: 0.25s;
+
+  .topnavbar-register {
+    display: none;
+  }
+
+  li > a {
+    -webkit-transition: 0.25s; /* Safari */
+    transition: 0.25s;
+
+    &:focus {
+      text-decoration: none;
+      background-color: inherit;
+    }
+  }
+
+  &:not(.topnavbar-scrolled) {
+    @media screen and (min-width: 768px) {
+      background: transparent;
+
+      border-bottom: none !important;
+
+      .topnavbar-login a {
+        border: 1px solid @white;
+        border-radius: 4px;
+        padding-top: 3px;
+        padding-bottom: 5px;
+        margin-top: 18px;
+      }
+
+      .logo__white {
+        display: block !important;
+      }
+
+      .logo__default {
+        display: none;
+      }
+
+      li > a {
+        color: @white !important;
+
+        &:hover {
+          background: none;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+
+// buttons
+
+
+.btn {
+  cursor: pointer !important;
+  border-radius: 2px;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  //transition: all 0.3s ease;
+
+  &.btn-link {
+    color: @formLinkTextColor;
+    text-decoration: none;
+
+    &:hover {
+      color: #40607C;
+    }
+
+    &:active {
+      color: #40607C;
+      border: none;
+    }
+
+  }
+
+  &.btnBig {
+    margin-top: 5px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 260px;
+  }
+
+  &.btnWhite {
+    color: @formLinkTextColor;
+    background-color: @white;
+    box-shadow: 0 1px 0 0 @placeholderTextColor;
+    border: solid 1px @placeholderTextColor;
+
+    span {
+      color: @formCopyTextColor;
+    }
+
+    &:hover {
+      background-color: #efefef;
+    }
+
+    &:active {
+      color: @formLinkTextColor;
+      background-color: #efefef;
+      border: solid 1px @placeholderTextColor;
+    }
+
+  }
+
+  &.btnRed {
+    color: @negativeBgColor;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+
+}
+
+
+// navbar
+.topnavbar {
+  // height: 60px;
+  overflow: hidden;
+  background: @white;
+  margin-bottom: 0px;
+
+  .navbar-header {
+    height: 60px;
+    overflow: hidden;
+  }
+
+  .navbar-toggle {
+    margin-right: 0px;
+
+    .icon-bar {
+      background: @pagesBg;
+      margin-bottom: 5px;
+    }
+  }
+
+  .nav-wrapper {
+    box-shadow: none !important;
+  }
+
+  .brand-logo {
+    width: 130px;
+    margin-top: 3px;
+    margin-left: -14px;
+  }
+
+  .navbar-nav.navbar-right {
+    margin-top: 0px;
+  }
+
+  .navbar-nav > li > a,
+  .navbar-nav > .open > a {
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    color: @pagesBg;
+    border-top: 4px solid transparent;
+    padding-top: 18px;
+    padding-bottom: 18px;
+
+    &.btn-success {
+      margin-top: 14px;
+      color: @white;
+      padding: 4px 18px 6px 18px;
+      margin-left: 20px;
+    }
+
+    &.navbar__dashboard-link,
+    &.navbar__register-link {
+      @media screen and (min-width: 768px) {
+        background: @pagesBg;
+        color: @white;
+        width: 96px;
+        height: 34px;
+        padding: 3px 0 0;
+        margin-top: 15px;
+        &:hover {
+          color: @white;
+          background: #829AAF;
+        }
+      }
+    }
+
+    &:hover {
+      color: @pagesBg;
+      opacity: 0.8;
+
+      &.btn-success,
+      &.btn-succes:active,
+      &.btn-succes:focus,
+      &.btn-succes:hover,
+      &.btn-succes:visited {
+        color: @white;
+        opacity: 1;
+        background: #26a446 !important;
+        border-color: #26a446 !important;
+        box-shadow: none;
+      }
+    }
+
+  }
+
+  .navbar-nav > li.active > a {
+    color: @pagesBg;
+    border-top: 4px solid @pagesBg;
+    opacity: 1;
+    font-weight: 600;
+
+
+  }
+
+  .navbar-nav > li > div.dropdown {
+    padding: 17px 15px;
+
+    > a {
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: @pagesBg;
+
+      &:hover {
+        color: @pagesBg;
+        text-decoration: none;
+        opacity: 0.4;
+      }
+    }
+
+  }
+
+  &.navbar-fixed-top .navbar-collapse {
+    max-height: 470px;
+  }
+
+  .navbar-collapse {
+    .navbar-nav {
+      float: none;
+
+      .navbar__dashboard-link {
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      @media screen and (max-width: 767px) {
+        .pull-right {
+          float: none !important;
+        }
+
+        .navbar__dashboard-link {
+          margin: 0 10px;
+          padding: 15px;
+          font-size: 16px;
+          color: #fff;
+          font-weight: 400;
+          color: @pagesBg;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .navbar {
+
+    & > .container {
+
+      .navbar-header {
+
+        .navbar-brand {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
+
+.caretIcon {
+  width: 10px;
+  height: 15px;
+  display: inline-block;
+
+
+  &.down {
+    background: url(../img/iconArrowDropdown.svg) center no-repeat;
+    background-size: contain;
+  }
+}
+
+
+// form elements
+
+.btn-block + .btn-block {
+  margin-top: 10px;
+}
+
+
+
+// reusable components styles
+.actionLinks {
+  float: none;
+  clear: both;
+  display: block;
+  margin-top: 0px;
+
+  .linkItem {
+    color: @pagesBg;
+    margin: 0px 15px;
+    text-decoration: none;
+
+    &:hover {
+      color: @formLinkTextColor;
+    }
+
+    &:first-of-type {
+      margin-left: 0px;
+    }
+
+    &:last-of-type {
+      margin-right: 0px;
+    }
+  }
+}
+
+.labelText {
+  font-size: 12px;
+  font-weight: 600;
+  color: @black;
+
+  &.light {
+    color: @footerDarkTextColor;
+    font-weight: 300;
+  }
+}
+
+.valueText {
+  font-size: 32px;
+  font-weight: normal;
+  color: @formCopyTextColor;
+
+  &.medium {
+    font-size: 24px;
+  }
+
+  span {
+    color: @footerGray;
+  }
+}
+
+
+.disclaimerContainer {
+  h3 {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    color: #747b85;
+  }
+
+  p {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    color: #000000;
+  }
+}
+
+
+
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.content {
+  padding-top: 60px;
+}
+
+.notOptimizedForMobile {
+  display: none;
+}
+
+/* Large desktops and laptops */
+@media (min-width: 1200px) {
+
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+  .topnavbar {
+    overflow: inherit !important;
+
+    .navbar-brand {
+      margin-left: 10px;
+    }
+
+    .navbar-nav > li > a {
+      padding: 18px 7px;
+      font-size: 13px;
+
+      &.navbar__dashboard-link,
+      &.navbar__register-link {
+        width: 86px;
+      }
+    }
+  }
+
+  .container,
+  .content{
+    //width: 100% !important;
+
+    .backgroundImageOverlay {
+      display: none !important;
+    }
+  }
+
+  footer {
+    .brand-logo {
+      margin-top: 0px;
+    }
+  }
+
+}
+
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+  .topnavbar {
+    overflow: inherit !important;
+
+    .navbar-brand {
+      margin-left: 10px;
+    }
+
+    .navbar-collapse {
+      background: @white;
+      border-top: 0px;
+      border-bottom: 4px solid @pagesBg;
+
+      .navbar-nav > li > a {
+        color: @pagesBg;
+        border-top: 0px solid @pagesBg;
+        border-left: 4px solid transparent;
+        opacity: 1;
+      }
+
+      .navbar-nav > li.active > a {
+        color: @pagesBg;
+        border-top: 0px solid @pagesBg;
+        border-left: 4px solid @pagesBg;
+        opacity: 1;
+      }
+
+    }
+  }
+
+  footer {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+
+    ul {
+      padding-left: 0px;
+    }
+
+    .brand-logo {
+      margin-top: 40px;
+    }
+  }
+
+  .container,
+  .content {
+    //width: 100% !important;
+
+    .backgroundImageOverlay {
+      display: none !important;
+    }
+  }
+
+}
+
+/* Portrait phones and smaller */
+@media (max-width: 480px) {
+
+  .topnavbar {
+    overflow: inherit !important;
+
+    .navbar-brand {
+      margin-left: 10px;
+    }
+
+    .navbar-collapse {
+      background: @white;
+      border-top: 0px;
+      border-bottom: 4px solid @pagesBg;
+
+      .navbar-nav > li > a {
+        color: @pagesBg;
+        border-top: 0px solid @pagesBg;
+        border-left: 4px solid transparent;
+        opacity: 1;
+      }
+
+      .navbar-nav > li.active > a {
+        color: @pagesBg;
+        border-top: 0px solid @pagesBg;
+        border-left: 4px solid @pagesBg;
+        opacity: 1;
+      }
+
+    }
+  }
+
+  footer {
+    padding: 40px 0px !important;
+
+    ul {
+      padding-left: 0px;
+    }
+
+    .brand-logo {
+      margin-top: 40px;
+    }
+  }
+
+  .container,
+  .content {
+    //width: 100% !important;
+
+    .backgroundImageOverlay {
+      display: none !important;
+
+    }
+  }
+
+}
+
+
+#redoc-container {
+  .redoc-wrap {
+    background-color: @aquaHaze;
+  }
+
+  .menu-content {
+    top: 61px !important;
+
+    // set menu item hover the same as main navigation hover
+    label {
+      &.active,
+      &:hover {
+        background-color: @seashell;
+      }
+    }
+
+    // hide generated by whitelabel in sidebar menu
+    .sc-hXRMBi {
+      display: none;
+    }
+
+  }
+
+  // main wrapper spacing improvement
+  .api-content {
+    padding: 40px 0 140px;
+    background: @white;
+
+    .PDBNN {
+      background: @white;
+
+      h3 {
+        color: @footerDarkTextColor;
+        font-size: 14px;
+        font-weight: 400;
+      }
+    }
+  }
+
+  // sidebar tabs styles override
+  ul[role=tablist] {
+    li {
+      margin: 5px 5px 0;
+      border-radius: 0;
+      border: none;
+      background-color: @aquaHaze;
+    }
+  }
+
+
+}
+
+
+.content {
+  h1,h2,h3,h4,h5,h6 {
+    font-family: 'Libre Franklin', sans-serif;
+    font-weight: 100;
+  }
+}

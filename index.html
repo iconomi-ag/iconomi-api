@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf8"/>
+  <title>ICONOMI API Documentation</title>
+  <meta name="description"
+        content="Welcome to the ICONOMI Platform API. There are two ways to integrate with ICONOMI platform, either using REST API or a stream-oriented API using Websockets.">
+  <meta name="author" content="ICONOMI">
+  <link rel="icon" href="assets/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://www.iconomi.com/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="https://www.iconomi.com/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://www.iconomi.com/favicon-16x16.png" sizes="16x16">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=Libre+Franklin:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&subset=latin-ext");
+    @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&subset=latin-ext");
+  </style>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <link rel="stylesheet" media="all"
+        href="assets/style.css"
+        data-turbolinks-track="reload"/>
+  
+</head>
+<body>
+
+<nav role="navigation" class="navbar topnavbar navbar-fixed-top ">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+              aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.iconomi.com/">
+        <div class="brand-logo">
+          <img src="assets/logo.svg" alt="Iconomi" class="img-responsive logo__default"/>
+          <img src="assets/logoWhite.svg" alt="Iconomi" class="img-responsive logo__white" style="display: none;"/>
+        </div>
+      </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <div class="nav-wrapper">
+        <ul class="nav navbar-nav navbar--landing">
+          <li><h1 class="page-title">API Documentation</h1></li>
+          <li class="topnavbar-dashboard pull-right">
+            <a href="https://my.iconomi.com" class="btn navbar__dashboard-link">
+              Explore
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<div class="content page-api-docs">
+  <section id="redoc-container">
+    <div id="redoc_container"></div>
+    <script src="https://redocpro-cdn.redoc.ly/v1.0.0-beta.34/redocpro-standalone.min.js"></script>
+    <script>
+      RedocPro.init(
+        './openapi.json',
+        {"showConsole":true,"hideDownloadButton":true,"nativeScrollbars":true,"theme":{"spacing":{"unit":5,"sectionVertical":10},"colors":{"primary":{"main":"#4C6F8C"},"text":{"primary":"#747B85"},"success":{"main":"#4CD964"},"warning":{"main":"#FF9500"},"error":{"main":"#FF3B30"},"responses":{"success":{"color":"#4CD964"},"error":{"color":"#FF3B30"},"redirect":{"color":"#FF9500"},"info":{"color":"#0D79BE"}}},"typography":{"headings":{"fontFamily":"Libre Franklin"},"fontFamily":"\"Libre Franklin\", sans-serif","fontSize":"14px","code":{"fontFamily":"\"Courier New\",monospace","tokens":{"token.property":{"color":"#aofbaa"},"string":{"color":"#aofbaa"}}}},"menu":{"backgroundColor":"#F3F6F8","groupItems":{"textTransform":"uppercase"},"level1Items":{"textTransform":"none"}},"links":{"color":"#F7F9FA"}},"redocURL":"https://redocpro-cdn.redoc.ly/v1.0.0-beta.34/redocpro-standalone.min.js","redocExport":"RedocPro","unstable_externalDescription":"description.md"},
+        document.getElementById("redoc_container")
+      );
+    </script>
+  </section>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+</body>
+</html>
