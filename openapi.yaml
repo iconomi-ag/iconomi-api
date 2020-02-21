@@ -9,17 +9,64 @@ servers:
   - url: 'https://api-demo.iconomi.com'
     description: Sandbox Server
     variables: {}
-security:
-  - APIKey: []
 tags:
   - name: Asset
     description: Asset endpoint
-  - name: User
-    description: User data
   - name: Strategies
     description: 'Strategies, previously called DAAs'
   - name: Trading
     description: Orders and trading
+  - name: User
+    description: User data
+  - name: WebSocket Feed
+    description: |-
+      Using the WebSocket feed you can get close to real-time data on different events that take place on the ICONOMI platform.
+      To start receiving feed messages, first send a subscribe message indicating which channels you want to subscribe to.
+      All requests follow this following format
+
+      | Parameter  | Description   | Sample  |
+      |---|---|---|
+      | **type** <br> *String*        |   Always provide the value "subscribe"      |    subscribe    |
+      | **channel** <br> *String*     |     The channel to which you are subscribing    |     daa/price   |
+      |  <br> *Channel-specific*     |     Optional additional data specific  |       |
+
+      ### DAA price feed
+
+      You can subscribe to a price feed of DAA prices. The latest prices are sent every minute.
+
+      Channel-specific data:
+
+      | Parameter  | Description   | Sample  |
+      |---|---|---|
+      | **ticker** <br> *String*        |   Ticker of the DAA to receive the price feed for     |    BLX    |
+
+      ##### Subscription request
+
+      Example:
+
+      ```
+      {
+          "type":"subscribe",
+          "channel": "daa/price",
+          "ticker": "BLX"
+      }
+      ```
+
+      ##### Feed message
+
+      Example:
+
+      ```
+       {
+          "type":"price",
+          "price":
+          {
+             "ticker":"BLX",
+             "currency":"USD",
+             "price":"1.36"
+          }
+       }
+      ```
   - name: WebSocket RPC
     description: |-
       The WebSocket RPC is publicly available, but connections to it are rate-limited to 1 request per 4 seconds per IP.
@@ -46,7 +93,7 @@ tags:
 
       ```
       {
-          "type": "daalist"
+          "type": "daa-list"
       }
       ```
 
@@ -171,56 +218,300 @@ tags:
         ]
       }
       ```
-  - name: WebSocket Feed
-    description: |-
-      Using the WebSocket feed you can get close to real-time data on different events that take place on the ICONOMI platform.
-      To start receiving feed messages, first send a subscribe message indicating which channels you want to subscribe to.
-      All requests follow this following format
-
-      | Parameter  | Description   | Sample  |
-      |---|---|---|
-      | **type** <br> *String*        |   Always provide the value "subscribe"      |    subscribe    |
-      | **channel** <br> *String*     |     The channel to which you are subscribing    |     daa/price   |
-      |  <br> *Channel-specific*     |     Optional additional data specific  |       |
-
-      ### DAA price feed
-
-      You can subscribe to a price feed of DAA prices. The latest prices are sent every minute.
-
-      Channel-specific data:
-
-      | Parameter  | Description   | Sample  |
-      |---|---|---|
-      | **ticker** <br> *String*        |   Ticker of the DAA to receive the price feed for     |    BLX    |
-
-      ##### Subscription request
-
-      Example:
-
-      ```
-      {
-          "type":"subscribe",
-          "channel": "daa/price",
-          "ticker": "BLX"
-      }
-      ```
-
-      ##### Feed message
-
-      Example:
-
-      ```
-       {
-          "type":"price",
-          "price":
-          {
-             "ticker":"BLX",
-             "currency":"USD",
-             "price":"1.36"
-          }
-       }
-      ```
 paths:
+  /v1/assets:
+    get:
+      tags:
+        - Asset
+      summary: List of Assets
+      description: Returns a list of all direct tradeable assets
+      operationId: assetList
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asset'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  '/v1/assets/{ticker}':
+    get:
+      tags:
+        - Asset
+      summary: Asset details
+      description: |-
+        Endpoint: /v1/assets/{ticker}
+        Returns information about one specific Asset.
+      operationId: assetDetails
+      parameters:
+        - name: ticker
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Strategy'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  '/v1/assets/{ticker}/price':
+    get:
+      tags:
+        - Asset
+      summary: Current ticker
+      description: Returns the current ticker of the Asset. The price is refreshed every minute.
+      operationId: assetTicker
+      parameters:
+        - name: ticker
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          schema:
+            type: string
+            default: USD
+            enum:
+              - BTC
+              - USD
+              - EUR
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticker'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  '/v1/assets/{ticker}/pricehistory':
+    get:
+      tags:
+        - Asset
+      summary: Historical information
+      description: |-
+        The price history returns data points for the given period. Different granulation of
+        data can be returned based on the length of the period provided from daily to 5 minute (one 
+        price point per period).
+
+        From and to are optional parameters (both are either supplied or neither is supplied). If from/to are not supplied a default of last month is returned
+        with hourly granulation.
+      operationId: assetHistory
+      parameters:
+        - name: ticker
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          schema:
+            type: string
+            default: USD
+            enum:
+              - BTC
+              - USD
+              - EUR
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: to
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: granulation
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - TWO_MINUTE
+              - FIVE_MINUTE
+              - FIFTEEN_MINUTE
+              - HOURLY
+              - THREE_HOURLY
+              - EIGHT_HOURLY
+              - DAILY
+              - MONTHLY
+              - YEARLY
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chart'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  '/v1/assets/{ticker}/statistics':
+    get:
+      tags:
+        - Asset
+      summary: Statistics
+      description: 'Returns statistics of the strategy; returns, max drawdawn and volatility for strategy.'
+      operationId: assetStatistics
+      parameters:
+        - name: ticker
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          schema:
+            type: string
+            default: USD
+            enum:
+              - BTC
+              - USD
+              - EUR
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Statistics'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Statistics'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/order:
+    post:
+      tags:
+        - Trading
+      operationId: orderTrade
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderInfo'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/order/offer:
+    post:
+      tags:
+        - Trading
+      operationId: orderOffer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderOffer'
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeOffer'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  '/v1/order/offer/{offerId}/confirm':
+    post:
+      tags:
+        - Trading
+      operationId: confirmOffer
+      parameters:
+        - name: offerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TradeConfirm'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TradeConfirm'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /v1/order/orders:
+    get:
+      tags:
+        - Trading
+      operationId: getAllOrders
+      parameters:
+        - name: accountId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderInfo'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
   '/v1/order/{orderId}':
     get:
       tags:
@@ -278,87 +569,25 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/order/offer:
-    post:
-      tags:
-        - Trading
-      operationId: orderOffer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OrderOffer'
-      responses:
-        '200':
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TradeOffer'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-  '/v1/order/offer/{offerId}/confirm':
-    post:
-      tags:
-        - Trading
-      operationId: confirmOffer
-      parameters:
-        - name: offerId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TradeConfirm'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-  /v1/order:
-    post:
-      tags:
-        - Trading
-      operationId: orderTrade
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Order'
-      responses:
-        '200':
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OrderInfo'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-  /v1/order/orders:
+  /v1/strategies:
     get:
       tags:
-        - Trading
-      operationId: getAllOrders
-      parameters:
-        - name: accountId
-          in: query
-          required: false
-          schema:
-            type: string
+        - Strategies
+      summary: List of Strategies
+      description: |-
+        Returns a list of all public Strategies.
+        ##### Request
+        Empty Body
+        ##### Response
+        Result is an array of the following entities
+
+        | Parameter  | Description   | Sample  |
+        | ---|---|---|
+        | **name** <br> _String_ | Name of DAA | Blockchain index  |
+        | **manager** <br> _String_  | Manager of DAA  | Columbus Capital  |
+        | **ticker** <br> _String_  | DAA ticker  | BLX  |
+        | **type** <br> _String_  | Type of DAA. See DAA types</a> under enumerations section for possible options.  | PASSIVE  |
+      operationId: strategyList
       responses:
         '200':
           description: default response
@@ -367,14 +596,14 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/OrderInfo'
+                  $ref: '#/components/schemas/Strategy'
         '401':
           description: default response
           content:
             '*/*':
               schema:
                 type: string
-  '/v1/daa/{ticker}':
+  '/v1/strategies/{ticker}':
     get:
       tags:
         - Strategies
@@ -415,140 +644,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  '/v1/daa/{ticker}/structure':
-    get:
-      tags:
-        - Strategies
-      summary: Structure
-      description: |-
-        Returns the current structure of a DAA. The same result entity is returned 
-        for both PASSIVE and ACTIVE type DAAs, but for ACTIVE DAAs rebalancedWeight 
-        and targetWeight are always set to 0.
-
-        ##### Request
-
-        Empty body.
-
-        ##### Response
-
-        Returns an array of structure entities.
-
-        | Parameter  | Description   | Sample  |
-        | ---|---|---|
-        | **rebalancedWeight** <br> *Decimal*       |    Weight of the asset that was last set at rebalancing time. The value is provided as a percentage in decimal format (e.g. 0.5 means 50%).  For ACTIVE DAAs this is always 0.      |  0.5      |
-        | **targetWeight** <br> *Decimal*    |     Currently targeted weight of the asset for the DAA. Because of the price change of the asset, the target weight moves up or down. This is the percentage the DAA is targeting to hold at the current time.  For ACTIVE DAAs this is always 0.    |   0.6123     |
-        | **assetTicker** <br> *String*     |    Ticker of the asset       |    BTC    |
-        | **assetName** <br> *String*     | Name of the asset      |    Bitcoin    |
-        | **assetCategory** <br> *String*     | Category of the asset      |    Value    |
-      operationId: structure
-      parameters:
-        - name: ticker
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Structure'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-    post:
-      tags:
-        - Strategies
-      summary: Structure
-      description: |-
-        Endpoint requires authentication. Creates and submits a new structure for a given DAA.
-
-        ##### Request
-
-        | Parameter  | Description   | Sample  |
-        | ---|---|---|
-        | values | Array of structure items | See below | 
-
-
-        Structure items
-
-        | Parameter  | Description   | Sample  |
-        | ---|---|---|
-        | **rebalancedWeight** <br> *Decimal*       |    Weight of the asset. The value is provided as a percentage in decimal format (e.g. 0.5 means 50%).       |  0.5      |
-        | **assetTicker** <br> *String*     |    Ticker of the asset       |    BTC    |
-
-        ##### Response
-
-        Response is the same object as GET to /v1/daa/{ticker}/structure.
-      operationId: submitStructure
-      parameters:
-        - name: ticker
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DaaSubmitStructure'
-      responses:
-        '200':
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Structure'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-  '/v1/daa/{ticker}/statistics':
-    get:
-      tags:
-        - Strategies
-      summary: Statistics
-      description: 'Returns statistics of the strategy; returns, max drawdawn and volatility for strategy.'
-      operationId: getStatistics
-      parameters:
-        - name: ticker
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: currency
-          in: query
-          required: false
-          schema:
-            type: string
-            default: USD
-            enum:
-              - BTC
-              - USD
-              - EUR
-      responses:
-        '200':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Statistics'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Statistics'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-  '/v1/daa/{ticker}/balance':
+  '/v1/strategies/{ticker}/balance':
     get:
       tags:
         - Strategies
@@ -574,39 +670,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  /v1/daa:
-    get:
-      tags:
-        - Strategies
-      summary: List of Strategies
-      description: |-
-        Returns a list of all public Strategies.
-        ##### Request
-        Empty Body
-        ##### Response
-        Result is an array of the following entities
-
-        | Parameter  | Description   | Sample  |
-        | ---|---|---|
-        | **name** <br> _String_ | Name of DAA | Blockchain index  |
-        | **manager** <br> _String_  | Manager of DAA  | Columbus Capital  |
-        | **ticker** <br> _String_  | DAA ticker  | BLX  |
-        | **type** <br> _String_  | Type of DAA. See DAA types</a> under enumerations section for possible options.  | PASSIVE  |
-      operationId: daaList
-      responses:
-        '200':
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StrategyList'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-  '/v1/daa/{ticker}/price':
+  '/v1/strategies/{ticker}/price':
     get:
       tags:
         - Strategies
@@ -654,7 +718,7 @@ paths:
             '*/*':
               schema:
                 type: string
-  '/v1/daa/{ticker}/pricehistory':
+  '/v1/strategies/{ticker}/pricehistory':
     get:
       tags:
         - Strategies
@@ -744,6 +808,143 @@ paths:
             '*/*':
               schema:
                 type: string
+  '/v1/strategies/{ticker}/statistics':
+    get:
+      tags:
+        - Strategies
+      summary: Statistics
+      description: 'Returns statistics of the strategy; returns, max drawdawn and volatility for strategy.'
+      operationId: getStatistics
+      parameters:
+        - name: ticker
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          schema:
+            type: string
+            default: USD
+            enum:
+              - BTC
+              - USD
+              - EUR
+      responses:
+        '200':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Statistics'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Statistics'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  '/v1/strategies/{ticker}/structure':
+    get:
+      tags:
+        - Strategies
+      summary: Structure
+      description: |-
+        Returns the current structure of a DAA. The same result entity is returned 
+        for both PASSIVE and ACTIVE type DAAs, but for ACTIVE DAAs rebalancedWeight 
+        and targetWeight are always set to 0.
+
+        ##### Request
+
+        Empty body.
+
+        ##### Response
+
+        Returns an array of structure entities.
+
+        | Parameter  | Description   | Sample  |
+        | ---|---|---|
+        | **rebalancedWeight** <br> *Decimal*       |    Weight of the asset that was last set at rebalancing time. The value is provided as a percentage in decimal format (e.g. 0.5 means 50%).  For ACTIVE DAAs this is always 0.      |  0.5      |
+        | **targetWeight** <br> *Decimal*    |     Currently targeted weight of the asset for the DAA. Because of the price change of the asset, the target weight moves up or down. This is the percentage the DAA is targeting to hold at the current time.  For ACTIVE DAAs this is always 0.    |   0.6123     |
+        | **assetTicker** <br> *String*     |    Ticker of the asset       |    BTC    |
+        | **assetName** <br> *String*     | Name of the asset      |    Bitcoin    |
+        | **assetCategory** <br> *String*     | Category of the asset      |    Value    |
+      operationId: structure
+      parameters:
+        - name: ticker
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Structure'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+    post:
+      tags:
+        - Strategies
+      summary: Structure
+      description: |-
+        Endpoint requires authentication. Creates and submits a new structure for a given DAA.
+
+        ##### Request
+
+        | Parameter  | Description   | Sample  |
+        | ---|---|---|
+        | values | Array of structure items | See below | 
+
+
+        Structure items
+
+        | Parameter  | Description   | Sample  |
+        | ---|---|---|
+        | **rebalancedWeight** <br> *Decimal*       |    Weight of the asset. The value is provided as a percentage in decimal format (e.g. 0.5 means 50%).       |  0.5      |
+        | **assetTicker** <br> *String*     |    Ticker of the asset       |    BTC    |
+
+        ##### Response
+
+        Response is the same object as GET to /v1/daa/{ticker}/structure.
+      operationId: submitStructure
+      parameters:
+        - name: ticker
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StructureSubmit'
+      responses:
+        '200':
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Structure'
+        '401':
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+      security:
+        - ApiKey: []
+        - ApiTimestamp: []
+        - ApiSign: []
   /v1/user/balance:
     get:
       tags:
@@ -830,227 +1031,8 @@ paths:
             '*/*':
               schema:
                 type: string
-  '/v1/asset/{ticker}':
-    get:
-      tags:
-        - Asset
-      summary: Asset details
-      description: |-
-        Endpoint: /v1/asset/{ticker}
-        Returns information about one specific Asset.
-      operationId: info_1
-      parameters:
-        - name: ticker
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Strategy'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-  '/v1/asset/{ticker}/statistics':
-    get:
-      tags:
-        - Asset
-      summary: Statistics
-      description: 'Returns statistics of the strategy; returns, max drawdawn and volatility for strategy.'
-      operationId: getStatistics_1
-      parameters:
-        - name: ticker
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: currency
-          in: query
-          required: false
-          schema:
-            type: string
-            default: USD
-            enum:
-              - BTC
-              - USD
-              - EUR
-      responses:
-        '200':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Statistics'
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Statistics'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-  /v1/asset:
-    get:
-      tags:
-        - Asset
-      summary: List of Assets
-      description: Returns a list of all direct tradeable assets
-      operationId: daaList_1
-      responses:
-        '200':
-          description: default response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Asset'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-  '/v1/asset/{ticker}/price':
-    get:
-      tags:
-        - Asset
-      summary: Current ticker
-      description: Returns the current ticker of the Asset. The price is refreshed every minute.
-      operationId: daaPrice_1
-      parameters:
-        - name: ticker
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: currency
-          in: query
-          required: false
-          schema:
-            type: string
-            default: USD
-            enum:
-              - BTC
-              - USD
-              - EUR
-      responses:
-        '200':
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Ticker'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
-  '/v1/asset/{ticker}/pricehistory':
-    get:
-      tags:
-        - Asset
-      summary: Historical information
-      description: |-
-        The price history returns data points for the given period. Different granulation of
-        data can be returned based on the length of the period provided from daily to 5 minute (one 
-        price point per period).
-
-        From and to are optional parameters (both are either supplied or neither is supplied). If from/to are not supplied a default of last month is returned
-        with hourly granulation.
-      operationId: charts_1
-      parameters:
-        - name: ticker
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: currency
-          in: query
-          required: false
-          schema:
-            type: string
-            default: USD
-            enum:
-              - BTC
-              - USD
-              - EUR
-        - name: from
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int64
-        - name: to
-          in: query
-          required: false
-          schema:
-            type: integer
-            format: int64
-        - name: granulation
-          in: query
-          required: false
-          schema:
-            type: string
-            enum:
-              - TWO_MINUTE
-              - FIVE_MINUTE
-              - FIFTEEN_MINUTE
-              - HOURLY
-              - THREE_HOURLY
-              - EIGHT_HOURLY
-              - DAILY
-              - MONTHLY
-              - YEARLY
-      responses:
-        '200':
-          description: default response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Chart'
-        '401':
-          description: default response
-          content:
-            '*/*':
-              schema:
-                type: string
 components:
   schemas:
-    OrderInfo:
-      required:
-        - source_ticker
-        - target_ticker
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - created
-            - active
-            - done
-            - failed
-            - unknown
-        orderId:
-          type: string
-        percentageCompleted:
-          type: number
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
     OrderOffer:
       required:
         - amount
@@ -1154,31 +1136,69 @@ components:
           enum:
             - source
             - target
-    Strategy:
+    OrderInfo:
+      required:
+        - source_ticker
+        - target_ticker
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - created
+            - active
+            - done
+            - failed
+            - unknown
+        orderId:
+          type: string
+        percentageCompleted:
+          type: number
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
+    StrategyBalance:
       type: object
       properties:
         ticker:
           type: string
-        name:
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrategyBalanceElement'
+    StrategyBalanceElement:
+      type: object
+      properties:
+        ticker:
           type: string
-        manager:
+        balance:
           type: string
-        managementType:
+    StructureSubmit:
+      type: object
+      properties:
+        ticker:
           type: string
-        managementFee:
-          type: number
-        performanceFee:
-          type: number
-        entryFee:
-          type: number
-        exitFee:
-          type: number
-        aum:
-          type: number
-          deprecated: true
-        currency:
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmitStructureElement'
+        speedType:
           type: string
-          deprecated: true
+          enum:
+            - SLOW
+            - MEDIUM
+            - FAST
+    SubmitStructureElement:
+      type: object
+      properties:
+        assetTicker:
+          type: string
+        rebalancedWeight:
+          type: number
     Structure:
       type: object
       properties:
@@ -1210,24 +1230,58 @@ components:
           type: string
         assetCategory:
           type: string
-    DaaSubmitStructure:
+    Ticker:
       type: object
       properties:
         ticker:
           type: string
+        currency:
+          type: string
+        price:
+          type: number
+        change24h:
+          type: number
+        change7d:
+          type: number
+        change1m:
+          type: number
+        change3m:
+          type: number
+        change6m:
+          type: number
+        change12m:
+          type: number
+        changeAll:
+          type: number
+        aum:
+          type: number
+    Chart:
+      type: object
+      properties:
+        ticker:
+          type: string
+        currency:
+          type: string
+        from:
+          type: integer
+          format: int64
+        to:
+          type: integer
+          format: int64
+        granulation:
+          type: string
         values:
           type: array
           items:
-            $ref: '#/components/schemas/SubmitDaaStructureElement'
-        speedType:
-          type: string
-    SubmitDaaStructureElement:
+            $ref: '#/components/schemas/ChartPoint'
+    ChartPoint:
       type: object
       properties:
-        assetTicker:
+        x:
+          type: integer
+          format: int64
+        'y':
           type: string
-        rebalancedWeight:
-          type: number
     EnumMapIntervalBigDecimal:
       type: object
       properties:
@@ -1311,81 +1365,31 @@ components:
               type: number
             ALL_TIME:
               type: number
-    StrategyBalance:
+    Strategy:
       type: object
       properties:
         ticker:
           type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyBalanceElement'
-    StrategyBalanceElement:
-      type: object
-      properties:
-        ticker:
+        name:
           type: string
-        balance:
+        manager:
           type: string
-    StrategyList:
-      type: object
-      properties:
-        daaList:
-          type: array
-          items:
-            $ref: '#/components/schemas/Strategy'
-    Ticker:
-      type: object
-      properties:
-        ticker:
+        managementType:
           type: string
-        currency:
-          type: string
-        price:
+        managementFee:
           type: number
-        change24h:
+        performanceFee:
           type: number
-        change7d:
+        entryFee:
           type: number
-        change1m:
-          type: number
-        change3m:
-          type: number
-        change6m:
-          type: number
-        change12m:
-          type: number
-        changeAll:
+        exitFee:
           type: number
         aum:
           type: number
-    Chart:
-      type: object
-      properties:
-        ticker:
-          type: string
+          deprecated: true
         currency:
           type: string
-        from:
-          type: integer
-          format: int64
-        to:
-          type: integer
-          format: int64
-        granulation:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChartPoint'
-    ChartPoint:
-      type: object
-      properties:
-        x:
-          type: integer
-          format: int64
-        'y':
-          type: string
+          deprecated: true
     Balance:
       type: object
       properties:
@@ -1417,3 +1421,16 @@ components:
           type: string
         name:
           type: string
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      name: ICN-API-KEY
+      in: header
+    ApiSign:
+      type: apiKey
+      name: ICN-SIGN
+      in: header
+    ApiTimestamp:
+      type: apiKey
+      name: ICN-TIMESTAMP
+      in: header
