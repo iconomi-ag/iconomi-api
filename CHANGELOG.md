@@ -10,6 +10,7 @@
   * add lastRebalanced date on strategy structure endpoint 
   * add monthlyRebalancedCount on strategy structure endpoint
   * new experimental /trading endpoint (ATM only available for institutional customers)
+  * add optional granulation parameter to pricing history endpoint
     
 
 ## 2019 September 20th: two new endpoints added
