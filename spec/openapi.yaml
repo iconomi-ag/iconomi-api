@@ -224,7 +224,7 @@ paths:
       tags:
       - Asset
       summary: List of Assets
-      description: Returns a list of all direct tradeable assets
+      description: Returns a list of all assets on platform
       operationId: assetList
       responses:
         "401":
@@ -268,7 +268,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Strategy'
+                $ref: '#/components/schemas/AssetInfo'
   /v1/assets/{ticker}/price:
     get:
       tags:
@@ -575,19 +575,7 @@ paths:
       tags:
       - Strategies
       summary: List of Strategies
-      description: |-
-        Returns a list of all public Strategies.
-        ##### Request
-        Empty Body
-        ##### Response
-        Result is an array of the following entities
-
-        | Parameter  | Description   | Sample  |
-        | ---|---|---|
-        | **name** <br> _String_ | Name of DAA | Blockchain index  |
-        | **manager** <br> _String_  | Manager of DAA  | Columbus Capital  |
-        | **ticker** <br> _String_  | DAA ticker  | BLX  |
-        | **type** <br> _String_  | Type of DAA. See DAA types</a> under enumerations section for possible options.  | PASSIVE  |
+      description: Returns a list of all public Strategies.
       operationId: strategyList
       responses:
         "401":
@@ -612,26 +600,15 @@ paths:
       description: |-
         Endpoint: /v1/daa/{ticker}
         Returns information about one specific DAA.
-
-        ##### Request
-
-        Empty body.
-
-        ##### Response
-
-        | Parameter  | Description   | Sample  |
-        | ---|---|---|
-        | **name** <br> _String_ | Name of DAA | Blockchain index  |
-        | **manager** <br> _String_  | Manager of DAA  | Columbus Capital  |
-        | **ticker** <br> _String_  | DAA ticker  | BLX  |
-        | **type** <br> _String_  | Type of DAA. See DAA types</a> under enumerations section for possible options.  | PASSIVE  |
       operationId: info
       parameters:
       - name: ticker
         in: path
+        description: Ticker of structure
         required: true
         schema:
           type: string
+        example: BLX
       responses:
         "401":
           description: default response
@@ -676,19 +653,8 @@ paths:
       tags:
       - Strategies
       summary: Current ticker
-      description: |-
-        Returns the current ticker of the Strategy. The price is refreshed every minute.
-
-        ##### Request
-
-        Empty body.
-
-        ##### Response
-
-        | Parameter  | Description   | Sample  |
-        | ---|---|---|
-        | **currency** <br> *String*        |    Ticker of the currency that the price is quoted in.       |    USD    |
-        | **price** <br> *String*     |     The current price of the DAA in the quoted currency. Up to 6 decimal places of precision is possible.      |     1932.432456   |
+      description: Returns the current ticker of the Strategy. The price is refreshed
+        every minute.
       operationId: daaPrice
       parameters:
       - name: ticker
@@ -729,22 +695,7 @@ paths:
         \ from daily to 5 minute (one \nprice point per period).\n\nFrom and to are\
         \ optional parameters (both are either suplied or neither is supplied). If\
         \ from/to are not supplied a default of last month is returned\nwith hourly\
-        \ granulation.\n\n##### Request\n\nEmpty body.\n\n##### Response\n\n| Parameter\
-        \  | Description   | Sample  |\n| ---|---|---|\n| **currency** <br> *String*\
-        \        |    Ticker of the currency in which the prices are returned.   \
-        \    |  USD      |\n| **values** <br> *Array of objects*     |     Array of\
-        \ price point objects.      |   See price point objects     |\n| **from**\
-        \ <br> *Long*      |    Timestamp for when the chart information starts in\
-        \ <b>Epoch</b> seconds format.        |    1530615303    |\n| **to** <br>\
-        \ *Long*        |    Timestamp for when the chart information ends in <b>Epoch</b>\
-        \ seconds format.       |  1533207303      |\n| **granulation** <br> *String*\
-        \        |     Granulation for price points. See granulation enumeration section\
-        \ for more details.      |      HOURLY  |\n\nPrice point object:\n\n| Parameter\
-        \  | Description   | Sample  |\n| ---|---|---|\n| **timestamp** <br> *Long*\
-        \        |      Timestamp for the point in Epoch seconds format.     |   \
-        \ 1530705600    |\n| **price** <br> *String*     |     Price at the time point.\
-        \ Up to 6 decimal places of precision is possible.      |    1813.952343 \
-        \   |"
+        \ granulation."
       operationId: charts
       parameters:
       - name: ticker
@@ -776,6 +727,8 @@ paths:
           format: int64
       - name: granulation
         in: query
+        description: Granulation for price points. See granulation enumeration section
+          for more details.
         required: false
         schema:
           type: string
@@ -789,6 +742,7 @@ paths:
           - DAILY
           - MONTHLY
           - YEARLY
+        example: HOURLY
       responses:
         "401":
           description: default response
@@ -849,19 +803,7 @@ paths:
       summary: Structure
       description: "Returns the current structure of a DAA. The same result entity\
         \ is returned \nfor both PASSIVE and ACTIVE type DAAs, but for ACTIVE DAAs\
-        \ rebalancedWeight \nand targetWeight are always set to 0.\n\n##### Request\n\
-        \nEmpty body.\n\n##### Response\n\nReturns an array of structure entities.\n\
-        \n| Parameter  | Description   | Sample  |\n| ---|---|---|\n| **rebalancedWeight**\
-        \ <br> *Decimal*       |    Weight of the asset that was last set at rebalancing\
-        \ time. The value is provided as a percentage in decimal format (e.g. 0.5\
-        \ means 50%).  For ACTIVE DAAs this is always 0.      |  0.5      |\n| **targetWeight**\
-        \ <br> *Decimal*    |     Currently targeted weight of the asset for the DAA.\
-        \ Because of the price change of the asset, the target weight moves up or\
-        \ down. This is the percentage the DAA is targeting to hold at the current\
-        \ time.  For ACTIVE DAAs this is always 0.    |   0.6123     |\n| **assetTicker**\
-        \ <br> *String*     |    Ticker of the asset       |    BTC    |\n| **assetName**\
-        \ <br> *String*     | Name of the asset      |    Bitcoin    |\n| **assetCategory**\
-        \ <br> *String*     | Category of the asset      |    Value    |"
+        \ rebalancedWeight \nand targetWeight are always set to 0."
       operationId: structure
       parameters:
       - name: ticker
@@ -887,14 +829,7 @@ paths:
       - Strategies
       summary: Structure
       description: "Endpoint requires authentication. Creates and submits a new structure\
-        \ for a given DAA.\n\n##### Request\n\n| Parameter  | Description   | Sample\
-        \  |\n| ---|---|---|\n| values | Array of structure items | See below | \n\
-        \n\nStructure items\n\n| Parameter  | Description   | Sample  |\n| ---|---|---|\n\
-        | **rebalancedWeight** <br> *Decimal*       |    Weight of the asset. The\
-        \ value is provided as a percentage in decimal format (e.g. 0.5 means 50%).\
-        \       |  0.5      |\n| **assetTicker** <br> *String*     |    Ticker of\
-        \ the asset       |    BTC    |\n\n##### Response\n\nResponse is the same\
-        \ object as GET to /v1/daa/{ticker}/structure."
+        \ for a given DAA. \n\nResponse is the same object as GET to /v1/daa/{ticker}/structure."
       operationId: submitStructure
       parameters:
       - name: ticker
@@ -1128,75 +1063,28 @@ components:
         amount:
           minimum: 0
           type: number
-    StrategyBalance:
+    Strategy:
       type: object
       properties:
         ticker:
           type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyBalanceElement'
-    StrategyBalanceElement:
-      type: object
-      properties:
-        ticker:
+        name:
           type: string
-        balance:
+        manager:
           type: string
-    StructureSubmit:
-      type: object
-      properties:
-        ticker:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubmitStructureElement'
-        speedType:
+        managementType:
           type: string
           enum:
-          - SLOW
-          - MEDIUM
-          - FAST
-    SubmitStructureElement:
-      type: object
-      properties:
-        assetTicker:
-          type: string
-        rebalancedWeight:
+          - ACTIVE
+          - PASSIVE
+        managementFee:
           type: number
-    Structure:
-      type: object
-      properties:
-        ticker:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructureElement'
-        numberOfAssets:
-          type: integer
-          format: int32
-        lastRebalanced:
-          type: integer
-          format: int64
-        monthlyRebalancedCount:
-          type: integer
-          format: int64
-    StructureElement:
-      type: object
-      properties:
-        rebalancedWeight:
+        performanceFee:
           type: number
-        targetWeight:
+        entryFee:
           type: number
-        assetTicker:
-          type: string
-        assetName:
-          type: string
-        assetCategory:
-          type: string
+        exitFee:
+          type: number
     Ticker:
       type: object
       properties:
@@ -1229,6 +1117,10 @@ components:
           type: string
         currency:
           type: string
+          enum:
+          - BTC
+          - USD
+          - EUR
         from:
           type: integer
           format: int64
@@ -1249,6 +1141,75 @@ components:
           format: int64
         y:
           type: string
+    StrategyBalance:
+      type: object
+      properties:
+        ticker:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrategyBalanceElement'
+    StrategyBalanceElement:
+      type: object
+      properties:
+        ticker:
+          type: string
+        balance:
+          type: string
+    Structure:
+      type: object
+      properties:
+        ticker:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructureElement'
+        numberOfAssets:
+          type: integer
+          format: int32
+        lastRebalanced:
+          type: integer
+          format: int64
+        monthlyRebalancedCount:
+          type: integer
+          format: int64
+    StructureElement:
+      type: object
+      properties:
+        rebalancedWeight:
+          type: number
+        targetWeight:
+          type: number
+        assetTicker:
+          type: string
+        assetName:
+          type: string
+        assetCategory:
+          type: string
+    StructureSubmit:
+      type: object
+      properties:
+        ticker:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmitStructureElement'
+        speedType:
+          type: string
+          enum:
+          - SLOW
+          - MEDIUM
+          - FAST
+    SubmitStructureElement:
+      type: object
+      properties:
+        assetTicker:
+          type: string
+        rebalancedWeight:
+          type: number
     EnumMapIntervalBigDecimal:
       type: object
       properties:
@@ -1332,31 +1293,6 @@ components:
               type: number
             ALL_TIME:
               type: number
-    Strategy:
-      type: object
-      properties:
-        ticker:
-          type: string
-        name:
-          type: string
-        manager:
-          type: string
-        managementType:
-          type: string
-        managementFee:
-          type: number
-        performanceFee:
-          type: number
-        entryFee:
-          type: number
-        exitFee:
-          type: number
-        aum:
-          type: number
-          deprecated: true
-        currency:
-          type: string
-          deprecated: true
     Balance:
       type: object
       properties:
@@ -1382,6 +1318,25 @@ components:
         value:
           type: string
     Asset:
+      type: object
+      properties:
+        ticker:
+          type: string
+        supported:
+          type: boolean
+        useInStrategy:
+          type: boolean
+        tradeable:
+          type: boolean
+        status:
+          type: string
+          enum:
+          - ONLINE
+          - OFFLINE
+          - DELISTING
+          - DELISTED
+          - MAINTENANCE
+    AssetInfo:
       type: object
       properties:
         ticker:
