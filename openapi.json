@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Iconomi API",
-    "version": "1.3 beta"
+    "version": "1.2 beta"
   },
   "servers": [
     {
@@ -1042,8 +1042,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Activity (Only in non production environment. Coming soon.)",
-        "description": "Endpoint returns user's activity (buy, sell, deposit, withdraw).",
+        "summary": "Activity",
+        "description": "(Only in non production environment. Coming soon.)\n\nEndpoint returns user's activity (buy, sell, deposit, withdraw).",
         "operationId": "getActivities",
         "parameters": [
           {
@@ -1160,8 +1160,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Deposit (Only in non production environment. Coming soon.)",
-        "description": "Endpoint returns user's crypto address.",
+        "summary": "Deposit",
+        "description": "(Only in non production environment. Coming soon.)\n\nEndpoint returns user's crypto address.",
         "operationId": "getDepositAddress",
         "parameters": [
           {
@@ -1244,8 +1244,8 @@
         "tags": [
           "User"
         ],
-        "summary": "Withdraw (Only in non production environment. Coming soon.)",
-        "description": "Endpoint allows to make withdraw asset from user's account to recipient's address. Recipient's address must be whitelisted at ICONOMI platform.",
+        "summary": "Withdraw",
+        "description": "(Only in non production environment. Coming soon.)\n\nEndpoint allows to make withdraw asset from user's account to recipient's address. Recipient's address must be whitelisted at ICONOMI platform.",
         "operationId": "withdraw",
         "requestBody": {
           "content": {
