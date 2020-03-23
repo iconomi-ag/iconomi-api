@@ -1308,77 +1308,6 @@
           }
         }
       },
-      "Strategy": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "manager": {
-            "type": "string"
-          },
-          "managementType": {
-            "type": "string",
-            "enum": [
-              "ACTIVE",
-              "PASSIVE"
-            ]
-          },
-          "managementFee": {
-            "type": "number"
-          },
-          "performanceFee": {
-            "type": "number"
-          },
-          "entryFee": {
-            "type": "number"
-          },
-          "exitFee": {
-            "type": "number"
-          }
-        }
-      },
-      "Ticker": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "currency": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "change24h": {
-            "type": "number"
-          },
-          "change7d": {
-            "type": "number"
-          },
-          "change1m": {
-            "type": "number"
-          },
-          "change3m": {
-            "type": "number"
-          },
-          "change6m": {
-            "type": "number"
-          },
-          "change12m": {
-            "type": "number"
-          },
-          "changeAll": {
-            "type": "number"
-          },
-          "aum": {
-            "type": "number"
-          }
-        }
-      },
       "Chart": {
         "type": "object",
         "properties": {
@@ -1652,6 +1581,77 @@
                 "type": "number"
               }
             }
+          }
+        }
+      },
+      "Strategy": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "manager": {
+            "type": "string"
+          },
+          "managementType": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PASSIVE"
+            ]
+          },
+          "managementFee": {
+            "type": "number"
+          },
+          "performanceFee": {
+            "type": "number"
+          },
+          "entryFee": {
+            "type": "number"
+          },
+          "exitFee": {
+            "type": "number"
+          }
+        }
+      },
+      "Ticker": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "change24h": {
+            "type": "number"
+          },
+          "change7d": {
+            "type": "number"
+          },
+          "change1m": {
+            "type": "number"
+          },
+          "change3m": {
+            "type": "number"
+          },
+          "change6m": {
+            "type": "number"
+          },
+          "change12m": {
+            "type": "number"
+          },
+          "changeAll": {
+            "type": "number"
+          },
+          "aum": {
+            "type": "number"
           }
         }
       },
