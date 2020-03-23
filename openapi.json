@@ -49,7 +49,7 @@
           "Asset"
         ],
         "summary": "List of Assets",
-        "description": "Returns a list of all assets on platform",
+        "description": "Returns a list of all assets on platform.",
         "operationId": "assetList",
         "responses": {
           "200": {
@@ -84,7 +84,7 @@
           "Asset"
         ],
         "summary": "Asset details",
-        "description": "Endpoint: /v1/assets/{ticker}\nReturns information about one specific Asset.",
+        "description": "Returns information about one specific Asset.",
         "operationId": "assetDetails",
         "parameters": [
           {
@@ -275,7 +275,7 @@
           "Asset"
         ],
         "summary": "Statistics",
-        "description": "Returns statistics of the strategy; returns, max drawdawn and volatility for strategy.",
+        "description": "Returns statistics of the strategy; returns, max drawdown and volatility for strategy.",
         "operationId": "assetStatistics",
         "parameters": [
           {
@@ -335,6 +335,8 @@
         "tags": [
           "Trading"
         ],
+        "summary": "Place order",
+        "description": "Placing user's logical order.",
         "operationId": "orderTrade",
         "requestBody": {
           "content": {
@@ -374,6 +376,8 @@
         "tags": [
           "Trading"
         ],
+        "summary": "Trade offer",
+        "description": "Generating trade offer.",
         "operationId": "orderOffer",
         "requestBody": {
           "content": {
@@ -413,6 +417,8 @@
         "tags": [
           "Trading"
         ],
+        "summary": "Confirm trade offer",
+        "description": "This endpoint confirms generated trade offer.",
         "operationId": "confirmOffer",
         "parameters": [
           {
@@ -458,6 +464,8 @@
         "tags": [
           "Trading"
         ],
+        "summary": "List of orders",
+        "description": "Returns a list of all user's logical orders.",
         "operationId": "getAllOrders",
         "parameters": [
           {
@@ -501,6 +509,8 @@
         "tags": [
           "Trading"
         ],
+        "summary": "Logical order",
+        "description": "Returns a user's logical order.",
         "operationId": "status",
         "parameters": [
           {
@@ -547,6 +557,8 @@
         "tags": [
           "Trading"
         ],
+        "summary": "Delete",
+        "description": "Remove user's logical order.",
         "operationId": "cancelOrder",
         "parameters": [
           {
@@ -631,7 +643,7 @@
           "Strategies"
         ],
         "summary": "Strategy details",
-        "description": "Endpoint: /v1/daa/{ticker}\nReturns information about one specific DAA.",
+        "description": "Returns information about one specific DAA.",
         "operationId": "info",
         "parameters": [
           {
@@ -868,7 +880,7 @@
           "Strategies"
         ],
         "summary": "Statistics",
-        "description": "Returns statistics of the strategy; returns, max drawdawn and volatility for strategy.",
+        "description": "Returns statistics of the strategy; returns, max drawdown and volatility for strategy.",
         "operationId": "getStatistics",
         "parameters": [
           {
@@ -1030,8 +1042,8 @@
         "tags": [
           "User"
         ],
-        "summary": "User's transactions",
-        "description": "Endpoint returns user's activity (buy, sell, deposit, withdraw)",
+        "summary": "Activity (Only in non production environment. Coming soon.)",
+        "description": "Endpoint returns user's activity (buy, sell, deposit, withdraw).",
         "operationId": "getActivities",
         "parameters": [
           {
@@ -1096,7 +1108,7 @@
           "User"
         ],
         "summary": "User Balance",
-        "description": "Endpoint: /v1/user/balance\n\nEndpoint requires authentication. Returns the balance based on the authentication of the user. \n\nThere is an optional query parameter currency that changes the resulting fiat value calculation to chosen currency. Possibly values are EUR or USD.\n\n##### Request\n\nEmpty body.\n\n##### Response\n\n| Parameter  | Description   | Sample  |\n|---|---|---|\n| **currency** <br> *String*        |   Currency in which the values are returned | USD  |\n| **daaList** <br> *BalanceEntry*     | Array of portfolios balances   |   |\n| **assetList** <br> *BalanceEntry*     | Array of cryptocurrency balances  |   |\n\nBalanceEntry is of the following structure:\n\n| Parameter  | Description   | Sample  |\n| ---|---|---|\n| **name** <br> _String_ | Name of asset | Blockchain index  |\n| **ticker** <br> _String_  | Ticker of asset  | BLX  |\n| **balance** <br> _String_  | Balance of the asset  | 1337  |\n| **value** <br> _String_  | Value in USD or EUR (depending on the optional currency in query string)  | 4700  |",
+        "description": "Endpoint requires authentication. Returns the balance based on the authentication of the user. \n\nThere is an optional query parameter currency that changes the resulting fiat value calculation to chosen currency. Possibly values are EUR or USD.\n\n##### Request\n\nEmpty body.\n\n##### Response\n\n| Parameter  | Description   | Sample  |\n|---|---|---|\n| **currency** <br> *String*        |   Currency in which the values are returned | USD  |\n| **daaList** <br> *BalanceEntry*     | Array of portfolios balances   |   |\n| **assetList** <br> *BalanceEntry*     | Array of cryptocurrency balances  |   |\n\nBalanceEntry is of the following structure:\n\n| Parameter  | Description   | Sample  |\n| ---|---|---|\n| **name** <br> _String_ | Name of asset | Blockchain index  |\n| **ticker** <br> _String_  | Ticker of asset  | BLX  |\n| **balance** <br> _String_  | Balance of the asset  | 1337  |\n| **value** <br> _String_  | Value in USD or EUR (depending on the optional currency in query string)  | 4700  |",
         "operationId": "getUserBalance",
         "parameters": [
           {
@@ -1148,8 +1160,8 @@
         "tags": [
           "User"
         ],
-        "summary": "User's deposit address",
-        "description": "Endpoint returns user's crypto address",
+        "summary": "Deposit (Only in non production environment. Coming soon.)",
+        "description": "Endpoint returns user's crypto address.",
         "operationId": "getDepositAddress",
         "parameters": [
           {
@@ -1191,7 +1203,7 @@
           "User"
         ],
         "summary": "Transaction",
-        "description": "Endpoint returns details about user's transaction",
+        "description": "Endpoint returns details about user's transaction.",
         "operationId": "transactionInfo",
         "parameters": [
           {
@@ -1232,8 +1244,8 @@
         "tags": [
           "User"
         ],
-        "summary": "User withdraw",
-        "description": "Endpoint allows to make withdraw from user's account to recipient's address. Recipient's address must be whitelisted at ICONOMI platform",
+        "summary": "Withdraw (Only in non production environment. Coming soon.)",
+        "description": "Endpoint allows to make withdraw asset from user's account to recipient's address. Recipient's address must be whitelisted at ICONOMI platform.",
         "operationId": "withdraw",
         "requestBody": {
           "content": {
@@ -1519,6 +1531,41 @@
           }
         }
       },
+      "OrderInfo": {
+        "required": [
+          "source_ticker",
+          "target_ticker"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "active",
+              "done",
+              "failed",
+              "unknown"
+            ]
+          },
+          "orderId": {
+            "type": "string"
+          },
+          "percentageCompleted": {
+            "type": "number"
+          },
+          "source_ticker": {
+            "type": "string"
+          },
+          "target_ticker": {
+            "type": "string"
+          },
+          "amount": {
+            "minimum": 0,
+            "type": "number"
+          }
+        }
+      },
       "OrderOffer": {
         "required": [
           "amount",
@@ -1710,41 +1757,6 @@
               "source",
               "target"
             ]
-          }
-        }
-      },
-      "OrderInfo": {
-        "required": [
-          "source_ticker",
-          "target_ticker"
-        ],
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "created",
-              "active",
-              "done",
-              "failed",
-              "unknown"
-            ]
-          },
-          "orderId": {
-            "type": "string"
-          },
-          "percentageCompleted": {
-            "type": "number"
-          },
-          "source_ticker": {
-            "type": "string"
-          },
-          "target_ticker": {
-            "type": "string"
-          },
-          "amount": {
-            "minimum": 0,
-            "type": "number"
           }
         }
       },

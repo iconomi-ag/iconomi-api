@@ -224,7 +224,7 @@ paths:
       tags:
         - Asset
       summary: List of Assets
-      description: Returns a list of all assets on platform
+      description: Returns a list of all assets on platform.
       operationId: assetList
       responses:
         '200':
@@ -246,9 +246,7 @@ paths:
       tags:
         - Asset
       summary: Asset details
-      description: |-
-        Endpoint: /v1/assets/{ticker}
-        Returns information about one specific Asset.
+      description: Returns information about one specific Asset.
       operationId: assetDetails
       parameters:
         - name: ticker
@@ -379,7 +377,7 @@ paths:
       tags:
         - Asset
       summary: Statistics
-      description: 'Returns statistics of the strategy; returns, max drawdawn and volatility for strategy.'
+      description: 'Returns statistics of the strategy; returns, max drawdown and volatility for strategy.'
       operationId: assetStatistics
       parameters:
         - name: ticker
@@ -417,6 +415,8 @@ paths:
     post:
       tags:
         - Trading
+      summary: Place order
+      description: Placing user's logical order.
       operationId: orderTrade
       requestBody:
         content:
@@ -440,6 +440,8 @@ paths:
     post:
       tags:
         - Trading
+      summary: Trade offer
+      description: Generating trade offer.
       operationId: orderOffer
       requestBody:
         content:
@@ -463,6 +465,8 @@ paths:
     post:
       tags:
         - Trading
+      summary: Confirm trade offer
+      description: This endpoint confirms generated trade offer.
       operationId: confirmOffer
       parameters:
         - name: offerId
@@ -490,6 +494,8 @@ paths:
     get:
       tags:
         - Trading
+      summary: List of orders
+      description: Returns a list of all user's logical orders.
       operationId: getAllOrders
       parameters:
         - name: accountId
@@ -516,6 +522,8 @@ paths:
     get:
       tags:
         - Trading
+      summary: Logical order
+      description: Returns a user's logical order.
       operationId: status
       parameters:
         - name: orderId
@@ -544,6 +552,8 @@ paths:
     delete:
       tags:
         - Trading
+      summary: Delete
+      description: Remove user's logical order.
       operationId: cancelOrder
       parameters:
         - name: orderId
@@ -596,9 +606,7 @@ paths:
       tags:
         - Strategies
       summary: Strategy details
-      description: |-
-        Endpoint: /v1/daa/{ticker}
-        Returns information about one specific DAA.
+      description: Returns information about one specific DAA.
       operationId: info
       parameters:
         - name: ticker
@@ -759,7 +767,7 @@ paths:
       tags:
         - Strategies
       summary: Statistics
-      description: 'Returns statistics of the strategy; returns, max drawdawn and volatility for strategy.'
+      description: 'Returns statistics of the strategy; returns, max drawdown and volatility for strategy.'
       operationId: getStatistics
       parameters:
         - name: ticker
@@ -863,8 +871,8 @@ paths:
     get:
       tags:
         - User
-      summary: User's transactions
-      description: 'Endpoint returns user''s activity (buy, sell, deposit, withdraw)'
+      summary: Activity (Only in non production environment. Coming soon.)
+      description: 'Endpoint returns user''s activity (buy, sell, deposit, withdraw).'
       operationId: getActivities
       parameters:
         - name: type
@@ -907,8 +915,6 @@ paths:
         - User
       summary: User Balance
       description: |-
-        Endpoint: /v1/user/balance
-
         Endpoint requires authentication. Returns the balance based on the authentication of the user. 
 
         There is an optional query parameter currency that changes the resulting fiat value calculation to chosen currency. Possibly values are EUR or USD.
@@ -965,8 +971,8 @@ paths:
     get:
       tags:
         - User
-      summary: User's deposit address
-      description: Endpoint returns user's crypto address
+      summary: Deposit (Only in non production environment. Coming soon.)
+      description: Endpoint returns user's crypto address.
       operationId: getDepositAddress
       parameters:
         - name: currency
@@ -992,7 +998,7 @@ paths:
       tags:
         - User
       summary: Transaction
-      description: Endpoint returns details about user's transaction
+      description: Endpoint returns details about user's transaction.
       operationId: transactionInfo
       parameters:
         - name: transactionId
@@ -1017,8 +1023,8 @@ paths:
     post:
       tags:
         - User
-      summary: User withdraw
-      description: Endpoint allows to make withdraw from user's account to recipient's address. Recipient's address must be whitelisted at ICONOMI platform
+      summary: Withdraw (Only in non production environment. Coming soon.)
+      description: Endpoint allows to make withdraw asset from user's account to recipient's address. Recipient's address must be whitelisted at ICONOMI platform.
       operationId: withdraw
       requestBody:
         content:
@@ -1205,6 +1211,31 @@ components:
               type: number
             ALL_TIME:
               type: number
+    OrderInfo:
+      required:
+        - source_ticker
+        - target_ticker
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - created
+            - active
+            - done
+            - failed
+            - unknown
+        orderId:
+          type: string
+        percentageCompleted:
+          type: number
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
     OrderOffer:
       required:
         - amount
@@ -1339,31 +1370,6 @@ components:
           enum:
             - source
             - target
-    OrderInfo:
-      required:
-        - source_ticker
-        - target_ticker
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - created
-            - active
-            - done
-            - failed
-            - unknown
-        orderId:
-          type: string
-        percentageCompleted:
-          type: number
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
     Strategy:
       type: object
       properties:
