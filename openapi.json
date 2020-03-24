@@ -143,12 +143,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -199,12 +199,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           },
           {
@@ -292,12 +292,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -746,12 +746,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -802,12 +802,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           },
           {
@@ -897,12 +897,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -1052,11 +1052,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "MY_ACTIVITIES",
               "enum": [
                 "MY_ACTIVITIES",
                 "FEES_AND_EARNINGS"
-              ]
+              ],
+              "default": "MY_ACTIVITIES"
             }
           },
           {
@@ -1117,12 +1117,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -1262,7 +1262,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WithdrawInfo"
+                  "$ref": "#/components/schemas/Transaction"
                 }
               }
             }
@@ -1531,41 +1531,6 @@
           }
         }
       },
-      "OrderInfo": {
-        "required": [
-          "source_ticker",
-          "target_ticker"
-        ],
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "created",
-              "active",
-              "done",
-              "failed",
-              "unknown"
-            ]
-          },
-          "orderId": {
-            "type": "string"
-          },
-          "percentageCompleted": {
-            "type": "number"
-          },
-          "source_ticker": {
-            "type": "string"
-          },
-          "target_ticker": {
-            "type": "string"
-          },
-          "amount": {
-            "minimum": 0,
-            "type": "number"
-          }
-        }
-      },
       "OrderOffer": {
         "required": [
           "amount",
@@ -1757,6 +1722,41 @@
               "source",
               "target"
             ]
+          }
+        }
+      },
+      "OrderInfo": {
+        "required": [
+          "source_ticker",
+          "target_ticker"
+        ],
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "active",
+              "done",
+              "failed",
+              "unknown"
+            ]
+          },
+          "orderId": {
+            "type": "string"
+          },
+          "percentageCompleted": {
+            "type": "number"
+          },
+          "source_ticker": {
+            "type": "string"
+          },
+          "target_ticker": {
+            "type": "string"
+          },
+          "amount": {
+            "minimum": 0,
+            "type": "number"
           }
         }
       },
@@ -1971,14 +1971,6 @@
             "type": "string"
           },
           "address": {
-            "type": "string"
-          }
-        }
-      },
-      "WithdrawInfo": {
-        "type": "object",
-        "properties": {
-          "transactionId": {
             "type": "string"
           }
         }

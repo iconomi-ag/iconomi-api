@@ -285,11 +285,11 @@ paths:
           required: false
           schema:
             type: string
-            default: USD
             enum:
               - BTC
               - USD
               - EUR
+            default: USD
       responses:
         '200':
           description: default response
@@ -327,11 +327,11 @@ paths:
           required: false
           schema:
             type: string
-            default: USD
             enum:
               - BTC
               - USD
               - EUR
+            default: USD
         - name: from
           in: query
           required: false
@@ -390,11 +390,11 @@ paths:
           required: false
           schema:
             type: string
-            default: USD
             enum:
               - BTC
               - USD
               - EUR
+            default: USD
       responses:
         '200':
           description: default response
@@ -673,11 +673,11 @@ paths:
           required: false
           schema:
             type: string
-            default: USD
             enum:
               - BTC
               - USD
               - EUR
+            default: USD
       responses:
         '200':
           description: default response
@@ -715,11 +715,11 @@ paths:
           required: false
           schema:
             type: string
-            default: USD
             enum:
               - BTC
               - USD
               - EUR
+            default: USD
         - name: from
           in: query
           required: false
@@ -780,11 +780,11 @@ paths:
           required: false
           schema:
             type: string
-            default: USD
             enum:
               - BTC
               - USD
               - EUR
+            default: USD
       responses:
         '200':
           description: default response
@@ -883,10 +883,10 @@ paths:
           required: false
           schema:
             type: string
-            default: MY_ACTIVITIES
             enum:
               - MY_ACTIVITIES
               - FEES_AND_EARNINGS
+            default: MY_ACTIVITIES
         - name: pageSize
           in: query
           required: false
@@ -949,11 +949,11 @@ paths:
           required: false
           schema:
             type: string
-            default: USD
             enum:
               - BTC
               - USD
               - EUR
+            default: USD
       responses:
         '200':
           description: default response
@@ -1046,7 +1046,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WithdrawInfo'
+                $ref: '#/components/schemas/Transaction'
         '401':
           description: default response
           content:
@@ -1220,31 +1220,6 @@ components:
               type: number
             ALL_TIME:
               type: number
-    OrderInfo:
-      required:
-        - source_ticker
-        - target_ticker
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - created
-            - active
-            - done
-            - failed
-            - unknown
-        orderId:
-          type: string
-        percentageCompleted:
-          type: number
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
     OrderOffer:
       required:
         - amount
@@ -1379,6 +1354,31 @@ components:
           enum:
             - source
             - target
+    OrderInfo:
+      required:
+        - source_ticker
+        - target_ticker
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - created
+            - active
+            - done
+            - failed
+            - unknown
+        orderId:
+          type: string
+        percentageCompleted:
+          type: number
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
     Strategy:
       type: object
       properties:
@@ -1520,11 +1520,6 @@ components:
         currency:
           type: string
         address:
-          type: string
-    WithdrawInfo:
-      type: object
-      properties:
-        transactionId:
           type: string
   securitySchemes:
     ApiKey:

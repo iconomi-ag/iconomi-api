@@ -117,6 +117,21 @@ base64_encode(HMAC_SHA512(base64_decode(secret_key), timestamp + upper_case(meth
 
 <br/>
 
+### Postman
+
+You can also try with <a href="https://www.postman.com/downloads/" target="_blank" rel="nofollow">postman client</a>. After you import <a href="https://www.postman.com/collections/2d5e387a761a6da9f022" target="_blank" rel="nofollow">collection</a> into client, you have to create new environment under "Manage environments" and add two variables:
+
+<br>
+
+* **ICN-API-KEY** The api key from your account on ICONOMI platform 
+* **ICN-SECRET** The secret key from your account on ICONOMI platform
+
+<br/>
+
+Before you execute any of those endpoints, environment must be selected.
+
+<br/>
+
 ### Websocket Authentication
 
 It is possible to authenticate yourself when subscribing to the websocket feed.
