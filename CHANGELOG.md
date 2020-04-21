@@ -1,5 +1,8 @@
 # Change Log
 
+## 2020 April
+  * renamed property "tradeable" to "tradable" in Asset object
+
 ## 2020 February 
   * new documentation based on OpenApi v3
   * new /assets endpoints
@@ -14,8 +17,6 @@
     
 
 ## 2019 September 20th: two new endpoints added
-
   * Submitting a new structure, find it [**here**](https://api.iconomi.com/#tag/REST-API/paths/~1v1~1daa~1{ticker}~1structure/post)
-
   * Getting the live underlying balances of crypto funds (avaiable only to institutional clients), find it [**here**](https://api.iconomi.com/#tag/REST-API/paths/~1v1~1daa~1{ticker}~1balance/get)
 
