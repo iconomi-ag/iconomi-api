@@ -1064,7 +1064,7 @@ components:
           type: boolean
         useInStrategy:
           type: boolean
-        tradeable:
+        tradable:
           type: boolean
         status:
           type: string
