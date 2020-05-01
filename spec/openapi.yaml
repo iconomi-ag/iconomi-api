@@ -30,15 +30,15 @@ tags:
     | **channel** <br> *String*     |     The channel to which you are subscribing    |     daa/price   |
     |  <br> *Channel-specific*     |     Optional additional data specific  |       |
 
-    ### DAA price feed
+    ### Strategy price feed
 
-    You can subscribe to a price feed of DAA prices. The latest prices are sent every minute.
+    You can subscribe to a price feed of strategy prices. The latest prices are sent every minute.
 
     Channel-specific data:
 
     | Parameter  | Description   | Sample  |
     |---|---|---|
-    | **ticker** <br> *String*        |   Ticker of the DAA to receive the price feed for     |    BLX    |
+    | **ticker** <br> *String*        |   Ticker of the strategy to receive the price feed for     |    BLX    |
 
     ##### Subscription request
 
@@ -83,7 +83,7 @@ tags:
     }
     ```
 
-    ### DAA list
+    ### Strategy list
 
     Returns a list of all public DAAs.
 
@@ -103,10 +103,10 @@ tags:
 
     | Parameter  | Description   | Sample  |
     |---|---|---|
-    | **name** <br> *String*        |   Name of DAA      |    Blockchain Index    |
-    | **manager** <br> *String*     |     Manager of DAA     |     Columbus Capital   |
-    | **ticker** <br> *String*     |     DAA ticker      |     BLX   |
-    | **type** <br> *String*     |     Type of DAA. See DAA types under enumerations section for possible options.      |     PASSIVE   |
+    | **name** <br> *String*        |   Name of strategy      |    Blockchain Index    |
+    | **manager** <br> *String*     |     Manager of strategy     |     Columbus Capital   |
+    | **ticker** <br> *String*     |     Strategy ticker      |     BLX   |
+    | **type** <br> *String*     |     Type of strategy. See strategy types under enumerations section for possible options.      |     PASSIVE   |
 
     Example:
 
@@ -133,7 +133,7 @@ tags:
 
     ### DAA details
 
-    Returns details of a specific DAA.
+    Returns details of a specific strategy.
 
     ##### Request
 
@@ -152,10 +152,10 @@ tags:
 
     | Parameter  | Description   | Sample  |
     |---|---|---|
-    | **name** <br> *String*        |   Name of DAA      |    Blockchain Index    |
-    | **manager** <br> *String*     |     Manager of DAA     |     Columbus Capital   |
-    | **ticker** <br> *String*     |     DAA ticker      |     BLX   |
-    | **type** <br> *String*     |     Type of DAA. See DAA types under enumerations section for possible options.      |     PASSIVE   |
+    | **name** <br> *String*        |   Name of strategy      |    Blockchain Index    |
+    | **manager** <br> *String*     |     Manager of strategy     |     Columbus Capital   |
+    | **ticker** <br> *String*     |     Strategy ticker      |     BLX   |
+    | **type** <br> *String*     |     Type of strategy. See strategy types under enumerations section for possible options.      |     PASSIVE   |
 
     Example:
 
@@ -1433,19 +1433,6 @@ components:
               type: number
             ALL_TIME:
               type: number
-    Withdraw:
-      required:
-      - address
-      - amount
-      - currency
-      type: object
-      properties:
-        amount:
-          type: string
-        currency:
-          type: string
-        address:
-          type: string
     Balance:
       type: object
       properties:
@@ -1480,6 +1467,19 @@ components:
     Deposit:
       type: object
       properties:
+        currency:
+          type: string
+        address:
+          type: string
+    Withdraw:
+      required:
+      - address
+      - amount
+      - currency
+      type: object
+      properties:
+        amount:
+          type: string
         currency:
           type: string
         address:
