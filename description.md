@@ -60,24 +60,20 @@ All IDs are UUIDs.
 
 There are several enumerations on the platform that are used across the platform.
 
-<br/>
-
-#### DAA types
-There are different types of DAAs supported on the platform which use different strategies for 
+#### Strategy types
+There are different types of strategies supported on the platform which use different behaviour for 
 investment:
 
-* **PASSIVE** DAAs that have structures based set on percentages and are rebalances less often
+* **PASSIVE** Strategies that have structures based set on percentages and are rebalances less often
 
-* **ACTIVE** DAAs that follow a more active strategy not using an index
-
-<br/>
+* **ACTIVE** Strategies that follow a more active strategy not using an index
 
 #### Granulations
 
 Depending on the time period selected different granulation of data is possible as a result. 
 For each of the granulations there will be one data point available:
 
-* **TWO_MINUTE** - only available for institutional strategies. 
+* **TWO_MINUTE** - only available for institutional strategies.
 * **FIVE_MINUTE**
 * **HOURLY**
 * **THREE_HOURLY**
@@ -123,14 +119,12 @@ You can also try with <a href="https://www.postman.com/downloads/" target="_blan
 
 <br>
 
-* **ICN-API-KEY** The api key from your account on ICONOMI platform 
+* **ICN-API-KEY** The api key from your account on ICONOMI platform
 * **ICN-SECRET** The secret key from your account on ICONOMI platform
 
 <br/>
 
 Before you execute any of those endpoints, environment must be selected.
-
-<br/>
 
 ### Websocket Authentication
 
