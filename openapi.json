@@ -143,12 +143,12 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
@@ -199,12 +199,12 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           },
           {
@@ -292,12 +292,12 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
@@ -643,7 +643,7 @@
           "Strategies"
         ],
         "summary": "Strategy details",
-        "description": "Returns information about one specific DAA.",
+        "description": "Returns information about one specific strategy.",
         "operationId": "info",
         "parameters": [
           {
@@ -746,12 +746,12 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
@@ -802,12 +802,12 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           },
           {
@@ -897,12 +897,12 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
@@ -941,7 +941,7 @@
           "Strategies"
         ],
         "summary": "Structure",
-        "description": "Returns the current structure of a DAA. The same result entity is returned \nfor both PASSIVE and ACTIVE type DAAs, but for ACTIVE DAAs rebalancedWeight \nand targetWeight are always set to 0.",
+        "description": "Returns the current structure of a strategy. The same result entity is returned \nfor both PASSIVE and ACTIVE type DAAs, but for ACTIVE DAAs rebalancedWeight \nand targetWeight are always set to 0.",
         "operationId": "structure",
         "parameters": [
           {
@@ -981,7 +981,7 @@
           "Strategies"
         ],
         "summary": "Structure",
-        "description": "Endpoint requires authentication. Creates and submits a new structure for a given DAA. \n\nResponse is the same object as GET to /v1/daa/{ticker}/structure.",
+        "description": "Endpoint requires authentication. Creates and submits a new structure for a given strategy. \n\nResponse is the same object as GET to /v1/strategies/{ticker}/structure.",
         "operationId": "submitStructure",
         "parameters": [
           {
@@ -1052,11 +1052,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "MY_ACTIVITIES",
               "enum": [
                 "MY_ACTIVITIES",
                 "FEES_AND_EARNINGS"
-              ],
-              "default": "MY_ACTIVITIES"
+              ]
             }
           },
           {
@@ -1117,12 +1117,12 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
@@ -1283,251 +1283,38 @@
   },
   "components": {
     "schemas": {
-      "Asset": {
+      "OrderInfo": {
+        "required": [
+          "source_ticker",
+          "target_ticker"
+        ],
         "type": "object",
         "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "supported": {
-            "type": "boolean"
-          },
-          "useInStrategy": {
-            "type": "boolean"
-          },
-          "tradable": {
-            "type": "boolean"
-          },
           "status": {
             "type": "string",
             "enum": [
-              "ONLINE",
-              "OFFLINE",
-              "DELISTING",
-              "DELISTED",
-              "MAINTENANCE"
-            ]
-          }
-        }
-      },
-      "AssetInfo": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "Ticker": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "currency": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "change24h": {
-            "type": "number"
-          },
-          "change7d": {
-            "type": "number"
-          },
-          "change1m": {
-            "type": "number"
-          },
-          "change3m": {
-            "type": "number"
-          },
-          "change6m": {
-            "type": "number"
-          },
-          "change12m": {
-            "type": "number"
-          },
-          "changeAll": {
-            "type": "number"
-          },
-          "aum": {
-            "type": "number"
-          }
-        }
-      },
-      "Chart": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "currency": {
-            "type": "string",
-            "enum": [
-              "BTC",
-              "USD",
-              "EUR"
+              "created",
+              "active",
+              "done",
+              "failed",
+              "unknown"
             ]
           },
-          "from": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "to": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "granulation": {
+          "orderId": {
             "type": "string"
           },
-          "values": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChartPoint"
-            }
-          }
-        }
-      },
-      "ChartPoint": {
-        "type": "object",
-        "properties": {
-          "x": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "y": {
-            "type": "string"
-          }
-        }
-      },
-      "EnumMapIntervalBigDecimal": {
-        "type": "object",
-        "properties": {
-          "DAY": {
+          "percentageCompleted": {
             "type": "number"
           },
-          "WEEK": {
-            "type": "number"
-          },
-          "MONTH": {
-            "type": "number"
-          },
-          "THREE_MONTH": {
-            "type": "number"
-          },
-          "SIX_MONTH": {
-            "type": "number"
-          },
-          "YTD": {
-            "type": "number"
-          },
-          "YEAR": {
-            "type": "number"
-          },
-          "ALL_TIME": {
-            "type": "number"
-          }
-        }
-      },
-      "Statistics": {
-        "type": "object",
-        "properties": {
-          "ticker": {
+          "source_ticker": {
             "type": "string"
           },
-          "currency": {
+          "target_ticker": {
             "type": "string"
           },
-          "returns": {
-            "type": "object",
-            "properties": {
-              "DAY": {
-                "type": "number"
-              },
-              "WEEK": {
-                "type": "number"
-              },
-              "MONTH": {
-                "type": "number"
-              },
-              "THREE_MONTH": {
-                "type": "number"
-              },
-              "SIX_MONTH": {
-                "type": "number"
-              },
-              "YTD": {
-                "type": "number"
-              },
-              "YEAR": {
-                "type": "number"
-              },
-              "ALL_TIME": {
-                "type": "number"
-              }
-            }
-          },
-          "volatility": {
-            "type": "object",
-            "properties": {
-              "DAY": {
-                "type": "number"
-              },
-              "WEEK": {
-                "type": "number"
-              },
-              "MONTH": {
-                "type": "number"
-              },
-              "THREE_MONTH": {
-                "type": "number"
-              },
-              "SIX_MONTH": {
-                "type": "number"
-              },
-              "YTD": {
-                "type": "number"
-              },
-              "YEAR": {
-                "type": "number"
-              },
-              "ALL_TIME": {
-                "type": "number"
-              }
-            }
-          },
-          "maxDrawdown": {
-            "type": "object",
-            "properties": {
-              "DAY": {
-                "type": "number"
-              },
-              "WEEK": {
-                "type": "number"
-              },
-              "MONTH": {
-                "type": "number"
-              },
-              "THREE_MONTH": {
-                "type": "number"
-              },
-              "SIX_MONTH": {
-                "type": "number"
-              },
-              "YTD": {
-                "type": "number"
-              },
-              "YEAR": {
-                "type": "number"
-              },
-              "ALL_TIME": {
-                "type": "number"
-              }
-            }
+          "amount": {
+            "minimum": 0,
+            "type": "number"
           }
         }
       },
@@ -1725,41 +1512,6 @@
           }
         }
       },
-      "OrderInfo": {
-        "required": [
-          "source_ticker",
-          "target_ticker"
-        ],
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "created",
-              "active",
-              "done",
-              "failed",
-              "unknown"
-            ]
-          },
-          "orderId": {
-            "type": "string"
-          },
-          "percentageCompleted": {
-            "type": "number"
-          },
-          "source_ticker": {
-            "type": "string"
-          },
-          "target_ticker": {
-            "type": "string"
-          },
-          "amount": {
-            "minimum": 0,
-            "type": "number"
-          }
-        }
-      },
       "Strategy": {
         "type": "object",
         "properties": {
@@ -1790,6 +1542,89 @@
           },
           "exitFee": {
             "type": "number"
+          }
+        }
+      },
+      "Ticker": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "change24h": {
+            "type": "number"
+          },
+          "change7d": {
+            "type": "number"
+          },
+          "change1m": {
+            "type": "number"
+          },
+          "change3m": {
+            "type": "number"
+          },
+          "change6m": {
+            "type": "number"
+          },
+          "change12m": {
+            "type": "number"
+          },
+          "changeAll": {
+            "type": "number"
+          },
+          "aum": {
+            "type": "number"
+          }
+        }
+      },
+      "Chart": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "BTC",
+              "USD",
+              "EUR"
+            ]
+          },
+          "from": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "to": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "granulation": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChartPoint"
+            }
+          }
+        }
+      },
+      "ChartPoint": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "y": {
+            "type": "string"
           }
         }
       },
@@ -1897,6 +1732,152 @@
           }
         }
       },
+      "EnumMapIntervalBigDecimal": {
+        "type": "object",
+        "properties": {
+          "DAY": {
+            "type": "number"
+          },
+          "WEEK": {
+            "type": "number"
+          },
+          "MONTH": {
+            "type": "number"
+          },
+          "THREE_MONTH": {
+            "type": "number"
+          },
+          "SIX_MONTH": {
+            "type": "number"
+          },
+          "YTD": {
+            "type": "number"
+          },
+          "YEAR": {
+            "type": "number"
+          },
+          "ALL_TIME": {
+            "type": "number"
+          }
+        }
+      },
+      "Statistics": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "returns": {
+            "type": "object",
+            "properties": {
+              "DAY": {
+                "type": "number"
+              },
+              "WEEK": {
+                "type": "number"
+              },
+              "MONTH": {
+                "type": "number"
+              },
+              "THREE_MONTH": {
+                "type": "number"
+              },
+              "SIX_MONTH": {
+                "type": "number"
+              },
+              "YTD": {
+                "type": "number"
+              },
+              "YEAR": {
+                "type": "number"
+              },
+              "ALL_TIME": {
+                "type": "number"
+              }
+            }
+          },
+          "volatility": {
+            "type": "object",
+            "properties": {
+              "DAY": {
+                "type": "number"
+              },
+              "WEEK": {
+                "type": "number"
+              },
+              "MONTH": {
+                "type": "number"
+              },
+              "THREE_MONTH": {
+                "type": "number"
+              },
+              "SIX_MONTH": {
+                "type": "number"
+              },
+              "YTD": {
+                "type": "number"
+              },
+              "YEAR": {
+                "type": "number"
+              },
+              "ALL_TIME": {
+                "type": "number"
+              }
+            }
+          },
+          "maxDrawdown": {
+            "type": "object",
+            "properties": {
+              "DAY": {
+                "type": "number"
+              },
+              "WEEK": {
+                "type": "number"
+              },
+              "MONTH": {
+                "type": "number"
+              },
+              "THREE_MONTH": {
+                "type": "number"
+              },
+              "SIX_MONTH": {
+                "type": "number"
+              },
+              "YTD": {
+                "type": "number"
+              },
+              "YEAR": {
+                "type": "number"
+              },
+              "ALL_TIME": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "Withdraw": {
+        "required": [
+          "address",
+          "amount",
+          "currency"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        }
+      },
       "Balance": {
         "type": "object",
         "properties": {
@@ -1956,21 +1937,40 @@
           }
         }
       },
-      "Withdraw": {
-        "required": [
-          "address",
-          "amount",
-          "currency"
-        ],
+      "Asset": {
         "type": "object",
         "properties": {
-          "amount": {
+          "ticker": {
             "type": "string"
           },
-          "currency": {
+          "supported": {
+            "type": "boolean"
+          },
+          "useInStrategy": {
+            "type": "boolean"
+          },
+          "tradable": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ONLINE",
+              "OFFLINE",
+              "DELISTING",
+              "DELISTED",
+              "MAINTENANCE"
+            ]
+          }
+        }
+      },
+      "AssetInfo": {
+        "type": "object",
+        "properties": {
+          "ticker": {
             "type": "string"
           },
-          "address": {
+          "name": {
             "type": "string"
           }
         }
