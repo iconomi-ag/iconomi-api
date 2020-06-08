@@ -14,7 +14,7 @@ All request bodies should have content type application/json and be valid JSON.
 
 ### Timestamps
 
-Unless otherwise specified, all timestamps are returned in ISO 8601 with microseconds.
+Unless otherwise specified, all timestamps will be returned in ISO 8601 with microseconds.
 
 <br/> Example:
 
@@ -64,9 +64,9 @@ There are several enumerations on the platform that are used across the platform
 There are different types of strategies supported on the platform which use different behaviour for 
 investment:
 
-* **PASSIVE** Strategies that have structures based set on percentages and are rebalances less often
+* **PASSIVE** - Strategies that have structures based set on percentages and are rebalances less often
 
-* **ACTIVE** Strategies that follow a more active strategy not using an index
+* **ACTIVE** - Strategies that follow a more active strategy not using an index
 
 #### Granulations
 
@@ -93,9 +93,9 @@ keys (you can find the option under Settings).
 
 All REST requests must contain the following headers:
 
-* **ICN-API-KEY** The api key as a string.
-* **ICN-SIGN** The base64-encoded signature (see Signing a Message).
-* **ICN-TIMESTAMP** A timestamp for your request in epoch miliseconds.
+* **ICN-API-KEY** - The api key as a string.
+* **ICN-SIGN** - The base64-encoded signature (see Signing a Message).
+* **ICN-TIMESTAMP** - A timestamp for your request in epoch milliseconds.
 
 <br/>
  
@@ -119,8 +119,8 @@ You can also try with <a href="https://www.postman.com/downloads/" target="_blan
 
 <br>
 
-* **ICN-API-KEY** The api key from your account on ICONOMI platform
-* **ICN-SECRET** The secret key from your account on ICONOMI platform
+* **ICN-API-KEY** - The api key from your account on ICONOMI platform
+* **ICN-SECRET** - The secret key from your account on ICONOMI platform
 
 <br/>
 

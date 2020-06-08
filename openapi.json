@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Iconomi API",
-    "version": "1.3 beta"
+    "version": "1.3"
   },
   "servers": [
     {
@@ -39,7 +39,7 @@
     },
     {
       "name": "WebSocket RPC",
-      "description": "The WebSocket RPC is publicly available, but connections to it are rate-limited to 1 request per 4 seconds per IP.\nThe WebSocket API is available at `wss://api.iconomi.com/v1/ws`. The current version is v1.\n\nRequests and responses are application/json content type.  The general message format used for both requests and responses is a structure with message type as the first attribute,  followed by the objects of the request/response.\n\nExample request:\n\n```\n{\n  \"type\": \"daa\",\n  \"ticker\" : \"BLX\"\n}\n```\n\n### Strategy list\n\nReturns a list of all public DAAs.\n\n##### Request\n\nExample:\n\n```\n{\n    \"type\": \"daa-list\"\n}\n```\n\n##### Response\n\nResult is an array of the following entities:\n\n| Parameter  | Description   | Sample  |\n|---|---|---|\n| **name** <br> *String*        |   Name of strategy      |    Blockchain Index    |\n| **manager** <br> *String*     |     Manager of strategy     |     Columbus Capital   |\n| **ticker** <br> *String*     |     Strategy ticker      |     BLX   |\n| **type** <br> *String*     |     Type of strategy. See strategy types under enumerations section for possible options.      |     PASSIVE   |\n\nExample:\n\n```\n{\n    \"type\":\"daalist\",\n    \"daalist\":\n    [\n        {\n            \"name\":\"Blockchain Index\",\n            \"manager\":\"Columbus Capital\",\n            \"ticker\":\"BLX\",\n            \"type\":\"PASSIVE\"\n        },\n        {\n            \"name\":\"Pinta\",\n            \"manager\":\"Columbus Capital\",\n            \"ticker\":\"CCP\",\n            \"type\":\"ACTIVE\"\n        }\n    ]\n}\n```\n\n### DAA details\n\nReturns details of a specific strategy.\n\n##### Request\n\nExample:\n\n```\n{\n    \"type\": \"daa\",\n    \"ticker\": \"BLX\"\n}\n```\n\n##### Response\n\nThe result is an array of the following entities:\n\n| Parameter  | Description   | Sample  |\n|---|---|---|\n| **name** <br> *String*        |   Name of strategy      |    Blockchain Index    |\n| **manager** <br> *String*     |     Manager of strategy     |     Columbus Capital   |\n| **ticker** <br> *String*     |     Strategy ticker      |     BLX   |\n| **type** <br> *String*     |     Type of strategy. See strategy types under enumerations section for possible options.      |     PASSIVE   |\n\nExample:\n\n```\n{\n    \"type\":\"daa\",\n    \"name\":\"Blockchain Index\",\n    \"manager\":\"Columbus Capital\",\n    \"ticker\":\"BLX\",\n    \"type\":\"PASSIVE\"\n}\n```\n\n### User balance\n\nReturns user balance based on authentication.\n\n##### Request\n\nExample:\n\nEmpty body.\n\n##### Response\n\n | Parameter  | Description   | Sample  |\n|---|---|---|\n| **currency** <br> *String*        |   Currency in which the values are returned | USD  |\n| **daaList** <br> *BalanceEntry*     | Array of portfolios balances   |   |\n| **assetList** <br> *BalanceEntry*     | Array of cryptocurrency balances  |   |\n\nBalanceEntry is of the following structure:\n\n| Parameter  | Description   | Sample  |\n|---|---|---|\n| **name** <br> *String*        |   Name of asset | Blockchain index  |\n| **ticker** <br> *String*     | Ticker of asset  | BLX  |\n| **balance** <br> *String*     | Balance of the asset  | 1337  |\n| **value** <br> *String*     | Value in USD or EUR (depending on the optional currency in query string)  | 4700  |\n\nExample:\n```\n{\n  \"currency\": \"USD\",\n  \"daaList\": [\n    {\n      \"name\": \"Blockchain Index\",\n      \"ticker\": \"BLX\",\n      \"balance\": \"1337\",\n      \"value\": \"4700\"\n    }\n  ],\n  \"assetList\": [\n    {\n      \"name\": \"Bitcoin\",\n      \"ticker\": \"BTC\",\n      \"balance\": \"1\",\n      \"value\": \"29998\"\n    }\n  ]\n}\n```"
+      "description": "The WebSocket RPC is publicly available, but connections to it are rate-limited to 1 request per 4 seconds per IP.\nThe WebSocket API is available at `wss://api.iconomi.com/v1/ws`. The current version is v1.\n\nRequests and responses are application/json content type.  The general message format used for both requests and responses is a structure with message type as the first attribute,  followed by the objects of the request/response.\n\nExample request:\n\n```\n{\n  \"type\": \"daa\",\n  \"ticker\" : \"BLX\"\n}\n```\n\n### Strategy list\n\nReturns a list of all public DAAs.\n\n##### Request\n\nExample:\n\n```\n{\n    \"type\": \"daa-list\"\n}\n```\n\n##### Response\n\nResult is an array of the following entities:\n\n| Parameter  | Description   | Sample  |\n|---|---|---|\n| **name** <br> *String*        |   Name of strategy      |    Blockchain Index    |\n| **manager** <br> *String*     |     Manager of strategy     |     Columbus Capital   |\n| **ticker** <br> *String*     |     Strategy ticker      |     BLX   |\n| **type** <br> *String*     |     Type of strategy. See strategy types under enumerations section for possible options.      |     PASSIVE   |\n\nExample:\n\n```\n{\n    \"type\":\"daalist\",\n    \"daalist\":\n    [\n        {\n            \"name\":\"Blockchain Index\",\n            \"manager\":\"Columbus Capital\",\n            \"ticker\":\"BLX\",\n            \"type\":\"PASSIVE\"\n        },\n        {\n            \"name\":\"Pinta\",\n            \"manager\":\"Columbus Capital\",\n            \"ticker\":\"CCP\",\n            \"type\":\"ACTIVE\"\n        }\n    ]\n}\n```\n\n### Strategy details\n\nReturns details of a specific strategy.\n\n##### Request\n\nExample:\n\n```\n{\n    \"type\": \"daa\",\n    \"ticker\": \"BLX\"\n}\n```\n\n##### Response\n\nThe result is an array of the following entities:\n\n| Parameter  | Description   | Sample  |\n|---|---|---|\n| **name** <br> *String*        |   Name of strategy      |    Blockchain Index    |\n| **manager** <br> *String*     |     Manager of strategy     |     Columbus Capital   |\n| **ticker** <br> *String*     |     Strategy ticker      |     BLX   |\n| **type** <br> *String*     |     Type of strategy. See strategy types under enumerations section for possible options.      |     PASSIVE   |\n\nExample:\n\n```\n{\n    \"type\":\"daa\",\n    \"name\":\"Blockchain Index\",\n    \"manager\":\"Columbus Capital\",\n    \"ticker\":\"BLX\",\n    \"type\":\"PASSIVE\"\n}\n```\n\n### User balance\n\nReturns user balance based on authentication.\n\n##### Request\n\nExample:\n\nEmpty body.\n\n##### Response\n\n | Parameter  | Description   | Sample  |\n|---|---|---|\n| **currency** <br> *String*        |   Currency in which the values are returned | USD  |\n| **daaList** <br> *BalanceEntry*     | Array of portfolios balances   |   |\n| **assetList** <br> *BalanceEntry*     | Array of cryptocurrency balances  |   |\n\nBalanceEntry is of the following structure:\n\n| Parameter  | Description   | Sample  |\n|---|---|---|\n| **name** <br> *String*        |   Name of asset | Blockchain index  |\n| **ticker** <br> *String*     | Ticker of asset  | BLX  |\n| **balance** <br> *String*     | Balance of the asset  | 1337  |\n| **value** <br> *String*     | Value in USD or EUR (depending on the optional currency in query string)  | 4700  |\n\nExample:\n```\n{\n  \"currency\": \"USD\",\n  \"daaList\": [\n    {\n      \"name\": \"Blockchain Index\",\n      \"ticker\": \"BLX\",\n      \"balance\": \"1337\",\n      \"value\": \"4700\"\n    }\n  ],\n  \"assetList\": [\n    {\n      \"name\": \"Bitcoin\",\n      \"ticker\": \"BTC\",\n      \"balance\": \"1\",\n      \"value\": \"29998\"\n    }\n  ]\n}\n```"
     }
   ],
   "paths": {
@@ -1043,7 +1043,7 @@
           "User"
         ],
         "summary": "Activity",
-        "description": "(Only in non production environment. Coming soon.)\n\nEndpoint returns user's activity (buy, sell, deposit, withdraw).",
+        "description": "Endpoint returns user's activity (buy, sell, deposit, withdraw).",
         "operationId": "getActivities",
         "parameters": [
           {
@@ -1161,7 +1161,7 @@
           "User"
         ],
         "summary": "Deposit",
-        "description": "(Only in non production environment. Coming soon.)\n\nEndpoint returns user's crypto address.",
+        "description": "Endpoint returns user's crypto address.",
         "operationId": "getDepositAddress",
         "parameters": [
           {
@@ -1245,7 +1245,7 @@
           "User"
         ],
         "summary": "Withdraw",
-        "description": "(Only in non production environment. Coming soon.)\n\nEndpoint allows to make withdraw asset from user's account to recipient's address. Recipient's address must be whitelisted at ICONOMI platform.",
+        "description": "Endpoint allows to make withdraw asset from user's account to recipient's address. Recipient's address must be whitelisted at ICONOMI platform.",
         "operationId": "withdraw",
         "requestBody": {
           "content": {
@@ -1283,6 +1283,254 @@
   },
   "components": {
     "schemas": {
+      "Asset": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "supported": {
+            "type": "boolean"
+          },
+          "useInStrategy": {
+            "type": "boolean"
+          },
+          "tradable": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ONLINE",
+              "OFFLINE",
+              "DELISTING",
+              "DELISTED",
+              "MAINTENANCE"
+            ]
+          }
+        }
+      },
+      "AssetInfo": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Ticker": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "change24h": {
+            "type": "number"
+          },
+          "change7d": {
+            "type": "number"
+          },
+          "change1m": {
+            "type": "number"
+          },
+          "change3m": {
+            "type": "number"
+          },
+          "change6m": {
+            "type": "number"
+          },
+          "change12m": {
+            "type": "number"
+          },
+          "changeAll": {
+            "type": "number"
+          },
+          "aum": {
+            "type": "number"
+          }
+        }
+      },
+      "Chart": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "BTC",
+              "USD",
+              "EUR"
+            ]
+          },
+          "from": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "to": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "granulation": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChartPoint"
+            }
+          }
+        }
+      },
+      "ChartPoint": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "y": {
+            "type": "string"
+          }
+        }
+      },
+      "EnumMapIntervalBigDecimal": {
+        "type": "object",
+        "properties": {
+          "DAY": {
+            "type": "number"
+          },
+          "WEEK": {
+            "type": "number"
+          },
+          "MONTH": {
+            "type": "number"
+          },
+          "THREE_MONTH": {
+            "type": "number"
+          },
+          "SIX_MONTH": {
+            "type": "number"
+          },
+          "YTD": {
+            "type": "number"
+          },
+          "YEAR": {
+            "type": "number"
+          },
+          "ALL_TIME": {
+            "type": "number"
+          }
+        }
+      },
+      "Statistics": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "returns": {
+            "type": "object",
+            "properties": {
+              "DAY": {
+                "type": "number"
+              },
+              "WEEK": {
+                "type": "number"
+              },
+              "MONTH": {
+                "type": "number"
+              },
+              "THREE_MONTH": {
+                "type": "number"
+              },
+              "SIX_MONTH": {
+                "type": "number"
+              },
+              "YTD": {
+                "type": "number"
+              },
+              "YEAR": {
+                "type": "number"
+              },
+              "ALL_TIME": {
+                "type": "number"
+              }
+            }
+          },
+          "volatility": {
+            "type": "object",
+            "properties": {
+              "DAY": {
+                "type": "number"
+              },
+              "WEEK": {
+                "type": "number"
+              },
+              "MONTH": {
+                "type": "number"
+              },
+              "THREE_MONTH": {
+                "type": "number"
+              },
+              "SIX_MONTH": {
+                "type": "number"
+              },
+              "YTD": {
+                "type": "number"
+              },
+              "YEAR": {
+                "type": "number"
+              },
+              "ALL_TIME": {
+                "type": "number"
+              }
+            }
+          },
+          "maxDrawdown": {
+            "type": "object",
+            "properties": {
+              "DAY": {
+                "type": "number"
+              },
+              "WEEK": {
+                "type": "number"
+              },
+              "MONTH": {
+                "type": "number"
+              },
+              "THREE_MONTH": {
+                "type": "number"
+              },
+              "SIX_MONTH": {
+                "type": "number"
+              },
+              "YTD": {
+                "type": "number"
+              },
+              "YEAR": {
+                "type": "number"
+              },
+              "ALL_TIME": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
       "OrderInfo": {
         "required": [
           "source_ticker",
@@ -1545,89 +1793,6 @@
           }
         }
       },
-      "Ticker": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "currency": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "change24h": {
-            "type": "number"
-          },
-          "change7d": {
-            "type": "number"
-          },
-          "change1m": {
-            "type": "number"
-          },
-          "change3m": {
-            "type": "number"
-          },
-          "change6m": {
-            "type": "number"
-          },
-          "change12m": {
-            "type": "number"
-          },
-          "changeAll": {
-            "type": "number"
-          },
-          "aum": {
-            "type": "number"
-          }
-        }
-      },
-      "Chart": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "currency": {
-            "type": "string",
-            "enum": [
-              "BTC",
-              "USD",
-              "EUR"
-            ]
-          },
-          "from": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "to": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "granulation": {
-            "type": "string"
-          },
-          "values": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChartPoint"
-            }
-          }
-        }
-      },
-      "ChartPoint": {
-        "type": "object",
-        "properties": {
-          "x": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "y": {
-            "type": "string"
-          }
-        }
-      },
       "StrategyBalance": {
         "type": "object",
         "properties": {
@@ -1732,133 +1897,6 @@
           }
         }
       },
-      "EnumMapIntervalBigDecimal": {
-        "type": "object",
-        "properties": {
-          "DAY": {
-            "type": "number"
-          },
-          "WEEK": {
-            "type": "number"
-          },
-          "MONTH": {
-            "type": "number"
-          },
-          "THREE_MONTH": {
-            "type": "number"
-          },
-          "SIX_MONTH": {
-            "type": "number"
-          },
-          "YTD": {
-            "type": "number"
-          },
-          "YEAR": {
-            "type": "number"
-          },
-          "ALL_TIME": {
-            "type": "number"
-          }
-        }
-      },
-      "Statistics": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "currency": {
-            "type": "string"
-          },
-          "returns": {
-            "type": "object",
-            "properties": {
-              "DAY": {
-                "type": "number"
-              },
-              "WEEK": {
-                "type": "number"
-              },
-              "MONTH": {
-                "type": "number"
-              },
-              "THREE_MONTH": {
-                "type": "number"
-              },
-              "SIX_MONTH": {
-                "type": "number"
-              },
-              "YTD": {
-                "type": "number"
-              },
-              "YEAR": {
-                "type": "number"
-              },
-              "ALL_TIME": {
-                "type": "number"
-              }
-            }
-          },
-          "volatility": {
-            "type": "object",
-            "properties": {
-              "DAY": {
-                "type": "number"
-              },
-              "WEEK": {
-                "type": "number"
-              },
-              "MONTH": {
-                "type": "number"
-              },
-              "THREE_MONTH": {
-                "type": "number"
-              },
-              "SIX_MONTH": {
-                "type": "number"
-              },
-              "YTD": {
-                "type": "number"
-              },
-              "YEAR": {
-                "type": "number"
-              },
-              "ALL_TIME": {
-                "type": "number"
-              }
-            }
-          },
-          "maxDrawdown": {
-            "type": "object",
-            "properties": {
-              "DAY": {
-                "type": "number"
-              },
-              "WEEK": {
-                "type": "number"
-              },
-              "MONTH": {
-                "type": "number"
-              },
-              "THREE_MONTH": {
-                "type": "number"
-              },
-              "SIX_MONTH": {
-                "type": "number"
-              },
-              "YTD": {
-                "type": "number"
-              },
-              "YEAR": {
-                "type": "number"
-              },
-              "ALL_TIME": {
-                "type": "number"
-              }
-            }
-          }
-        }
-      },
       "Balance": {
         "type": "object",
         "properties": {
@@ -1933,44 +1971,6 @@
             "type": "string"
           },
           "address": {
-            "type": "string"
-          }
-        }
-      },
-      "Asset": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "supported": {
-            "type": "boolean"
-          },
-          "useInStrategy": {
-            "type": "boolean"
-          },
-          "tradable": {
-            "type": "boolean"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "ONLINE",
-              "OFFLINE",
-              "DELISTING",
-              "DELISTED",
-              "MAINTENANCE"
-            ]
-          }
-        }
-      },
-      "AssetInfo": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "name": {
             "type": "string"
           }
         }

@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Iconomi API
-  version: 1.3 beta
+  version: '1.3'
 servers:
   - url: 'https://api.iconomi.com'
     description: Live Server
@@ -131,7 +131,7 @@ tags:
       }
       ```
 
-      ### DAA details
+      ### Strategy details
 
       Returns details of a specific strategy.
 
@@ -872,10 +872,7 @@ paths:
       tags:
         - User
       summary: Activity
-      description: |-
-        (Only in non production environment. Coming soon.)
-
-        Endpoint returns user's activity (buy, sell, deposit, withdraw).
+      description: 'Endpoint returns user''s activity (buy, sell, deposit, withdraw).'
       operationId: getActivities
       parameters:
         - name: type
@@ -975,10 +972,7 @@ paths:
       tags:
         - User
       summary: Deposit
-      description: |-
-        (Only in non production environment. Coming soon.)
-
-        Endpoint returns user's crypto address.
+      description: Endpoint returns user's crypto address.
       operationId: getDepositAddress
       parameters:
         - name: currency
@@ -1030,10 +1024,7 @@ paths:
       tags:
         - User
       summary: Withdraw
-      description: |-
-        (Only in non production environment. Coming soon.)
-
-        Endpoint allows to make withdraw asset from user's account to recipient's address. Recipient's address must be whitelisted at ICONOMI platform.
+      description: Endpoint allows to make withdraw asset from user's account to recipient's address. Recipient's address must be whitelisted at ICONOMI platform.
       operationId: withdraw
       requestBody:
         content:
@@ -1055,6 +1046,171 @@ paths:
                 type: string
 components:
   schemas:
+    Asset:
+      type: object
+      properties:
+        ticker:
+          type: string
+        supported:
+          type: boolean
+        useInStrategy:
+          type: boolean
+        tradable:
+          type: boolean
+        status:
+          type: string
+          enum:
+            - ONLINE
+            - OFFLINE
+            - DELISTING
+            - DELISTED
+            - MAINTENANCE
+    AssetInfo:
+      type: object
+      properties:
+        ticker:
+          type: string
+        name:
+          type: string
+    Ticker:
+      type: object
+      properties:
+        ticker:
+          type: string
+        currency:
+          type: string
+        price:
+          type: number
+        change24h:
+          type: number
+        change7d:
+          type: number
+        change1m:
+          type: number
+        change3m:
+          type: number
+        change6m:
+          type: number
+        change12m:
+          type: number
+        changeAll:
+          type: number
+        aum:
+          type: number
+    Chart:
+      type: object
+      properties:
+        ticker:
+          type: string
+        currency:
+          type: string
+          enum:
+            - BTC
+            - USD
+            - EUR
+        from:
+          type: integer
+          format: int64
+        to:
+          type: integer
+          format: int64
+        granulation:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChartPoint'
+    ChartPoint:
+      type: object
+      properties:
+        x:
+          type: integer
+          format: int64
+        'y':
+          type: string
+    EnumMapIntervalBigDecimal:
+      type: object
+      properties:
+        DAY:
+          type: number
+        WEEK:
+          type: number
+        MONTH:
+          type: number
+        THREE_MONTH:
+          type: number
+        SIX_MONTH:
+          type: number
+        YTD:
+          type: number
+        YEAR:
+          type: number
+        ALL_TIME:
+          type: number
+    Statistics:
+      type: object
+      properties:
+        ticker:
+          type: string
+        currency:
+          type: string
+        returns:
+          type: object
+          properties:
+            DAY:
+              type: number
+            WEEK:
+              type: number
+            MONTH:
+              type: number
+            THREE_MONTH:
+              type: number
+            SIX_MONTH:
+              type: number
+            YTD:
+              type: number
+            YEAR:
+              type: number
+            ALL_TIME:
+              type: number
+        volatility:
+          type: object
+          properties:
+            DAY:
+              type: number
+            WEEK:
+              type: number
+            MONTH:
+              type: number
+            THREE_MONTH:
+              type: number
+            SIX_MONTH:
+              type: number
+            YTD:
+              type: number
+            YEAR:
+              type: number
+            ALL_TIME:
+              type: number
+        maxDrawdown:
+          type: object
+          properties:
+            DAY:
+              type: number
+            WEEK:
+              type: number
+            MONTH:
+              type: number
+            THREE_MONTH:
+              type: number
+            SIX_MONTH:
+              type: number
+            YTD:
+              type: number
+            YEAR:
+              type: number
+            ALL_TIME:
+              type: number
     OrderInfo:
       required:
         - source_ticker
@@ -1236,62 +1392,6 @@ components:
           type: number
         exitFee:
           type: number
-    Ticker:
-      type: object
-      properties:
-        ticker:
-          type: string
-        currency:
-          type: string
-        price:
-          type: number
-        change24h:
-          type: number
-        change7d:
-          type: number
-        change1m:
-          type: number
-        change3m:
-          type: number
-        change6m:
-          type: number
-        change12m:
-          type: number
-        changeAll:
-          type: number
-        aum:
-          type: number
-    Chart:
-      type: object
-      properties:
-        ticker:
-          type: string
-        currency:
-          type: string
-          enum:
-            - BTC
-            - USD
-            - EUR
-        from:
-          type: integer
-          format: int64
-        to:
-          type: integer
-          format: int64
-        granulation:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChartPoint'
-    ChartPoint:
-      type: object
-      properties:
-        x:
-          type: integer
-          format: int64
-        'y':
-          type: string
     StrategyBalance:
       type: object
       properties:
@@ -1361,89 +1461,6 @@ components:
           type: string
         rebalancedWeight:
           type: number
-    EnumMapIntervalBigDecimal:
-      type: object
-      properties:
-        DAY:
-          type: number
-        WEEK:
-          type: number
-        MONTH:
-          type: number
-        THREE_MONTH:
-          type: number
-        SIX_MONTH:
-          type: number
-        YTD:
-          type: number
-        YEAR:
-          type: number
-        ALL_TIME:
-          type: number
-    Statistics:
-      type: object
-      properties:
-        ticker:
-          type: string
-        currency:
-          type: string
-        returns:
-          type: object
-          properties:
-            DAY:
-              type: number
-            WEEK:
-              type: number
-            MONTH:
-              type: number
-            THREE_MONTH:
-              type: number
-            SIX_MONTH:
-              type: number
-            YTD:
-              type: number
-            YEAR:
-              type: number
-            ALL_TIME:
-              type: number
-        volatility:
-          type: object
-          properties:
-            DAY:
-              type: number
-            WEEK:
-              type: number
-            MONTH:
-              type: number
-            THREE_MONTH:
-              type: number
-            SIX_MONTH:
-              type: number
-            YTD:
-              type: number
-            YEAR:
-              type: number
-            ALL_TIME:
-              type: number
-        maxDrawdown:
-          type: object
-          properties:
-            DAY:
-              type: number
-            WEEK:
-              type: number
-            MONTH:
-              type: number
-            THREE_MONTH:
-              type: number
-            SIX_MONTH:
-              type: number
-            YTD:
-              type: number
-            YEAR:
-              type: number
-            ALL_TIME:
-              type: number
     Balance:
       type: object
       properties:
@@ -1494,32 +1511,6 @@ components:
         currency:
           type: string
         address:
-          type: string
-    Asset:
-      type: object
-      properties:
-        ticker:
-          type: string
-        supported:
-          type: boolean
-        useInStrategy:
-          type: boolean
-        tradable:
-          type: boolean
-        status:
-          type: string
-          enum:
-            - ONLINE
-            - OFFLINE
-            - DELISTING
-            - DELISTED
-            - MAINTENANCE
-    AssetInfo:
-      type: object
-      properties:
-        ticker:
-          type: string
-        name:
           type: string
   securitySchemes:
     ApiKey:
