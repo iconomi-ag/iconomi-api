@@ -1056,165 +1056,6 @@ paths:
                 type: string
 components:
   schemas:
-    OrderInfo:
-      required:
-        - source_ticker
-        - target_ticker
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - created
-            - active
-            - done
-            - failed
-            - unknown
-        orderId:
-          type: string
-        percentageCompleted:
-          type: number
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
-    TradeConfirm:
-      type: object
-      properties:
-        offerId:
-          type: string
-        transaction:
-          $ref: '#/components/schemas/Transaction'
-    Transaction:
-      required:
-        - amount_ticker
-        - fee_ticker
-        - performance_fee_ticker
-        - profit_ticker
-        - source_ticker
-        - target_ticker
-        - vat_ticker
-      type: object
-      properties:
-        transactionId:
-          type: string
-        timestamp:
-          type: integer
-          format: int64
-        status:
-          type: string
-        exchangeRate:
-          type: number
-        paymentMethod:
-          type: string
-        address:
-          type: string
-        type:
-          type: string
-        kind:
-          type: string
-        amount_ticker:
-          type: string
-        amount:
-          type: number
-        source_ticker:
-          type: string
-        source_amount:
-          type: number
-        target_ticker:
-          type: string
-        target_amount:
-          type: number
-        fee_ticker:
-          type: string
-        fee_amount:
-          type: number
-        vat_ticker:
-          type: string
-        vat_amount:
-          type: number
-        performance_fee_ticker:
-          type: string
-        performance_fee_amount:
-          type: number
-        profit_ticker:
-          type: string
-        profit_amount:
-          type: number
-    Order:
-      required:
-        - amount
-        - side
-        - source_ticker
-        - target_ticker
-      type: object
-      properties:
-        accountId:
-          type: string
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
-        side:
-          type: string
-          enum:
-            - source
-            - target
-    OrderOffer:
-      required:
-        - amount
-        - side
-        - source_ticker
-        - target_ticker
-      type: object
-      properties:
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
-        side:
-          type: string
-          enum:
-            - source
-            - target
-    TradeOffer:
-      type: object
-      properties:
-        offerId:
-          type: string
-        sourceTicker:
-          type: string
-        targetTicker:
-          type: string
-        sourceAmount:
-          type: number
-        targetAmount:
-          type: number
-        exchangeRate:
-          type: number
-        feeAmount:
-          type: number
-        feeTicker:
-          type: string
-        validTo:
-          type: integer
-          format: int64
-        serverTime:
-          type: integer
-          format: int64
-        error:
-          type: string
-        used:
-          type: boolean
     Strategy:
       type: object
       properties:
@@ -1237,6 +1078,9 @@ components:
           type: number
         exitFee:
           type: number
+        followers:
+          type: integer
+          format: int64
     Ticker:
       type: object
       properties:
@@ -1445,6 +1289,215 @@ components:
               type: number
             ALL_TIME:
               type: number
+    OrderInfo:
+      required:
+        - source_ticker
+        - target_ticker
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - created
+            - active
+            - done
+            - failed
+            - unknown
+        orderId:
+          type: string
+        percentageCompleted:
+          type: number
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
+    Order:
+      required:
+        - amount
+        - side
+        - source_ticker
+        - target_ticker
+      type: object
+      properties:
+        accountId:
+          type: string
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
+        side:
+          type: string
+          enum:
+            - source
+            - target
+    OrderOffer:
+      required:
+        - amount
+        - side
+        - source_ticker
+        - target_ticker
+      type: object
+      properties:
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
+        side:
+          type: string
+          enum:
+            - source
+            - target
+    TradeOffer:
+      type: object
+      properties:
+        offerId:
+          type: string
+        sourceTicker:
+          type: string
+        targetTicker:
+          type: string
+        sourceAmount:
+          type: number
+        targetAmount:
+          type: number
+        exchangeRate:
+          type: number
+        feeAmount:
+          type: number
+        feeTicker:
+          type: string
+        validTo:
+          type: integer
+          format: int64
+        serverTime:
+          type: integer
+          format: int64
+        error:
+          type: string
+        used:
+          type: boolean
+    TradeConfirm:
+      type: object
+      properties:
+        offerId:
+          type: string
+        transaction:
+          $ref: '#/components/schemas/Transaction'
+    Transaction:
+      required:
+        - amount_ticker
+        - fee_ticker
+        - performance_fee_ticker
+        - profit_ticker
+        - source_ticker
+        - target_ticker
+        - vat_ticker
+      type: object
+      properties:
+        transactionId:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        status:
+          type: string
+        exchangeRate:
+          type: number
+        paymentMethod:
+          type: string
+        address:
+          type: string
+        type:
+          type: string
+        kind:
+          type: string
+        amount_ticker:
+          type: string
+        amount:
+          type: number
+        source_ticker:
+          type: string
+        source_amount:
+          type: number
+        target_ticker:
+          type: string
+        target_amount:
+          type: number
+        fee_ticker:
+          type: string
+        fee_amount:
+          type: number
+        vat_ticker:
+          type: string
+        vat_amount:
+          type: number
+        performance_fee_ticker:
+          type: string
+        performance_fee_amount:
+          type: number
+        profit_ticker:
+          type: string
+        profit_amount:
+          type: number
+    Asset:
+      type: object
+      properties:
+        ticker:
+          type: string
+        supported:
+          type: boolean
+        useInStrategy:
+          type: boolean
+        tradable:
+          type: boolean
+        status:
+          type: string
+          enum:
+            - ONLINE
+            - OFFLINE
+            - DELISTING
+            - DELISTED
+            - MAINTENANCE
+    AssetInfo:
+      type: object
+      properties:
+        ticker:
+          type: string
+        name:
+          type: string
+    Balance:
+      type: object
+      properties:
+        currency:
+          type: string
+        daaList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+        assetList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+    BalanceEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        ticker:
+          type: string
+        balance:
+          type: string
+        value:
+          type: string
     Activity:
       type: object
       properties:
@@ -1471,56 +1524,6 @@ components:
         currency:
           type: string
         address:
-          type: string
-    Balance:
-      type: object
-      properties:
-        currency:
-          type: string
-        daaList:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceEntry'
-        assetList:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceEntry'
-    BalanceEntry:
-      type: object
-      properties:
-        name:
-          type: string
-        ticker:
-          type: string
-        balance:
-          type: string
-        value:
-          type: string
-    Asset:
-      type: object
-      properties:
-        ticker:
-          type: string
-        supported:
-          type: boolean
-        useInStrategy:
-          type: boolean
-        tradable:
-          type: boolean
-        status:
-          type: string
-          enum:
-            - ONLINE
-            - OFFLINE
-            - DELISTING
-            - DELISTED
-            - MAINTENANCE
-    AssetInfo:
-      type: object
-      properties:
-        ticker:
-          type: string
-        name:
           type: string
   securitySchemes:
     ApiKey:
