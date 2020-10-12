@@ -108,7 +108,7 @@ You generate the **ICN-SIGN** header by creating a **sha512 HMAC** using the bas
 
 Example:
 ``` 
-base64_encode(HMAC_SHA512(base64_decode(secret_key), timestamp + upper_case(method) + requestPath + body))
+base64_encode(HMAC_SHA512(secret_key, timestamp + upper_case(method) + requestPath + body))
 ```
 
 <br/>
