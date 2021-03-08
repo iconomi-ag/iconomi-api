@@ -357,8 +357,6 @@ paths:
               - THREE_HOURLY
               - EIGHT_HOURLY
               - DAILY
-              - MONTHLY
-              - YEARLY
       responses:
         '200':
           description: default response
@@ -634,7 +632,7 @@ paths:
       tags:
         - Strategies
       summary: Balance
-      description: Returns live balance of strategy
+      description: Endpoint requires manager authentication with institutional role. Returns live balances underlying assets of strategy.
       operationId: daaBalance
       parameters:
         - name: ticker
@@ -746,8 +744,6 @@ paths:
               - THREE_HOURLY
               - EIGHT_HOURLY
               - DAILY
-              - MONTHLY
-              - YEARLY
           example: HOURLY
       responses:
         '200':
@@ -1056,31 +1052,57 @@ paths:
                 type: string
 components:
   schemas:
-    Strategy:
+    OrderOffer:
+      required:
+        - amount
+        - side
+        - source_ticker
+        - target_ticker
       type: object
       properties:
-        ticker:
+        source_ticker:
           type: string
-        name:
+        target_ticker:
           type: string
-        manager:
-          type: string
-        managementType:
+        amount:
+          minimum: 0
+          type: number
+        side:
           type: string
           enum:
-            - ACTIVE
-            - PASSIVE
-        managementFee:
+            - source
+            - target
+    TradeOffer:
+      type: object
+      properties:
+        offerId:
+          type: string
+        sourceTicker:
+          type: string
+        targetTicker:
+          type: string
+        sourceAmount:
           type: number
-        performanceFee:
+        targetAmount:
           type: number
-        entryFee:
+        exchangeRate:
           type: number
-        exitFee:
+        feeAmount:
           type: number
-        followers:
+        feeTicker:
+          type: string
+        sellingAssets:
+          type: boolean
+        validTo:
           type: integer
           format: int64
+        serverTime:
+          type: integer
+          format: int64
+        error:
+          type: string
+        used:
+          type: boolean
     Ticker:
       type: object
       properties:
@@ -1106,6 +1128,33 @@ components:
           type: number
         aum:
           type: number
+    Strategy:
+      type: object
+      properties:
+        ticker:
+          type: string
+        name:
+          type: string
+        manager:
+          type: string
+        managementType:
+          type: string
+          enum:
+            - ACTIVE
+            - PASSIVE
+        managementFee:
+          type: number
+        performanceFee:
+          type: number
+        performanceFeeCollectionPeriod:
+          type: string
+        entryFee:
+          type: number
+        exitFee:
+          type: number
+        followers:
+          type: integer
+          format: int64
     Chart:
       type: object
       properties:
@@ -1137,6 +1186,107 @@ components:
           format: int64
         'y':
           type: string
+    OrderInfo:
+      required:
+        - source_ticker
+        - target_ticker
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - created
+            - active
+            - done
+            - failed
+            - unknown
+        orderId:
+          type: string
+        percentageCompleted:
+          type: number
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
+    Withdraw:
+      required:
+        - address
+        - amount
+        - currency
+      type: object
+      properties:
+        amount:
+          type: string
+        currency:
+          type: string
+        address:
+          type: string
+    Transaction:
+      required:
+        - amount_ticker
+        - fee_ticker
+        - performance_fee_ticker
+        - profit_ticker
+        - source_ticker
+        - target_ticker
+        - vat_ticker
+      type: object
+      properties:
+        transactionId:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        status:
+          type: string
+        exchangeRate:
+          type: number
+        paymentMethod:
+          type: string
+        address:
+          type: string
+        type:
+          type: string
+        kind:
+          type: string
+        amount_ticker:
+          type: string
+        amount:
+          type: number
+        source_ticker:
+          type: string
+        source_amount:
+          type: number
+        target_ticker:
+          type: string
+        target_amount:
+          type: number
+        fee_ticker:
+          type: string
+        fee_amount:
+          type: number
+        vat_ticker:
+          type: string
+        vat_amount:
+          type: number
+        performance_fee_ticker:
+          type: string
+        performance_fee_amount:
+          type: number
+        profit_ticker:
+          type: string
+        profit_amount:
+          type: number
+    Activity:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
     StrategyBalance:
       type: object
       properties:
@@ -1153,6 +1303,107 @@ components:
           type: string
         balance:
           type: string
+    Order:
+      required:
+        - amount
+        - side
+        - source_ticker
+        - target_ticker
+      type: object
+      properties:
+        accountId:
+          type: string
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
+        side:
+          type: string
+          enum:
+            - source
+            - target
+    Balance:
+      type: object
+      properties:
+        currency:
+          type: string
+        daaList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+        assetList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+    BalanceEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        ticker:
+          type: string
+        balance:
+          type: string
+        value:
+          type: string
+    Deposit:
+      type: object
+      properties:
+        currency:
+          type: string
+        address:
+          type: string
+    AssetInfo:
+      type: object
+      properties:
+        ticker:
+          type: string
+        name:
+          type: string
+    Asset:
+      type: object
+      properties:
+        ticker:
+          type: string
+        supported:
+          type: boolean
+        useInStrategy:
+          type: boolean
+        tradable:
+          type: boolean
+        status:
+          type: string
+          enum:
+            - ONLINE
+            - OFFLINE
+            - DELISTING
+            - DELISTED
+            - MAINTENANCE
+    StructureSubmit:
+      type: object
+      properties:
+        ticker:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmitStructureElement'
+        speedType:
+          type: string
+          enum:
+            - SLOW
+            - MEDIUM
+            - FAST
+    SubmitStructureElement:
+      type: object
+      properties:
+        assetTicker:
+          type: string
+        rebalancedWeight:
+          type: number
     Structure:
       type: object
       properties:
@@ -1184,28 +1435,6 @@ components:
           type: string
         assetCategory:
           type: string
-    StructureSubmit:
-      type: object
-      properties:
-        ticker:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubmitStructureElement'
-        speedType:
-          type: string
-          enum:
-            - SLOW
-            - MEDIUM
-            - FAST
-    SubmitStructureElement:
-      type: object
-      properties:
-        assetTicker:
-          type: string
-        rebalancedWeight:
-          type: number
     EnumMapIntervalBigDecimal:
       type: object
       properties:
@@ -1289,102 +1518,6 @@ components:
               type: number
             ALL_TIME:
               type: number
-    OrderInfo:
-      required:
-        - source_ticker
-        - target_ticker
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - created
-            - active
-            - done
-            - failed
-            - unknown
-        orderId:
-          type: string
-        percentageCompleted:
-          type: number
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
-    Order:
-      required:
-        - amount
-        - side
-        - source_ticker
-        - target_ticker
-      type: object
-      properties:
-        accountId:
-          type: string
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
-        side:
-          type: string
-          enum:
-            - source
-            - target
-    OrderOffer:
-      required:
-        - amount
-        - side
-        - source_ticker
-        - target_ticker
-      type: object
-      properties:
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
-        side:
-          type: string
-          enum:
-            - source
-            - target
-    TradeOffer:
-      type: object
-      properties:
-        offerId:
-          type: string
-        sourceTicker:
-          type: string
-        targetTicker:
-          type: string
-        sourceAmount:
-          type: number
-        targetAmount:
-          type: number
-        exchangeRate:
-          type: number
-        feeAmount:
-          type: number
-        feeTicker:
-          type: string
-        validTo:
-          type: integer
-          format: int64
-        serverTime:
-          type: integer
-          format: int64
-        error:
-          type: string
-        used:
-          type: boolean
     TradeConfirm:
       type: object
       properties:
@@ -1392,139 +1525,6 @@ components:
           type: string
         transaction:
           $ref: '#/components/schemas/Transaction'
-    Transaction:
-      required:
-        - amount_ticker
-        - fee_ticker
-        - performance_fee_ticker
-        - profit_ticker
-        - source_ticker
-        - target_ticker
-        - vat_ticker
-      type: object
-      properties:
-        transactionId:
-          type: string
-        timestamp:
-          type: integer
-          format: int64
-        status:
-          type: string
-        exchangeRate:
-          type: number
-        paymentMethod:
-          type: string
-        address:
-          type: string
-        type:
-          type: string
-        kind:
-          type: string
-        amount_ticker:
-          type: string
-        amount:
-          type: number
-        source_ticker:
-          type: string
-        source_amount:
-          type: number
-        target_ticker:
-          type: string
-        target_amount:
-          type: number
-        fee_ticker:
-          type: string
-        fee_amount:
-          type: number
-        vat_ticker:
-          type: string
-        vat_amount:
-          type: number
-        performance_fee_ticker:
-          type: string
-        performance_fee_amount:
-          type: number
-        profit_ticker:
-          type: string
-        profit_amount:
-          type: number
-    Asset:
-      type: object
-      properties:
-        ticker:
-          type: string
-        supported:
-          type: boolean
-        useInStrategy:
-          type: boolean
-        tradable:
-          type: boolean
-        status:
-          type: string
-          enum:
-            - ONLINE
-            - OFFLINE
-            - DELISTING
-            - DELISTED
-            - MAINTENANCE
-    AssetInfo:
-      type: object
-      properties:
-        ticker:
-          type: string
-        name:
-          type: string
-    Balance:
-      type: object
-      properties:
-        currency:
-          type: string
-        daaList:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceEntry'
-        assetList:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceEntry'
-    BalanceEntry:
-      type: object
-      properties:
-        name:
-          type: string
-        ticker:
-          type: string
-        balance:
-          type: string
-        value:
-          type: string
-    Activity:
-      type: object
-      properties:
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
-    Deposit:
-      type: object
-      properties:
-        currency:
-          type: string
-        address:
-          type: string
-    Withdraw:
-      required:
-        - address
-        - amount
-        - currency
-      type: object
-      properties:
-        amount:
-          type: string
-        currency:
-          type: string
-        address:
-          type: string
   securitySchemes:
     ApiKey:
       type: apiKey
