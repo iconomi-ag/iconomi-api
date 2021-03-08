@@ -3,10 +3,10 @@ info:
   title: Iconomi API
   version: "1.3"
 servers:
-- url: "https://api.iconomi.com"
+- url: https://api.iconomi.com
   description: Live Server
   variables: {}
-- url: "https://api-demo.iconomi.com"
+- url: https://api-demo.iconomi.com
   description: Sandbox Server
   variables: {}
 tags:
@@ -107,7 +107,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Asset"
+                  $ref: '#/components/schemas/Asset'
   /v1/assets/{ticker}:
     get:
       tags:
@@ -133,7 +133,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AssetInfo"
+                $ref: '#/components/schemas/AssetInfo'
   /v1/assets/{ticker}/price:
     get:
       tags:
@@ -170,7 +170,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Ticker"
+                $ref: '#/components/schemas/Ticker'
   /v1/assets/{ticker}/pricehistory:
     get:
       tags:
@@ -224,8 +224,6 @@ paths:
           - THREE_HOURLY
           - EIGHT_HOURLY
           - DAILY
-          - MONTHLY
-          - YEARLY
       responses:
         "401":
           description: default response
@@ -238,7 +236,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Chart"
+                $ref: '#/components/schemas/Chart'
   /v1/assets/{ticker}/statistics:
     get:
       tags:
@@ -275,10 +273,10 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Statistics"
+                $ref: '#/components/schemas/Statistics'
             application/json:
               schema:
-                $ref: "#/components/schemas/Statistics"
+                $ref: '#/components/schemas/Statistics'
   /v1/order:
     post:
       tags:
@@ -290,7 +288,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Order"
+              $ref: '#/components/schemas/Order'
       responses:
         "401":
           description: default response
@@ -303,7 +301,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OrderInfo"
+                $ref: '#/components/schemas/OrderInfo'
   /v1/order/offer:
     post:
       tags:
@@ -315,7 +313,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/OrderOffer"
+              $ref: '#/components/schemas/OrderOffer'
       responses:
         "401":
           description: default response
@@ -328,7 +326,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TradeOffer"
+                $ref: '#/components/schemas/TradeOffer'
   /v1/order/offer/{offerId}/confirm:
     post:
       tags:
@@ -354,10 +352,10 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/TradeConfirm"
+                $ref: '#/components/schemas/TradeConfirm'
             application/json:
               schema:
-                $ref: "#/components/schemas/TradeConfirm"
+                $ref: '#/components/schemas/TradeConfirm'
   /v1/order/orders:
     get:
       tags:
@@ -385,7 +383,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/OrderInfo"
+                  $ref: '#/components/schemas/OrderInfo'
   /v1/order/{orderId}:
     get:
       tags:
@@ -416,7 +414,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OrderInfo"
+                $ref: '#/components/schemas/OrderInfo'
     delete:
       tags:
       - Trading
@@ -446,7 +444,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OrderInfo"
+                $ref: '#/components/schemas/OrderInfo'
   /v1/strategies:
     get:
       tags:
@@ -468,7 +466,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Strategy"
+                  $ref: '#/components/schemas/Strategy'
   /v1/strategies/{ticker}:
     get:
       tags:
@@ -496,13 +494,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Strategy"
+                $ref: '#/components/schemas/Strategy'
   /v1/strategies/{ticker}/balance:
     get:
       tags:
       - Strategies
       summary: Balance
-      description: Returns live balance of strategy
+      description: Endpoint requires manager authentication with institutional role.
+        Returns live balances underlying assets of strategy.
       operationId: daaBalance
       parameters:
       - name: ticker
@@ -522,7 +521,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StrategyBalance"
+                $ref: '#/components/schemas/StrategyBalance'
   /v1/strategies/{ticker}/price:
     get:
       tags:
@@ -559,7 +558,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Ticker"
+                $ref: '#/components/schemas/Ticker'
   /v1/strategies/{ticker}/pricehistory:
     get:
       tags:
@@ -615,8 +614,6 @@ paths:
           - THREE_HOURLY
           - EIGHT_HOURLY
           - DAILY
-          - MONTHLY
-          - YEARLY
         example: HOURLY
       responses:
         "401":
@@ -630,7 +627,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Chart"
+                $ref: '#/components/schemas/Chart'
   /v1/strategies/{ticker}/statistics:
     get:
       tags:
@@ -667,10 +664,10 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Statistics"
+                $ref: '#/components/schemas/Statistics'
             application/json:
               schema:
-                $ref: "#/components/schemas/Statistics"
+                $ref: '#/components/schemas/Statistics'
   /v1/strategies/{ticker}/structure:
     get:
       tags:
@@ -708,7 +705,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Structure"
+                $ref: '#/components/schemas/Structure'
     post:
       tags:
       - Strategies
@@ -726,7 +723,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StructureSubmit"
+              $ref: '#/components/schemas/StructureSubmit'
       responses:
         "401":
           description: default response
@@ -739,7 +736,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Structure"
+                $ref: '#/components/schemas/Structure'
       security:
       - ApiKey: []
       - ApiTimestamp: []
@@ -785,7 +782,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Activity"
+                $ref: '#/components/schemas/Activity'
   /v1/user/balance:
     get:
       tags:
@@ -829,10 +826,10 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Balance"
+                $ref: '#/components/schemas/Balance'
             application/json:
               schema:
-                $ref: "#/components/schemas/Balance"
+                $ref: '#/components/schemas/Balance'
   /v1/user/deposit/{currency}:
     get:
       tags:
@@ -858,7 +855,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Deposit"
+                $ref: '#/components/schemas/Deposit'
   /v1/user/transaction/{transactionId}:
     get:
       tags:
@@ -884,7 +881,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Transaction"
+                $ref: '#/components/schemas/Transaction'
   /v1/user/withdraw:
     post:
       tags:
@@ -897,7 +894,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Withdraw"
+              $ref: '#/components/schemas/Withdraw'
       responses:
         "401":
           description: default response
@@ -910,34 +907,60 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Transaction"
+                $ref: '#/components/schemas/Transaction'
 components:
   schemas:
-    Strategy:
+    OrderOffer:
+      required:
+      - amount
+      - side
+      - source_ticker
+      - target_ticker
       type: object
       properties:
-        ticker:
+        source_ticker:
           type: string
-        name:
+        target_ticker:
           type: string
-        manager:
-          type: string
-        managementType:
+        amount:
+          minimum: 0
+          type: number
+        side:
           type: string
           enum:
-          - ACTIVE
-          - PASSIVE
-        managementFee:
+          - source
+          - target
+    TradeOffer:
+      type: object
+      properties:
+        offerId:
+          type: string
+        sourceTicker:
+          type: string
+        targetTicker:
+          type: string
+        sourceAmount:
           type: number
-        performanceFee:
+        targetAmount:
           type: number
-        entryFee:
+        exchangeRate:
           type: number
-        exitFee:
+        feeAmount:
           type: number
-        followers:
+        feeTicker:
+          type: string
+        sellingAssets:
+          type: boolean
+        validTo:
           type: integer
           format: int64
+        serverTime:
+          type: integer
+          format: int64
+        error:
+          type: string
+        used:
+          type: boolean
     Ticker:
       type: object
       properties:
@@ -963,6 +986,33 @@ components:
           type: number
         aum:
           type: number
+    Strategy:
+      type: object
+      properties:
+        ticker:
+          type: string
+        name:
+          type: string
+        manager:
+          type: string
+        managementType:
+          type: string
+          enum:
+          - ACTIVE
+          - PASSIVE
+        managementFee:
+          type: number
+        performanceFee:
+          type: number
+        performanceFeeCollectionPeriod:
+          type: string
+        entryFee:
+          type: number
+        exitFee:
+          type: number
+        followers:
+          type: integer
+          format: int64
     Chart:
       type: object
       properties:
@@ -985,7 +1035,7 @@ components:
         values:
           type: array
           items:
-            $ref: "#/components/schemas/ChartPoint"
+            $ref: '#/components/schemas/ChartPoint'
     ChartPoint:
       type: object
       properties:
@@ -994,6 +1044,107 @@ components:
           format: int64
         y:
           type: string
+    OrderInfo:
+      required:
+      - source_ticker
+      - target_ticker
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - created
+          - active
+          - done
+          - failed
+          - unknown
+        orderId:
+          type: string
+        percentageCompleted:
+          type: number
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
+    Withdraw:
+      required:
+      - address
+      - amount
+      - currency
+      type: object
+      properties:
+        amount:
+          type: string
+        currency:
+          type: string
+        address:
+          type: string
+    Transaction:
+      required:
+      - amount_ticker
+      - fee_ticker
+      - performance_fee_ticker
+      - profit_ticker
+      - source_ticker
+      - target_ticker
+      - vat_ticker
+      type: object
+      properties:
+        transactionId:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        status:
+          type: string
+        exchangeRate:
+          type: number
+        paymentMethod:
+          type: string
+        address:
+          type: string
+        type:
+          type: string
+        kind:
+          type: string
+        amount_ticker:
+          type: string
+        amount:
+          type: number
+        source_ticker:
+          type: string
+        source_amount:
+          type: number
+        target_ticker:
+          type: string
+        target_amount:
+          type: number
+        fee_ticker:
+          type: string
+        fee_amount:
+          type: number
+        vat_ticker:
+          type: string
+        vat_amount:
+          type: number
+        performance_fee_ticker:
+          type: string
+        performance_fee_amount:
+          type: number
+        profit_ticker:
+          type: string
+        profit_amount:
+          type: number
+    Activity:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
     StrategyBalance:
       type: object
       properties:
@@ -1002,7 +1153,7 @@ components:
         values:
           type: array
           items:
-            $ref: "#/components/schemas/StrategyBalanceElement"
+            $ref: '#/components/schemas/StrategyBalanceElement'
     StrategyBalanceElement:
       type: object
       properties:
@@ -1010,6 +1161,107 @@ components:
           type: string
         balance:
           type: string
+    Order:
+      required:
+      - amount
+      - side
+      - source_ticker
+      - target_ticker
+      type: object
+      properties:
+        accountId:
+          type: string
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
+        side:
+          type: string
+          enum:
+          - source
+          - target
+    Balance:
+      type: object
+      properties:
+        currency:
+          type: string
+        daaList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+        assetList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+    BalanceEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        ticker:
+          type: string
+        balance:
+          type: string
+        value:
+          type: string
+    Deposit:
+      type: object
+      properties:
+        currency:
+          type: string
+        address:
+          type: string
+    AssetInfo:
+      type: object
+      properties:
+        ticker:
+          type: string
+        name:
+          type: string
+    Asset:
+      type: object
+      properties:
+        ticker:
+          type: string
+        supported:
+          type: boolean
+        useInStrategy:
+          type: boolean
+        tradable:
+          type: boolean
+        status:
+          type: string
+          enum:
+          - ONLINE
+          - OFFLINE
+          - DELISTING
+          - DELISTED
+          - MAINTENANCE
+    StructureSubmit:
+      type: object
+      properties:
+        ticker:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmitStructureElement'
+        speedType:
+          type: string
+          enum:
+          - SLOW
+          - MEDIUM
+          - FAST
+    SubmitStructureElement:
+      type: object
+      properties:
+        assetTicker:
+          type: string
+        rebalancedWeight:
+          type: number
     Structure:
       type: object
       properties:
@@ -1018,7 +1270,7 @@ components:
         values:
           type: array
           items:
-            $ref: "#/components/schemas/StructureElement"
+            $ref: '#/components/schemas/StructureElement'
         numberOfAssets:
           type: integer
           format: int32
@@ -1041,28 +1293,6 @@ components:
           type: string
         assetCategory:
           type: string
-    StructureSubmit:
-      type: object
-      properties:
-        ticker:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: "#/components/schemas/SubmitStructureElement"
-        speedType:
-          type: string
-          enum:
-          - SLOW
-          - MEDIUM
-          - FAST
-    SubmitStructureElement:
-      type: object
-      properties:
-        assetTicker:
-          type: string
-        rebalancedWeight:
-          type: number
     EnumMapIntervalBigDecimal:
       type: object
       properties:
@@ -1146,242 +1376,13 @@ components:
               type: number
             ALL_TIME:
               type: number
-    OrderInfo:
-      required:
-      - source_ticker
-      - target_ticker
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - created
-          - active
-          - done
-          - failed
-          - unknown
-        orderId:
-          type: string
-        percentageCompleted:
-          type: number
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
-    Order:
-      required:
-      - amount
-      - side
-      - source_ticker
-      - target_ticker
-      type: object
-      properties:
-        accountId:
-          type: string
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
-        side:
-          type: string
-          enum:
-          - source
-          - target
-    OrderOffer:
-      required:
-      - amount
-      - side
-      - source_ticker
-      - target_ticker
-      type: object
-      properties:
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
-        side:
-          type: string
-          enum:
-          - source
-          - target
-    TradeOffer:
-      type: object
-      properties:
-        offerId:
-          type: string
-        sourceTicker:
-          type: string
-        targetTicker:
-          type: string
-        sourceAmount:
-          type: number
-        targetAmount:
-          type: number
-        exchangeRate:
-          type: number
-        feeAmount:
-          type: number
-        feeTicker:
-          type: string
-        validTo:
-          type: integer
-          format: int64
-        serverTime:
-          type: integer
-          format: int64
-        error:
-          type: string
-        used:
-          type: boolean
     TradeConfirm:
       type: object
       properties:
         offerId:
           type: string
         transaction:
-          $ref: "#/components/schemas/Transaction"
-    Transaction:
-      required:
-      - amount_ticker
-      - fee_ticker
-      - performance_fee_ticker
-      - profit_ticker
-      - source_ticker
-      - target_ticker
-      - vat_ticker
-      type: object
-      properties:
-        transactionId:
-          type: string
-        timestamp:
-          type: integer
-          format: int64
-        status:
-          type: string
-        exchangeRate:
-          type: number
-        paymentMethod:
-          type: string
-        address:
-          type: string
-        type:
-          type: string
-        kind:
-          type: string
-        amount_ticker:
-          type: string
-        amount:
-          type: number
-        source_ticker:
-          type: string
-        source_amount:
-          type: number
-        target_ticker:
-          type: string
-        target_amount:
-          type: number
-        fee_ticker:
-          type: string
-        fee_amount:
-          type: number
-        vat_ticker:
-          type: string
-        vat_amount:
-          type: number
-        performance_fee_ticker:
-          type: string
-        performance_fee_amount:
-          type: number
-        profit_ticker:
-          type: string
-        profit_amount:
-          type: number
-    Asset:
-      type: object
-      properties:
-        ticker:
-          type: string
-        supported:
-          type: boolean
-        useInStrategy:
-          type: boolean
-        tradable:
-          type: boolean
-        status:
-          type: string
-          enum:
-          - ONLINE
-          - OFFLINE
-          - DELISTING
-          - DELISTED
-          - MAINTENANCE
-    AssetInfo:
-      type: object
-      properties:
-        ticker:
-          type: string
-        name:
-          type: string
-    Balance:
-      type: object
-      properties:
-        currency:
-          type: string
-        daaList:
-          type: array
-          items:
-            $ref: "#/components/schemas/BalanceEntry"
-        assetList:
-          type: array
-          items:
-            $ref: "#/components/schemas/BalanceEntry"
-    BalanceEntry:
-      type: object
-      properties:
-        name:
-          type: string
-        ticker:
-          type: string
-        balance:
-          type: string
-        value:
-          type: string
-    Activity:
-      type: object
-      properties:
-        transactions:
-          type: array
-          items:
-            $ref: "#/components/schemas/Transaction"
-    Deposit:
-      type: object
-      properties:
-        currency:
-          type: string
-        address:
-          type: string
-    Withdraw:
-      required:
-      - address
-      - amount
-      - currency
-      type: object
-      properties:
-        amount:
-          type: string
-        currency:
-          type: string
-        address:
-          type: string
+          $ref: '#/components/schemas/Transaction'
   securitySchemes:
     ApiKey:
       type: apiKey
