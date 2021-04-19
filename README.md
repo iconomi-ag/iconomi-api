@@ -3,6 +3,9 @@
 * Any issues with documentation or the api can be reported under this project
 * There is a sample library available for java at **https://github.com/iconomi-ag/iconomi-java**
 
+# Unofficial ICONOMI APIs
+* There is a sample library available for dotnet at **https://github.com/lduchosal/iconomi-api-dotnet** (unofficial)
+
 ## Change log
 
  [Change log](CHANGELOG.md) 
