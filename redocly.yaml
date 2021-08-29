@@ -2,5 +2,3 @@ swaggerUI: false
 oasVersion: '3.0.1'
 splitSpec: false
 codeSamples: false
-travis: true
-repo: Rebilly/RebillyAPI
