@@ -55,6 +55,6 @@ theme:
   links:
     color: "#F7F9FA"
 
-#redocURL: https://redocpro-cdn.redoc.ly/v1.0.0-beta.34/redocpro-standalone.min.js
-#redocExport: RedocPro
+redocURL: https://redocpro-cdn.redoc.ly
+redocExport: RedocPro
 unstable_externalDescription: description.md
