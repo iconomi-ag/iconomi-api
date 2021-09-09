@@ -143,12 +143,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -199,12 +199,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           },
           {
@@ -290,12 +290,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -749,12 +749,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -805,12 +805,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           },
           {
@@ -898,12 +898,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -959,12 +959,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -1109,11 +1109,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "MY_ACTIVITIES",
               "enum": [
                 "MY_ACTIVITIES",
                 "FEES_AND_EARNINGS"
-              ]
+              ],
+              "default": "MY_ACTIVITIES"
             }
           },
           {
@@ -1174,12 +1174,12 @@
             "required": false,
             "schema": {
               "type": "string",
-              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ]
+              ],
+              "default": "USD"
             }
           }
         ],
@@ -1340,83 +1340,70 @@
   },
   "components": {
     "schemas": {
-      "StrategyBalance": {
+      "OrderInfo": {
+        "required": [
+          "source_amount",
+          "source_ticker",
+          "target_ticker"
+        ],
         "type": "object",
         "properties": {
-          "ticker": {
+          "id": {
             "type": "string"
           },
-          "values": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StrategyBalanceElement"
-            }
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "active",
+              "done",
+              "failed",
+              "unknown"
+            ]
+          },
+          "percentageCompleted": {
+            "type": "number"
+          },
+          "source_amount": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "source_ticker": {
+            "type": "string"
+          },
+          "target_amount": {
+            "type": "number"
+          },
+          "target_ticker": {
+            "type": "string"
           }
         }
       },
-      "StrategyBalanceElement": {
+      "Order": {
+        "required": [
+          "amount",
+          "source_ticker",
+          "target_ticker"
+        ],
         "type": "object",
         "properties": {
-          "ticker": {
+          "amount": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "source_ticker": {
             "type": "string"
           },
-          "balance": {
-            "type": "string"
-          }
-        }
-      },
-      "Ticker": {
-        "type": "object",
-        "properties": {
-          "ticker": {
+          "target_ticker": {
             "type": "string"
           },
-          "currency": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "change24h": {
-            "type": "number"
-          },
-          "change7d": {
-            "type": "number"
-          },
-          "change1m": {
-            "type": "number"
-          },
-          "change3m": {
-            "type": "number"
-          },
-          "change6m": {
-            "type": "number"
-          },
-          "change12m": {
-            "type": "number"
-          },
-          "changeAll": {
-            "type": "number"
-          },
-          "aum": {
-            "type": "number"
-          }
-        }
-      },
-      "FittingInfo": {
-        "type": "object",
-        "properties": {
-          "rebalanceCompleted": {
-            "type": "boolean"
-          },
-          "percentFitted": {
-            "type": "number"
-          },
-          "fittedPerAsset": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "number"
-            }
+          "fitting_speed_type": {
+            "type": "string",
+            "enum": [
+              "SLOW",
+              "MEDIUM",
+              "FAST"
+            ]
           }
         }
       },
@@ -1496,156 +1483,9 @@
           },
           "assetCategory": {
             "type": "string"
-          }
-        }
-      },
-      "OrderInfo": {
-        "required": [
-          "source_amount",
-          "source_ticker",
-          "target_ticker"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
           },
-          "status": {
-            "type": "string",
-            "enum": [
-              "created",
-              "active",
-              "done",
-              "failed",
-              "unknown"
-            ]
-          },
-          "percentageCompleted": {
+          "estimatedProfit": {
             "type": "number"
-          },
-          "source_amount": {
-            "minimum": 0,
-            "type": "number"
-          },
-          "source_ticker": {
-            "type": "string"
-          },
-          "target_amount": {
-            "type": "number"
-          },
-          "target_ticker": {
-            "type": "string"
-          }
-        }
-      },
-      "Balance": {
-        "type": "object",
-        "properties": {
-          "currency": {
-            "type": "string"
-          },
-          "daaList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BalanceEntry"
-            }
-          },
-          "assetList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BalanceEntry"
-            }
-          }
-        }
-      },
-      "BalanceEntry": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "ticker": {
-            "type": "string"
-          },
-          "balance": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
-      "OrderOffer": {
-        "required": [
-          "amount",
-          "side",
-          "source_ticker",
-          "target_ticker"
-        ],
-        "type": "object",
-        "properties": {
-          "source_ticker": {
-            "type": "string"
-          },
-          "target_ticker": {
-            "type": "string"
-          },
-          "amount": {
-            "minimum": 0,
-            "type": "number"
-          },
-          "side": {
-            "type": "string",
-            "enum": [
-              "source",
-              "target"
-            ]
-          }
-        }
-      },
-      "TradeOffer": {
-        "type": "object",
-        "properties": {
-          "offerId": {
-            "type": "string"
-          },
-          "sourceTicker": {
-            "type": "string"
-          },
-          "targetTicker": {
-            "type": "string"
-          },
-          "sourceAmount": {
-            "type": "number"
-          },
-          "targetAmount": {
-            "type": "number"
-          },
-          "exchangeRate": {
-            "type": "number"
-          },
-          "feeAmount": {
-            "type": "number"
-          },
-          "feeTicker": {
-            "type": "string"
-          },
-          "sellingAssets": {
-            "type": "boolean"
-          },
-          "validTo": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "serverTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "error": {
-            "type": "string"
-          },
-          "used": {
-            "type": "boolean"
           }
         }
       },
@@ -1749,52 +1589,39 @@
           }
         }
       },
-      "Deposit": {
+      "Balance": {
         "type": "object",
         "properties": {
           "currency": {
             "type": "string"
           },
-          "address": {
-            "type": "string"
+          "daaList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceEntry"
+            }
+          },
+          "assetList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceEntry"
+            }
           }
         }
       },
-      "Order": {
-        "required": [
-          "amount",
-          "source_ticker",
-          "target_ticker"
-        ],
+      "BalanceEntry": {
         "type": "object",
         "properties": {
-          "amount": {
-            "minimum": 0,
-            "type": "number"
-          },
-          "source_ticker": {
+          "name": {
             "type": "string"
           },
-          "target_ticker": {
-            "type": "string"
-          },
-          "fitting_speed_type": {
-            "type": "string",
-            "enum": [
-              "SLOW",
-              "MEDIUM",
-              "FAST"
-            ]
-          }
-        }
-      },
-      "AssetInfo": {
-        "type": "object",
-        "properties": {
           "ticker": {
             "type": "string"
           },
-          "name": {
+          "balance": {
+            "type": "string"
+          },
+          "value": {
             "type": "string"
           }
         }
@@ -1844,14 +1671,235 @@
           }
         }
       },
-      "Activity": {
+      "OrderOffer": {
+        "required": [
+          "amount",
+          "side",
+          "source_ticker",
+          "target_ticker"
+        ],
         "type": "object",
         "properties": {
-          "transactions": {
+          "source_ticker": {
+            "type": "string"
+          },
+          "target_ticker": {
+            "type": "string"
+          },
+          "amount": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "side": {
+            "type": "string",
+            "enum": [
+              "source",
+              "target"
+            ]
+          }
+        }
+      },
+      "TradeOffer": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "string"
+          },
+          "sourceTicker": {
+            "type": "string"
+          },
+          "targetTicker": {
+            "type": "string"
+          },
+          "sourceAmount": {
+            "type": "number"
+          },
+          "targetAmount": {
+            "type": "number"
+          },
+          "exchangeRate": {
+            "type": "number"
+          },
+          "feeAmount": {
+            "type": "number"
+          },
+          "feeTicker": {
+            "type": "string"
+          },
+          "sellingAssets": {
+            "type": "boolean"
+          },
+          "validTo": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "serverTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "error": {
+            "type": "string"
+          },
+          "used": {
+            "type": "boolean"
+          }
+        }
+      },
+      "TradeConfirm": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "string"
+          },
+          "transaction": {
+            "$ref": "#/components/schemas/Transaction"
+          }
+        }
+      },
+      "StrategyBalance": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "values": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Transaction"
+              "$ref": "#/components/schemas/StrategyBalanceElement"
             }
+          }
+        }
+      },
+      "StrategyBalanceElement": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "string"
+          }
+        }
+      },
+      "Strategy": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "manager": {
+            "type": "string"
+          },
+          "managementType": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PASSIVE"
+            ]
+          },
+          "managementFee": {
+            "type": "number"
+          },
+          "performanceFee": {
+            "type": "number"
+          },
+          "performanceFeeCollectionPeriod": {
+            "type": "string"
+          },
+          "entryFee": {
+            "type": "number"
+          },
+          "exitFee": {
+            "type": "number"
+          },
+          "followers": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Ticker": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "change24h": {
+            "type": "number"
+          },
+          "change7d": {
+            "type": "number"
+          },
+          "change1m": {
+            "type": "number"
+          },
+          "change3m": {
+            "type": "number"
+          },
+          "change6m": {
+            "type": "number"
+          },
+          "change12m": {
+            "type": "number"
+          },
+          "changeAll": {
+            "type": "number"
+          },
+          "aum": {
+            "type": "number"
+          }
+        }
+      },
+      "FittingInfo": {
+        "type": "object",
+        "properties": {
+          "rebalanceCompleted": {
+            "type": "boolean"
+          },
+          "percentFitted": {
+            "type": "number"
+          },
+          "fittedPerAsset": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "Asset": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "supported": {
+            "type": "boolean"
+          },
+          "useInStrategy": {
+            "type": "boolean"
+          },
+          "tradable": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ONLINE",
+              "OFFLINE",
+              "DELISTING",
+              "DELISTED",
+              "MAINTENANCE"
+            ]
           }
         }
       },
@@ -1982,7 +2030,29 @@
           }
         }
       },
-      "Strategy": {
+      "Deposit": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        }
+      },
+      "Activity": {
+        "type": "object",
+        "properties": {
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            }
+          }
+        }
+      },
+      "AssetInfo": {
         "type": "object",
         "properties": {
           "ticker": {
@@ -1990,73 +2060,6 @@
           },
           "name": {
             "type": "string"
-          },
-          "manager": {
-            "type": "string"
-          },
-          "managementType": {
-            "type": "string",
-            "enum": [
-              "ACTIVE",
-              "PASSIVE"
-            ]
-          },
-          "managementFee": {
-            "type": "number"
-          },
-          "performanceFee": {
-            "type": "number"
-          },
-          "performanceFeeCollectionPeriod": {
-            "type": "string"
-          },
-          "entryFee": {
-            "type": "number"
-          },
-          "exitFee": {
-            "type": "number"
-          },
-          "followers": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "Asset": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "supported": {
-            "type": "boolean"
-          },
-          "useInStrategy": {
-            "type": "boolean"
-          },
-          "tradable": {
-            "type": "boolean"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "ONLINE",
-              "OFFLINE",
-              "DELISTING",
-              "DELISTED",
-              "MAINTENANCE"
-            ]
-          }
-        }
-      },
-      "TradeConfirm": {
-        "type": "object",
-        "properties": {
-          "offerId": {
-            "type": "string"
-          },
-          "transaction": {
-            "$ref": "#/components/schemas/Transaction"
           }
         }
       }
