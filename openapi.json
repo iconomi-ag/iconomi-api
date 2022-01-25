@@ -2,13 +2,14 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Iconomi API!",
-    "description": "# Introduction\nWelcome to the ICONOMI Platform API. There are two ways to integrate with the ICONOMI platform, the REST API and a stream-oriented API using Websockets.\n\n## Versioning\n\nThis API maintains backward compatibility. Breaking changes to the API are managed by providing new endpoints. Old versions will remain available for two months after a new version is released and can then be removed at any time. All information about releases is published on this website.\nNon-breaking changes are released in the same major-version API.\n\n## Types\n\nAll request bodies should have content type application/json and be valid JSON.\n\n<br/>\n\n### Timestamps\n\nUnless otherwise specified, all timestamps will be returned in ISO 8601 with microseconds.\n\n<br/> Example:\n\n```\n2019-08-01T01:02:03.000004Z\n```\n\n<br/>\n\n### Numbers\n\nIntegers are unquoted.\n\n<br/> Example:\n\n```\n\"x\": 194767\n```\n\nDecimals are returned as strings with a period as a decimal separator and no thousands separator.\n\n<br/> Example:\n\n```\n\"price\": \"3.3847\"\n```\n\n<br/>\n\n### IDs\n\nAll IDs are UUIDs.\n\n<br/> Example:\n\n``` \n6EFB3D83-830A-42F8-84CD-2C307FE62AD8\n```\n\n<br/>\n\n### Enumerations\n\nThere are several enumerations on the platform that are used across the platform.\n\n#### Strategy types\nThere are different types of strategies supported on the platform which use different behaviour for \ninvestment:\n\n* **PASSIVE** - Strategies that have structures based set on percentages and are rebalances less often\n\n* **ACTIVE** - Strategies that follow a more active strategy not using an index\n\n#### Granulations\n\nDepending on the time period selected different granulation of data is possible as a result. \nFor each of the granulations there will be one data point available:\n\n* **TWO_MINUTE** - only available for institutional strategies.\n* **FIVE_MINUTE**\n* **HOURLY**\n* **THREE_HOURLY**\n* **EIGHT_HOURLY**\n* **DAILY**\n\n## Rate limiting\n\nThe public API (both the REST API and the Websocket API) allows for 60 requests per minute. This rate is subject to change.\n\n## Authentication\n\nTo access authenticated endpoints you need an account on the ICONOMI platform. After you have an account you need to setup your api\nkeys (you can find the option under Settings).\n\n### Creating a request\n\nAll REST requests must contain the following headers:\n\n* **ICN-API-KEY** - The api key as a string.\n* **ICN-SIGN** - The base64-encoded signature (see Signing a Message).\n* **ICN-TIMESTAMP** - A timestamp for your request in epoch milliseconds.\n\n<br/>\n \n### Signing a Message\n\nYou generate the **ICN-SIGN** header by creating a **sha512 HMAC** using the base64-decoded secret key on the prehash string timestamp + method + requestPath + body (where + represents string concatenation) and base64-encode the output, where:\n* the timestamp value is the same as the **ICN-TIMESTAMP** header.\n* the body is the request body string or omitted if there is no request body (typically for GET requests). \n* method must always be in upper case\n\nExample:\n``` \nbase64_encode(HMAC_SHA512(secret_key, timestamp + upper_case(method) + requestPath + body))\n```\n\n<br/>\n\n### Postman\n\nYou can also try with <a href=\"https://www.postman.com/downloads/\" target=\"_blank\" rel=\"nofollow\">postman client</a>. After you import <a href=\"https://www.postman.com/collections/2d5e387a761a6da9f022\" target=\"_blank\" rel=\"nofollow\">collection</a> into client, you have to create new environment under \"Manage environments\" and add two variables:\n\n<br>\n\n* **ICN-API-KEY** - The api key from your account on ICONOMI platform\n* **ICN-SECRET** - The secret key from your account on ICONOMI platform\n\n<br/>\n\nBefore you execute any of those endpoints, environment must be selected.\n\n### Websocket Authentication\n\nIt is possible to authenticate yourself when subscribing to the websocket feed.\n\nWhen opening connection to websocket, add additional headers, as if you were signing a request. To get the necessary parameters, you would go through the same process as you do to make authenticated calls to the API.\n\n## Sample libraries\nYou can find sample libraries for communicating with our API at our <a href=\"https://github.com/iconomi-ag\" target=\"_blank\" rel=\"nofollow\">github page.</a>\n\n## Bug reports\nFor any bug reports in the documentation or the API, feel free to report them to our <a href=\"https://github.com/iconomi-ag/iconomi-api\" target=\"_blank\" rel=\"nofollow\">github page.</a>",
+    "description": "# Introduction\nWelcome to the ICONOMI Platform API. There are two ways to integrate with the ICONOMI platform, the REST API and a stream-oriented API using Websockets.\n\n## Versioning\n\nThis API maintains backward compatibility. Breaking changes to the API are managed by providing new endpoints. Old versions will remain available for two months after a new version is released and can then be removed at any time. All information about releases is published on this website.\nNon-breaking changes are released in the same major-version API.\n\n## Types\n\nAll request bodies should have content type application/json and be valid JSON.\n\n<br/>\n\n### Timestamps\n\nUnless otherwise specified, all timestamps will be returned in ISO 8601 with microseconds.\n\n<br/> Example:\n\n```\n2019-08-01T01:02:03.000004Z\n```\n\n<br/>\n\n### Numbers\n\nIntegers are unquoted.\n\n<br/> Example:\n\n```\n\"x\": 194767\n```\n\nDecimals are returned as strings with a period as a decimal separator and no thousands separator.\n\n<br/> Example:\n\n```\n\"price\": \"3.3847\"\n```\n\n<br/>\n\n### IDs\n\nAll IDs are UUIDs.\n\n<br/> Example:\n\n``` \n6EFB3D83-830A-42F8-84CD-2C307FE62AD8\n```\n\n<br/>\n\n### Enumerations\n\nThere are several enumerations on the platform that are used across the platform.\n\n#### Strategy types\nThere are different types of strategies supported on the platform which use different behaviour for \ninvestment:\n\n* **PASSIVE** - Strategies that have structures based set on percentages and are rebalances less often\n\n* **ACTIVE** - Strategies that follow a more active strategy not using an index\n\n#### Granulations\n\nDepending on the time period selected different granulation of data is possible as a result. \nFor each of the granulations there will be one data point available:\n\n* **TWO_MINUTE** - only available for institutional strategies.\n* **FIVE_MINUTE**\n* **HOURLY**\n* **THREE_HOURLY**\n* **EIGHT_HOURLY**\n* **DAILY**\n\n## Rate limiting\n\nThe public API (both the REST API and the Websocket API) allows for 60 requests per minute. This rate is subject to change.\n\n## Authentication\n\nTo access authenticated endpoints you need an account on the ICONOMI platform. After you have an account you need to setup your api\nkeys (you can find the option under Settings).\n\n### Creating a request\n\nAll REST requests must contain the following headers:\n\n* **ICN-API-KEY** - The api key as a string.\n* **ICN-SIGN** - The base64-encoded signature (see Signing a Message).\n* **ICN-TIMESTAMP** - A timestamp for your request in epoch milliseconds.\n\n<br/>\n \n### Signing a Message\n\nYou generate the **ICN-SIGN** header by creating a **sha512 HMAC** using the base64-decoded secret key on the prehash string timestamp + method + requestPath + body (where + represents string concatenation) and base64-encode the output, where:\n* the timestamp value is the same as the **ICN-TIMESTAMP** header.\n* the body is the request body string or omitted if there is no request body (typically for GET requests). \n* method must always be in upper case\n\n\nPseudocode example:\n``` \nbase64_encode(HMAC_SHA512(secret_key, timestamp + upper_case(method) + requestPath + body))\n```\n\nJava code example:\n```\nString toSign = timestamp + method.toUpperCase() + requestPath + body;\nSecretKeySpec signingKey = new SecretKeySpec(apiSecret.getBytes(), \"HmacSHA512\");\nMac mac = Mac.getInstance(signingKey.getAlgorithm());\nmac.init(signingKey);\nString digest = Base64.getEncoder().encodeToString(mac.doFinal(toSign.getBytes()));\n```\n\nExample values:\n```\nsecret = '51ffd0604d4ba42790b42860fc1e98ac6a4b60e32e078b801d899c6eb04bc29e'\ntimestamp = '1643118174153'\nmethod = 'post'\nrequestPath = '/v1/order'\nbody = '{\"amount\":100,\"source_ticker\":\"EUR\",\"target_ticker\":\"BTC\",\"fitting_speed_type\":\"FAST\"}'\n\nstring to encode = '1643118174153POST/v1/order{\"amount\":100,\"source_ticker\":\"EUR\",\"target_ticker\":\"BTC\",\"fitting_speed_type\":\"FAST\"}'\n\nbase64 encoded signature result = 'tD9pi/UhcVp8BeQyahBDRQnkIm0avWmE1JMZlCEveZ66whMZ0YsHWfzFz6G14FhRunPR/rFbbFZuRkOLXEIoEA=='\n```\n\n<br/>\n\n### Postman\n\nYou can also try with <a href=\"https://www.postman.com/downloads/\" target=\"_blank\" rel=\"nofollow\">postman client</a>. After you import <a href=\"https://www.postman.com/collections/2d5e387a761a6da9f022\" target=\"_blank\" rel=\"nofollow\">collection</a> into client, you have to create new environment under \"Manage environments\" and add two variables:\n\n<br>\n\n* **ICN-API-KEY** - The api key from your account on ICONOMI platform\n* **ICN-SECRET** - The secret key from your account on ICONOMI platform\n\n<br/>\n\nBefore you execute any of those endpoints, environment must be selected.\n\n### Websocket Authentication\n\nIt is possible to authenticate yourself when subscribing to the websocket feed.\n\nWhen opening connection to websocket, add additional headers, as if you were signing a request. To get the necessary parameters, you would go through the same process as you do to make authenticated calls to the API.\n\n## Sample libraries\nYou can find sample libraries for communicating with our API at our <a href=\"https://github.com/iconomi-ag\" target=\"_blank\" rel=\"nofollow\">github page.</a>\n\n## Bug reports\nFor any bug reports in the documentation or the API, feel free to report them to our <a href=\"https://github.com/iconomi-ag/iconomi-api\" target=\"_blank\" rel=\"nofollow\">github page.</a>",
     "version": "1.3"
   },
   "servers": [
     {
       "url": "https://api.iconomi.com",
-      "description": "Live Server!"
+      "description": "Live Server!",
+      "variables": {}
     }
   ],
   "tags": [
@@ -48,7 +49,7 @@
         "operationId": "assetList",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -61,7 +62,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -93,7 +94,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -103,7 +104,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -138,18 +139,18 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -159,7 +160,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -194,12 +195,12 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           },
           {
@@ -240,7 +241,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -250,7 +251,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -285,19 +286,24 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Statistics"
+                }
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Statistics"
@@ -306,7 +312,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -333,12 +339,11 @@
                 "$ref": "#/components/schemas/Order"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -348,7 +353,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -375,12 +380,11 @@
                 "$ref": "#/components/schemas/OrderOffer"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -390,7 +394,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -422,8 +426,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TradeConfirm"
+                }
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TradeConfirm"
@@ -432,7 +441,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -465,11 +474,31 @@
                 "COMPLETED"
               ]
             }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -482,7 +511,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -510,19 +539,11 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "accountId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -532,7 +553,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -558,19 +579,11 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "accountId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -580,7 +593,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -600,9 +613,31 @@
         "summary": "List of Strategies",
         "description": "Returns a list of all public Strategies.",
         "operationId": "strategyList",
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1000
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -615,7 +650,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -649,7 +684,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -659,7 +694,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -691,7 +726,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -701,7 +736,69 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/strategies/{ticker}/posts": {
+      "get": {
+        "tags": [
+          "Strategies"
+        ],
+        "summary": "Strategy posts",
+        "description": "Returns a list of posts.",
+        "operationId": "posts",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Posts"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -736,18 +833,18 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -757,7 +854,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -792,12 +889,12 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           },
           {
@@ -840,7 +937,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -850,7 +947,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -885,19 +982,24 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Statistics"
+                }
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Statistics"
@@ -906,7 +1008,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -941,18 +1043,18 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -962,7 +1064,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -997,12 +1099,11 @@
                 "$ref": "#/components/schemas/StructureSubmit"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1012,7 +1113,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -1055,7 +1156,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1065,7 +1166,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -1092,11 +1193,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "MY_ACTIVITIES",
               "enum": [
                 "MY_ACTIVITIES",
                 "FEES_AND_EARNINGS"
-              ],
-              "default": "MY_ACTIVITIES"
+              ]
             }
           },
           {
@@ -1105,7 +1206,8 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 25
             }
           },
           {
@@ -1114,13 +1216,14 @@
             "required": false,
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 0
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1130,7 +1233,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -1157,19 +1260,24 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "USD",
               "enum": [
                 "BTC",
                 "USD",
                 "EUR"
-              ],
-              "default": "USD"
+              ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Balance"
+                }
+              },
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Balance"
@@ -1178,7 +1286,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -1210,7 +1318,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1220,7 +1328,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -1252,7 +1360,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1262,7 +1370,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -1289,12 +1397,11 @@
                 "$ref": "#/components/schemas/Withdraw"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -1304,7 +1411,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
@@ -1319,19 +1426,201 @@
   },
   "components": {
     "schemas": {
-      "StructureSubmit": {
+      "Strategy": {
         "type": "object",
         "properties": {
           "ticker": {
             "type": "string"
           },
-          "values": {
+          "name": {
+            "type": "string"
+          },
+          "manager": {
+            "type": "string"
+          },
+          "managementType": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PASSIVE"
+            ]
+          },
+          "managementFee": {
+            "type": "number"
+          },
+          "performanceFee": {
+            "type": "number"
+          },
+          "performanceFeeCollectionPeriod": {
+            "type": "string"
+          },
+          "entryFee": {
+            "type": "number"
+          },
+          "exitFee": {
+            "type": "number"
+          },
+          "followers": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "Deposit": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        }
+      },
+      "OrderInfo": {
+        "required": [
+          "source_amount",
+          "source_ticker",
+          "target_ticker"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "active",
+              "done",
+              "failed",
+              "unknown"
+            ]
+          },
+          "percentageCompleted": {
+            "type": "number"
+          },
+          "source_amount": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "source_ticker": {
+            "type": "string"
+          },
+          "target_amount": {
+            "type": "number"
+          },
+          "target_ticker": {
+            "type": "string"
+          }
+        }
+      },
+      "AssetInfo": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Ticker": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "change24h": {
+            "type": "number"
+          },
+          "change7d": {
+            "type": "number"
+          },
+          "change1m": {
+            "type": "number"
+          },
+          "change3m": {
+            "type": "number"
+          },
+          "change6m": {
+            "type": "number"
+          },
+          "change12m": {
+            "type": "number"
+          },
+          "changeAll": {
+            "type": "number"
+          },
+          "aum": {
+            "type": "number"
+          }
+        }
+      },
+      "Balance": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string"
+          },
+          "daaList": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SubmitStructureElement"
+              "$ref": "#/components/schemas/BalanceEntry"
             }
           },
-          "speedType": {
+          "assetList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceEntry"
+            }
+          }
+        }
+      },
+      "BalanceEntry": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "ticker": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "Order": {
+        "required": [
+          "amount",
+          "source_ticker",
+          "target_ticker"
+        ],
+        "type": "object",
+        "properties": {
+          "amount": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "source_ticker": {
+            "type": "string"
+          },
+          "target_ticker": {
+            "type": "string"
+          },
+          "fitting_speed_type": {
             "type": "string",
             "enum": [
               "SLOW",
@@ -1341,63 +1630,253 @@
           }
         }
       },
-      "SubmitStructureElement": {
+      "EnumMapIntervalBigDecimal": {
         "type": "object",
         "properties": {
-          "assetTicker": {
-            "type": "string"
+          "DAY": {
+            "type": "number"
           },
-          "rebalancedWeight": {
+          "WEEK": {
+            "type": "number"
+          },
+          "MONTH": {
+            "type": "number"
+          },
+          "THREE_MONTH": {
+            "type": "number"
+          },
+          "SIX_MONTH": {
+            "type": "number"
+          },
+          "YTD": {
+            "type": "number"
+          },
+          "YEAR": {
+            "type": "number"
+          },
+          "ALL_TIME": {
             "type": "number"
           }
         }
       },
-      "Structure": {
+      "Statistics": {
         "type": "object",
         "properties": {
           "ticker": {
             "type": "string"
           },
-          "values": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StructureElement"
+          "currency": {
+            "type": "string"
+          },
+          "returns": {
+            "type": "object",
+            "properties": {
+              "DAY": {
+                "type": "number"
+              },
+              "WEEK": {
+                "type": "number"
+              },
+              "MONTH": {
+                "type": "number"
+              },
+              "THREE_MONTH": {
+                "type": "number"
+              },
+              "SIX_MONTH": {
+                "type": "number"
+              },
+              "YTD": {
+                "type": "number"
+              },
+              "YEAR": {
+                "type": "number"
+              },
+              "ALL_TIME": {
+                "type": "number"
+              }
             }
           },
-          "numberOfAssets": {
-            "type": "integer",
-            "format": "int32"
+          "volatility": {
+            "type": "object",
+            "properties": {
+              "DAY": {
+                "type": "number"
+              },
+              "WEEK": {
+                "type": "number"
+              },
+              "MONTH": {
+                "type": "number"
+              },
+              "THREE_MONTH": {
+                "type": "number"
+              },
+              "SIX_MONTH": {
+                "type": "number"
+              },
+              "YTD": {
+                "type": "number"
+              },
+              "YEAR": {
+                "type": "number"
+              },
+              "ALL_TIME": {
+                "type": "number"
+              }
+            }
           },
-          "lastRebalanced": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "monthlyRebalancedCount": {
-            "type": "integer",
-            "format": "int64"
+          "maxDrawdown": {
+            "type": "object",
+            "properties": {
+              "DAY": {
+                "type": "number"
+              },
+              "WEEK": {
+                "type": "number"
+              },
+              "MONTH": {
+                "type": "number"
+              },
+              "THREE_MONTH": {
+                "type": "number"
+              },
+              "SIX_MONTH": {
+                "type": "number"
+              },
+              "YTD": {
+                "type": "number"
+              },
+              "YEAR": {
+                "type": "number"
+              },
+              "ALL_TIME": {
+                "type": "number"
+              }
+            }
           }
         }
       },
-      "StructureElement": {
+      "Post": {
         "type": "object",
         "properties": {
-          "rebalancedWeight": {
-            "type": "number"
-          },
-          "targetWeight": {
-            "type": "number"
-          },
-          "assetTicker": {
+          "id": {
             "type": "string"
           },
-          "assetName": {
+          "ticker": {
             "type": "string"
           },
-          "assetCategory": {
+          "content": {
             "type": "string"
           },
-          "estimatedProfit": {
-            "type": "number"
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "strategyName": {
+            "type": "string"
+          }
+        }
+      },
+      "Posts": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "posts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Post"
+            }
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Asset": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "supported": {
+            "type": "boolean"
+          },
+          "useInStrategy": {
+            "type": "boolean"
+          },
+          "tradable": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ONLINE",
+              "OFFLINE",
+              "DELISTING",
+              "DELISTED",
+              "MAINTENANCE"
+            ]
+          }
+        }
+      },
+      "Chart": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "BTC",
+              "USD",
+              "EUR"
+            ]
+          },
+          "from": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "to": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "granulation": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChartPoint"
+            }
+          }
+        }
+      },
+      "ChartPoint": {
+        "type": "object",
+        "properties": {
+          "x": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "y": {
+            "type": "string"
           }
         }
       },
@@ -1501,14 +1980,52 @@
           }
         }
       },
-      "TradeConfirm": {
+      "Structure": {
         "type": "object",
         "properties": {
-          "offerId": {
+          "ticker": {
             "type": "string"
           },
-          "transaction": {
-            "$ref": "#/components/schemas/Transaction"
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StructureElement"
+            }
+          },
+          "numberOfAssets": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastRebalanced": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "monthlyRebalancedCount": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "StructureElement": {
+        "type": "object",
+        "properties": {
+          "rebalancedWeight": {
+            "type": "number"
+          },
+          "targetWeight": {
+            "type": "number"
+          },
+          "assetTicker": {
+            "type": "string"
+          },
+          "assetName": {
+            "type": "string"
+          },
+          "assetCategory": {
+            "type": "string"
+          },
+          "estimatedProfit": {
+            "type": "number"
           }
         }
       },
@@ -1586,73 +2103,6 @@
           }
         }
       },
-      "Order": {
-        "required": [
-          "amount",
-          "source_ticker",
-          "target_ticker"
-        ],
-        "type": "object",
-        "properties": {
-          "amount": {
-            "minimum": 0,
-            "type": "number"
-          },
-          "source_ticker": {
-            "type": "string"
-          },
-          "target_ticker": {
-            "type": "string"
-          },
-          "fitting_speed_type": {
-            "type": "string",
-            "enum": [
-              "SLOW",
-              "MEDIUM",
-              "FAST"
-            ]
-          }
-        }
-      },
-      "OrderInfo": {
-        "required": [
-          "source_amount",
-          "source_ticker",
-          "target_ticker"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "created",
-              "active",
-              "done",
-              "failed",
-              "unknown"
-            ]
-          },
-          "percentageCompleted": {
-            "type": "number"
-          },
-          "source_amount": {
-            "minimum": 0,
-            "type": "number"
-          },
-          "source_ticker": {
-            "type": "string"
-          },
-          "target_amount": {
-            "type": "number"
-          },
-          "target_ticker": {
-            "type": "string"
-          }
-        }
-      },
       "FittingInfo": {
         "type": "object",
         "properties": {
@@ -1670,183 +2120,35 @@
           }
         }
       },
-      "Statistics": {
+      "StructureSubmit": {
         "type": "object",
         "properties": {
           "ticker": {
-            "type": "string"
-          },
-          "currency": {
-            "type": "string"
-          },
-          "returns": {
-            "type": "object",
-            "properties": {
-              "DAY": {
-                "type": "number"
-              },
-              "WEEK": {
-                "type": "number"
-              },
-              "MONTH": {
-                "type": "number"
-              },
-              "THREE_MONTH": {
-                "type": "number"
-              },
-              "SIX_MONTH": {
-                "type": "number"
-              },
-              "YTD": {
-                "type": "number"
-              },
-              "YEAR": {
-                "type": "number"
-              },
-              "ALL_TIME": {
-                "type": "number"
-              }
-            }
-          },
-          "volatility": {
-            "type": "object",
-            "properties": {
-              "DAY": {
-                "type": "number"
-              },
-              "WEEK": {
-                "type": "number"
-              },
-              "MONTH": {
-                "type": "number"
-              },
-              "THREE_MONTH": {
-                "type": "number"
-              },
-              "SIX_MONTH": {
-                "type": "number"
-              },
-              "YTD": {
-                "type": "number"
-              },
-              "YEAR": {
-                "type": "number"
-              },
-              "ALL_TIME": {
-                "type": "number"
-              }
-            }
-          },
-          "maxDrawdown": {
-            "type": "object",
-            "properties": {
-              "DAY": {
-                "type": "number"
-              },
-              "WEEK": {
-                "type": "number"
-              },
-              "MONTH": {
-                "type": "number"
-              },
-              "THREE_MONTH": {
-                "type": "number"
-              },
-              "SIX_MONTH": {
-                "type": "number"
-              },
-              "YTD": {
-                "type": "number"
-              },
-              "YEAR": {
-                "type": "number"
-              },
-              "ALL_TIME": {
-                "type": "number"
-              }
-            }
-          }
-        }
-      },
-      "Chart": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "currency": {
-            "type": "string",
-            "enum": [
-              "BTC",
-              "USD",
-              "EUR"
-            ]
-          },
-          "from": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "to": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "granulation": {
             "type": "string"
           },
           "values": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ChartPoint"
+              "$ref": "#/components/schemas/SubmitStructureElement"
             }
+          },
+          "speedType": {
+            "type": "string",
+            "enum": [
+              "SLOW",
+              "MEDIUM",
+              "FAST"
+            ]
           }
         }
       },
-      "ChartPoint": {
+      "SubmitStructureElement": {
         "type": "object",
         "properties": {
-          "x": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "y": {
-            "type": "string"
-          }
-        }
-      },
-      "Ticker": {
-        "type": "object",
-        "properties": {
-          "ticker": {
+          "assetTicker": {
             "type": "string"
           },
-          "currency": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "change24h": {
-            "type": "number"
-          },
-          "change7d": {
-            "type": "number"
-          },
-          "change1m": {
-            "type": "number"
-          },
-          "change3m": {
-            "type": "number"
-          },
-          "change6m": {
-            "type": "number"
-          },
-          "change12m": {
-            "type": "number"
-          },
-          "changeAll": {
-            "type": "number"
-          },
-          "aum": {
+          "rebalancedWeight": {
             "type": "number"
           }
         }
@@ -1876,94 +2178,6 @@
           }
         }
       },
-      "Strategy": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "manager": {
-            "type": "string"
-          },
-          "managementType": {
-            "type": "string",
-            "enum": [
-              "ACTIVE",
-              "PASSIVE"
-            ]
-          },
-          "managementFee": {
-            "type": "number"
-          },
-          "performanceFee": {
-            "type": "number"
-          },
-          "performanceFeeCollectionPeriod": {
-            "type": "string"
-          },
-          "entryFee": {
-            "type": "number"
-          },
-          "exitFee": {
-            "type": "number"
-          },
-          "followers": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "Deposit": {
-        "type": "object",
-        "properties": {
-          "currency": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string"
-          }
-        }
-      },
-      "Balance": {
-        "type": "object",
-        "properties": {
-          "currency": {
-            "type": "string"
-          },
-          "daaList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BalanceEntry"
-            }
-          },
-          "assetList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BalanceEntry"
-            }
-          }
-        }
-      },
-      "BalanceEntry": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "ticker": {
-            "type": "string"
-          },
-          "balance": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
       "Activity": {
         "type": "object",
         "properties": {
@@ -1975,41 +2189,14 @@
           }
         }
       },
-      "AssetInfo": {
+      "TradeConfirm": {
         "type": "object",
         "properties": {
-          "ticker": {
+          "offerId": {
             "type": "string"
           },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "Asset": {
-        "type": "object",
-        "properties": {
-          "ticker": {
-            "type": "string"
-          },
-          "supported": {
-            "type": "boolean"
-          },
-          "useInStrategy": {
-            "type": "boolean"
-          },
-          "tradable": {
-            "type": "boolean"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "ONLINE",
-              "OFFLINE",
-              "DELISTING",
-              "DELISTED",
-              "MAINTENANCE"
-            ]
+          "transaction": {
+            "$ref": "#/components/schemas/Transaction"
           }
         }
       }
