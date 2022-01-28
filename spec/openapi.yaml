@@ -39,19 +39,25 @@ info:
     \ + body (where + represents string concatenation) and base64-encode the output,\
     \ where:\n* the timestamp value is the same as the **ICN-TIMESTAMP** header.\n\
     * the body is the request body string or omitted if there is no request body (typically\
-    \ for GET requests). \n* method must always be in upper case\n\n\nPseudocode example:\n\
+    \ for GET requests). \n* method must always be in upper case\n* the request path\
+    \ starts with /v1/ and doesn't include query parameters\n\n\nPseudocode example:\n\
     ``` \nbase64_encode(HMAC_SHA512(secret_key, timestamp + upper_case(method) + requestPath\
-    \ + body))\n```\n\nJava code example:\n```\nString toSign = timestamp + method.toUpperCase()\
-    \ + requestPath + body;\nSecretKeySpec signingKey = new SecretKeySpec(apiSecret.getBytes(),\
-    \ \"HmacSHA512\");\nMac mac = Mac.getInstance(signingKey.getAlgorithm());\nmac.init(signingKey);\n\
-    String digest = Base64.getEncoder().encodeToString(mac.doFinal(toSign.getBytes()));\n\
-    ```\n\nExample values:\n```\nsecret = '51ffd0604d4ba42790b42860fc1e98ac6a4b60e32e078b801d899c6eb04bc29e'\n\
+    \ + body))\n```\n\nJava code example:\n```\nString apiSecret = \"...\";\nString\
+    \ toSign = timestamp + method.toUpperCase() + requestPath + body;\nSecretKeySpec\
+    \ signingKey = new SecretKeySpec(apiSecret.getBytes(), \"HmacSHA512\");\nMac mac\
+    \ = Mac.getInstance(signingKey.getAlgorithm());\nmac.init(signingKey);\nString\
+    \ digest = Base64.getEncoder().encodeToString(mac.doFinal(toSign.getBytes()));\n\
+    ```\n\nExample of a POST with a body:\n```\nsecret = '51ffd0604d4ba42790b42860fc1e98ac6a4b60e32e078b801d899c6eb04bc29e'\n\
     timestamp = '1643118174153'\nmethod = 'post'\nrequestPath = '/v1/order'\nbody\
     \ = '{\"amount\":100,\"source_ticker\":\"EUR\",\"target_ticker\":\"BTC\",\"fitting_speed_type\"\
     :\"FAST\"}'\n\nstring to encode = '1643118174153POST/v1/order{\"amount\":100,\"\
     source_ticker\":\"EUR\",\"target_ticker\":\"BTC\",\"fitting_speed_type\":\"FAST\"\
-    }'\n\nbase64 encoded signature result = 'tD9pi/UhcVp8BeQyahBDRQnkIm0avWmE1JMZlCEveZ66whMZ0YsHWfzFz6G14FhRunPR/rFbbFZuRkOLXEIoEA=='\n\
-    ```\n\n<br/>\n\n### Postman\n\nYou can also try with <a href=\"https://www.postman.com/downloads/\"\
+    }'\n\nbase64 encoded signature = 'tD9pi/UhcVp8BeQyahBDRQnkIm0avWmE1JMZlCEveZ66whMZ0YsHWfzFz6G14FhRunPR/rFbbFZuRkOLXEIoEA=='\n\
+    ```\nExample of GET with query parameters:\n```\nsecret = '51ffd0604d4ba42790b42860fc1e98ac6a4b60e32e078b801d899c6eb04bc29e'\n\
+    timestamp = '1643178751655'\nmethod = 'get'\nrequestPath = '/v1/user/activity?type=FEES_AND_EARNINGS&pageSize=4&pageNumber=0'\n\
+    body = <empty>\n\nstring to encode = '1643178751655GET/v1/user/activity'\n\nbase64\
+    \ encoded signature = 'efIB1zs7yunvzvCUL1SPWh5IAjU2b+g51vSPdGSX69KjJIVbtJQKIc2yVTaZlQIoReu6hx39r4w9dTDJhRdgdA=='\n\
+    ```\n\n\n<br/>\n\n### Postman\n\nYou can also try with <a href=\"https://www.postman.com/downloads/\"\
     \ target=\"_blank\" rel=\"nofollow\">postman client</a>. After you import <a href=\"\
     https://www.postman.com/collections/2d5e387a761a6da9f022\" target=\"_blank\" rel=\"\
     nofollow\">collection</a> into client, you have to create new environment under\
@@ -1145,6 +1151,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Deposit'
+  /v1/user/portfoliohistory:
+    post:
+      tags:
+      - User
+      summary: Portfolio value history
+      description: Get the history of the value of the users portfolio.
+      operationId: portfolioHistory
+      parameters:
+      - name: currency
+        in: query
+        required: false
+        schema:
+          type: string
+          default: USD
+          enum:
+          - BTC
+          - USD
+          - EUR
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ONE_WEEK
+          enum:
+          - ONE_DAY
+          - ONE_WEEK
+          - ONE_MONTH
+          - THREE_MONTHS
+          - SIX_MONTHS
+          - ONE_YEAR
+          - ALL_TIME
+      responses:
+        "401":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+        "200":
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortfolioHistory'
   /v1/user/transaction/{transactionId}:
     get:
       tags:
@@ -1199,39 +1250,29 @@ paths:
                 $ref: '#/components/schemas/Transaction'
 components:
   schemas:
-    Strategy:
-      type: object
-      properties:
-        ticker:
-          type: string
-        name:
-          type: string
-        manager:
-          type: string
-        managementType:
-          type: string
-          enum:
-          - ACTIVE
-          - PASSIVE
-        managementFee:
-          type: number
-        performanceFee:
-          type: number
-        performanceFeeCollectionPeriod:
-          type: string
-        entryFee:
-          type: number
-        exitFee:
-          type: number
-        followers:
-          type: integer
-          format: int64
-    Deposit:
+    Balance:
       type: object
       properties:
         currency:
           type: string
-        address:
+        daaList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+        assetList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+    BalanceEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        ticker:
+          type: string
+        balance:
+          type: string
+        value:
           type: string
     OrderInfo:
       required:
@@ -1261,6 +1302,82 @@ components:
           type: number
         target_ticker:
           type: string
+    Deposit:
+      type: object
+      properties:
+        currency:
+          type: string
+        address:
+          type: string
+    Withdraw:
+      required:
+      - address
+      - amount
+      - currency
+      type: object
+      properties:
+        amount:
+          type: string
+        currency:
+          type: string
+        address:
+          type: string
+    Transaction:
+      required:
+      - amount_ticker
+      - fee_ticker
+      - performance_fee_ticker
+      - profit_ticker
+      - source_ticker
+      - target_ticker
+      - vat_ticker
+      type: object
+      properties:
+        transactionId:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        status:
+          type: string
+        exchangeRate:
+          type: number
+        paymentMethod:
+          type: string
+        address:
+          type: string
+        type:
+          type: string
+        kind:
+          type: string
+        amount_ticker:
+          type: string
+        amount:
+          type: number
+        source_ticker:
+          type: string
+        source_amount:
+          type: number
+        target_ticker:
+          type: string
+        target_amount:
+          type: number
+        fee_ticker:
+          type: string
+        fee_amount:
+          type: number
+        vat_ticker:
+          type: string
+        vat_amount:
+          type: number
+        performance_fee_ticker:
+          type: string
+        performance_fee_amount:
+          type: number
+        profit_ticker:
+          type: string
+        profit_amount:
+          type: number
     AssetInfo:
       type: object
       properties:
@@ -1293,30 +1410,32 @@ components:
           type: number
         aum:
           type: number
-    Balance:
+    TradeConfirm:
       type: object
       properties:
-        currency:
+        offerId:
           type: string
-        daaList:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceEntry'
-        assetList:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceEntry'
-    BalanceEntry:
+        transaction:
+          $ref: '#/components/schemas/Transaction'
+    Asset:
       type: object
       properties:
-        name:
-          type: string
         ticker:
           type: string
-        balance:
+        supported:
+          type: boolean
+        useInStrategy:
+          type: boolean
+        tradable:
+          type: boolean
+        status:
           type: string
-        value:
-          type: string
+          enum:
+          - ONLINE
+          - OFFLINE
+          - DELISTING
+          - DELISTED
+          - MAINTENANCE
     Order:
       required:
       - amount
@@ -1337,6 +1456,227 @@ components:
           - SLOW
           - MEDIUM
           - FAST
+    FittingInfo:
+      type: object
+      properties:
+        rebalanceCompleted:
+          type: boolean
+        percentFitted:
+          type: number
+        fittedPerAsset:
+          type: object
+          additionalProperties:
+            type: number
+    Chart:
+      type: object
+      properties:
+        ticker:
+          type: string
+        currency:
+          type: string
+          enum:
+          - BTC
+          - USD
+          - EUR
+        from:
+          type: integer
+          format: int64
+        to:
+          type: integer
+          format: int64
+        granulation:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChartPoint'
+    ChartPoint:
+      type: object
+      properties:
+        x:
+          type: integer
+          format: int64
+        "y":
+          type: string
+    Activity:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    StructureSubmit:
+      type: object
+      properties:
+        ticker:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmitStructureElement'
+        speedType:
+          type: string
+          enum:
+          - SLOW
+          - MEDIUM
+          - FAST
+    SubmitStructureElement:
+      type: object
+      properties:
+        assetTicker:
+          type: string
+        rebalancedWeight:
+          type: number
+    Structure:
+      type: object
+      properties:
+        ticker:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructureElement'
+        numberOfAssets:
+          type: integer
+          format: int32
+        lastRebalanced:
+          type: integer
+          format: int64
+        monthlyRebalancedCount:
+          type: integer
+          format: int64
+    StructureElement:
+      type: object
+      properties:
+        rebalancedWeight:
+          type: number
+        targetWeight:
+          type: number
+        assetTicker:
+          type: string
+        assetName:
+          type: string
+        assetCategory:
+          type: string
+        estimatedProfit:
+          type: number
+    StrategyBalance:
+      type: object
+      properties:
+        ticker:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/StrategyBalanceElement'
+    StrategyBalanceElement:
+      type: object
+      properties:
+        ticker:
+          type: string
+        balance:
+          type: string
+    OrderOffer:
+      required:
+      - amount
+      - side
+      - source_ticker
+      - target_ticker
+      type: object
+      properties:
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        amount:
+          minimum: 0
+          type: number
+        side:
+          type: string
+          enum:
+          - source
+          - target
+    TradeOffer:
+      type: object
+      properties:
+        offerId:
+          type: string
+        sourceTicker:
+          type: string
+        targetTicker:
+          type: string
+        sourceAmount:
+          type: number
+        targetAmount:
+          type: number
+        exchangeRate:
+          type: number
+        feeAmount:
+          type: number
+        feeTicker:
+          type: string
+        sellingAssets:
+          type: boolean
+        validTo:
+          type: integer
+          format: int64
+        serverTime:
+          type: integer
+          format: int64
+        error:
+          type: string
+        used:
+          type: boolean
+    PortfolioHistory:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - BTC
+          - USD
+          - EUR
+        period:
+          type: string
+          enum:
+          - ONE_DAY
+          - ONE_WEEK
+          - ONE_MONTH
+          - THREE_MONTHS
+          - SIX_MONTHS
+          - ONE_YEAR
+          - ALL_TIME
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChartPoint'
+    Strategy:
+      type: object
+      properties:
+        ticker:
+          type: string
+        name:
+          type: string
+        manager:
+          type: string
+        managementType:
+          type: string
+          enum:
+          - ACTIVE
+          - PASSIVE
+        managementFee:
+          type: number
+        performanceFee:
+          type: number
+        performanceFeeCollectionPeriod:
+          type: string
+        entryFee:
+          type: number
+        exitFee:
+          type: number
+        followers:
+          type: integer
+          format: int64
     EnumMapIntervalBigDecimal:
       type: object
       properties:
@@ -1455,272 +1795,6 @@ components:
         totalCount:
           type: integer
           format: int32
-    Asset:
-      type: object
-      properties:
-        ticker:
-          type: string
-        supported:
-          type: boolean
-        useInStrategy:
-          type: boolean
-        tradable:
-          type: boolean
-        status:
-          type: string
-          enum:
-          - ONLINE
-          - OFFLINE
-          - DELISTING
-          - DELISTED
-          - MAINTENANCE
-    Chart:
-      type: object
-      properties:
-        ticker:
-          type: string
-        currency:
-          type: string
-          enum:
-          - BTC
-          - USD
-          - EUR
-        from:
-          type: integer
-          format: int64
-        to:
-          type: integer
-          format: int64
-        granulation:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChartPoint'
-    ChartPoint:
-      type: object
-      properties:
-        x:
-          type: integer
-          format: int64
-        "y":
-          type: string
-    Withdraw:
-      required:
-      - address
-      - amount
-      - currency
-      type: object
-      properties:
-        amount:
-          type: string
-        currency:
-          type: string
-        address:
-          type: string
-    Transaction:
-      required:
-      - amount_ticker
-      - fee_ticker
-      - performance_fee_ticker
-      - profit_ticker
-      - source_ticker
-      - target_ticker
-      - vat_ticker
-      type: object
-      properties:
-        transactionId:
-          type: string
-        timestamp:
-          type: integer
-          format: int64
-        status:
-          type: string
-        exchangeRate:
-          type: number
-        paymentMethod:
-          type: string
-        address:
-          type: string
-        type:
-          type: string
-        kind:
-          type: string
-        amount_ticker:
-          type: string
-        amount:
-          type: number
-        source_ticker:
-          type: string
-        source_amount:
-          type: number
-        target_ticker:
-          type: string
-        target_amount:
-          type: number
-        fee_ticker:
-          type: string
-        fee_amount:
-          type: number
-        vat_ticker:
-          type: string
-        vat_amount:
-          type: number
-        performance_fee_ticker:
-          type: string
-        performance_fee_amount:
-          type: number
-        profit_ticker:
-          type: string
-        profit_amount:
-          type: number
-    Structure:
-      type: object
-      properties:
-        ticker:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructureElement'
-        numberOfAssets:
-          type: integer
-          format: int32
-        lastRebalanced:
-          type: integer
-          format: int64
-        monthlyRebalancedCount:
-          type: integer
-          format: int64
-    StructureElement:
-      type: object
-      properties:
-        rebalancedWeight:
-          type: number
-        targetWeight:
-          type: number
-        assetTicker:
-          type: string
-        assetName:
-          type: string
-        assetCategory:
-          type: string
-        estimatedProfit:
-          type: number
-    OrderOffer:
-      required:
-      - amount
-      - side
-      - source_ticker
-      - target_ticker
-      type: object
-      properties:
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        amount:
-          minimum: 0
-          type: number
-        side:
-          type: string
-          enum:
-          - source
-          - target
-    TradeOffer:
-      type: object
-      properties:
-        offerId:
-          type: string
-        sourceTicker:
-          type: string
-        targetTicker:
-          type: string
-        sourceAmount:
-          type: number
-        targetAmount:
-          type: number
-        exchangeRate:
-          type: number
-        feeAmount:
-          type: number
-        feeTicker:
-          type: string
-        sellingAssets:
-          type: boolean
-        validTo:
-          type: integer
-          format: int64
-        serverTime:
-          type: integer
-          format: int64
-        error:
-          type: string
-        used:
-          type: boolean
-    FittingInfo:
-      type: object
-      properties:
-        rebalanceCompleted:
-          type: boolean
-        percentFitted:
-          type: number
-        fittedPerAsset:
-          type: object
-          additionalProperties:
-            type: number
-    StructureSubmit:
-      type: object
-      properties:
-        ticker:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubmitStructureElement'
-        speedType:
-          type: string
-          enum:
-          - SLOW
-          - MEDIUM
-          - FAST
-    SubmitStructureElement:
-      type: object
-      properties:
-        assetTicker:
-          type: string
-        rebalancedWeight:
-          type: number
-    StrategyBalance:
-      type: object
-      properties:
-        ticker:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyBalanceElement'
-    StrategyBalanceElement:
-      type: object
-      properties:
-        ticker:
-          type: string
-        balance:
-          type: string
-    Activity:
-      type: object
-      properties:
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
-    TradeConfirm:
-      type: object
-      properties:
-        offerId:
-          type: string
-        transaction:
-          $ref: '#/components/schemas/Transaction'
   securitySchemes:
     ApiKey:
       type: apiKey
