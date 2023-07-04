@@ -10,7 +10,7 @@ jobs:
     - uses: borales/actions-yarn@v2.3.0
       with:
         cmd: install # will run `yarn install` command
-    - uses: borales/actions-yarn@v2.3.0
+    - uses: borales/actions-yarn@v4
       with:
         cmd: build # will run `yarn build` command
     - name: Deploy pages
