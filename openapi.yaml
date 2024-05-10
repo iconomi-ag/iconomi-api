@@ -157,7 +157,7 @@ info:
 
     ### Postman
 
-    You can also try with <a href="https://www.postman.com/downloads/" target="_blank" rel="nofollow">postman client</a>. After you import <a href="https://www.postman.com/collections/2d5e387a761a6da9f022" target="_blank" rel="nofollow">collection</a> into client, you have to create new environment under "Manage environments" and add two variables:
+    You can also try with <a href="https://www.postman.com/downloads/" target="_blank" rel="nofollow">postman client</a>. After you import <a href="https://static.iconomi.com/api/postman_collection.json" target="_blank" rel="nofollow">collection</a> into client, you have to create new environment under "Manage environments" and add two variables:
 
     <br>
 
@@ -183,7 +183,6 @@ info:
 servers:
   - url: 'https://api.iconomi.com'
     description: Live Server!
-    variables: {}
 tags:
   - name: Asset
     description: Asset endpoint
@@ -403,7 +402,7 @@ paths:
       operationId: assetList
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
@@ -411,7 +410,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Asset'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -431,13 +430,13 @@ paths:
             type: string
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AssetInfo'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -467,13 +466,13 @@ paths:
               - EUR
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ticker'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -490,7 +489,7 @@ paths:
 
         From and to are optional parameters (both are either supplied or neither is supplied). If from/to are not supplied a default of last month is returned
         with hourly granulation.
-      operationId: assetHistory
+      operationId: assetPriceHistory
       parameters:
         - name: ticker
           in: path
@@ -534,13 +533,13 @@ paths:
               - DAILY
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Chart'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -570,16 +569,13 @@ paths:
               - EUR
       responses:
         '200':
-          description: default response
+          description: OK
           content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Statistics'
             application/json:
               schema:
                 $ref: '#/components/schemas/Statistics'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -596,15 +592,16 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Order'
+        required: true
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderInfo'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -621,15 +618,16 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/OrderOffer'
+        required: true
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TradeOffer'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -649,16 +647,13 @@ paths:
             type: string
       responses:
         '200':
-          description: default response
+          description: OK
           content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/TradeConfirm'
             application/json:
               schema:
                 $ref: '#/components/schemas/TradeConfirm'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -677,7 +672,9 @@ paths:
           schema:
             type: string
             enum:
+              - PREPARING
               - IN_PROGRESS
+              - CANCELLING
               - CANCELLED
               - COMPLETED
         - name: pageSize
@@ -696,7 +693,7 @@ paths:
             default: 0
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
@@ -704,7 +701,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/OrderInfo'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -724,13 +721,13 @@ paths:
             type: string
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderInfo'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -749,13 +746,13 @@ paths:
             type: string
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderInfo'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -784,7 +781,7 @@ paths:
             default: 0
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
@@ -792,7 +789,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Strategy'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -803,7 +800,7 @@ paths:
         - Strategies
       summary: Strategy details
       description: Returns information about one specific strategy.
-      operationId: info
+      operationId: details
       parameters:
         - name: ticker
           in: path
@@ -814,43 +811,94 @@ paths:
           example: BLX
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Strategy'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
                 type: string
-  '/v1/strategies/{ticker}/balance':
-    get:
+  '/v1/strategies/{ticker}/post':
+    post:
       tags:
         - Strategies
-      summary: Balance
-      description: Endpoint requires manager authentication with institutional role. Returns live balances underlying assets of strategy.
-      operationId: daaBalance
+      summary: Create post
+      description: Endpoint requires authentication. Submits a new post to the strategy.
+      operationId: createPost
       parameters:
         - name: ticker
           in: path
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitPost'
+        required: true
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StrategyBalance'
+                $ref: '#/components/schemas/Post'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
                 type: string
+      security:
+        - ApiKey: []
+        - ApiTimestamp: []
+        - ApiSign: []
+  '/v1/strategies/{ticker}/post/{id}':
+    post:
+      tags:
+        - Strategies
+      summary: Update post
+      description: Endpoint requires authentication. Updates a post on the strategy.
+      operationId: updatePost
+      parameters:
+        - name: ticker
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitPost'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: string
+      security:
+        - ApiKey: []
+        - ApiTimestamp: []
+        - ApiSign: []
   '/v1/strategies/{ticker}/posts':
     get:
       tags:
@@ -880,13 +928,13 @@ paths:
             default: 0
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Posts'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -916,13 +964,13 @@ paths:
               - EUR
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ticker'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -939,7 +987,7 @@ paths:
 
         From and to are optional parameters (both are either suplied or neither is supplied). If from/to are not supplied a default of last month is returned
         with hourly granulation.
-      operationId: charts
+      operationId: priceHistory
       parameters:
         - name: ticker
           in: path
@@ -985,13 +1033,13 @@ paths:
           example: HOURLY
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Chart'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1021,16 +1069,13 @@ paths:
               - EUR
       responses:
         '200':
-          description: default response
+          description: OK
           content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Statistics'
             application/json:
               schema:
                 $ref: '#/components/schemas/Statistics'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1063,13 +1108,13 @@ paths:
               - EUR
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Structure'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1094,15 +1139,16 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/StructureSubmit'
+        required: true
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Structure'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1126,13 +1172,13 @@ paths:
             type: string
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/FittingInfo'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1170,13 +1216,13 @@ paths:
             default: 0
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Activity'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1225,16 +1271,13 @@ paths:
               - EUR
       responses:
         '200':
-          description: default response
+          description: OK
           content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Balance'
             application/json:
               schema:
                 $ref: '#/components/schemas/Balance'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1254,13 +1297,13 @@ paths:
             type: string
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Deposit'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1299,13 +1342,13 @@ paths:
               - ALL_TIME
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PortfolioHistory'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1325,13 +1368,13 @@ paths:
             type: string
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Transaction'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
@@ -1348,79 +1391,105 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Withdraw'
+        required: true
       responses:
         '200':
-          description: default response
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Transaction'
         '401':
-          description: default response
+          description: Unauthorized
           content:
             '*/*':
               schema:
                 type: string
 components:
   schemas:
-    Balance:
+    StructureSubmit:
       type: object
       properties:
-        currency:
-          type: string
-        daaList:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceEntry'
-        assetList:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceEntry'
-    BalanceEntry:
-      type: object
-      properties:
-        name:
-          type: string
         ticker:
           type: string
-        balance:
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubmitStructureElement'
+        speedType:
           type: string
-        value:
+          enum:
+            - SLOW
+            - MEDIUM
+            - FAST
+    SubmitStructureElement:
+      type: object
+      properties:
+        assetTicker:
           type: string
-    OrderInfo:
-      required:
-        - source_amount
-        - source_ticker
-        - target_ticker
+        rebalancedWeight:
+          type: number
+    Structure:
+      type: object
+      properties:
+        ticker:
+          type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructureElement'
+        numberOfAssets:
+          type: integer
+          format: int32
+        lastRebalanced:
+          type: integer
+          format: int64
+        monthlyRebalancedCount:
+          type: integer
+          format: int64
+    StructureElement:
+      type: object
+      properties:
+        rebalancedWeight:
+          type: number
+        targetWeight:
+          type: number
+        assetTicker:
+          type: string
+        assetName:
+          type: string
+        assetCategory:
+          type: string
+        estimatedProfit:
+          type: number
+    SubmitPost:
+      type: object
+      properties:
+        postToFollowerFunds:
+          type: boolean
+        content:
+          type: string
+        giphyId:
+          type: string
+    Post:
       type: object
       properties:
         id:
           type: string
-        status:
+        ticker:
           type: string
-          enum:
-            - created
-            - active
-            - done
-            - failed
-            - unknown
-        percentageCompleted:
-          type: number
-        source_amount:
-          minimum: 0
-          type: number
-        source_ticker:
+        content:
           type: string
-        target_amount:
-          type: number
-        target_ticker:
+        timestamp:
+          type: integer
+          format: int64
+        strategyName:
           type: string
-    Deposit:
-      type: object
-      properties:
-        currency:
-          type: string
-        address:
+        feedback:
+          type: array
+          items:
+            $ref: '#/components/schemas/Post'
+        giphyId:
           type: string
     Withdraw:
       required:
@@ -1491,118 +1560,6 @@ components:
           type: string
         profit_amount:
           type: number
-    AssetInfo:
-      type: object
-      properties:
-        ticker:
-          type: string
-        name:
-          type: string
-    Ticker:
-      type: object
-      properties:
-        ticker:
-          type: string
-        currency:
-          type: string
-        price:
-          type: number
-        change24h:
-          type: number
-        change7d:
-          type: number
-        change1m:
-          type: number
-        change3m:
-          type: number
-        change6m:
-          type: number
-        change12m:
-          type: number
-        changeAll:
-          type: number
-        aum:
-          type: number
-    TradeConfirm:
-      type: object
-      properties:
-        offerId:
-          type: string
-        transaction:
-          $ref: '#/components/schemas/Transaction'
-    Asset:
-      type: object
-      properties:
-        ticker:
-          type: string
-        supported:
-          type: boolean
-        useInStrategy:
-          type: boolean
-        tradable:
-          type: boolean
-        status:
-          type: string
-          enum:
-            - ONLINE
-            - OFFLINE
-            - DELISTING
-            - DELISTED
-            - MAINTENANCE
-    Order:
-      required:
-        - amount
-        - source_ticker
-        - target_ticker
-      type: object
-      properties:
-        amount:
-          minimum: 0
-          type: number
-        source_ticker:
-          type: string
-        target_ticker:
-          type: string
-        fitting_speed_type:
-          type: string
-          enum:
-            - SLOW
-            - MEDIUM
-            - FAST
-    FittingInfo:
-      type: object
-      properties:
-        rebalanceCompleted:
-          type: boolean
-        percentFitted:
-          type: number
-        fittedPerAsset:
-          type: object
-          additionalProperties:
-            type: number
-    Chart:
-      type: object
-      properties:
-        ticker:
-          type: string
-        currency:
-          type: string
-          enum:
-            - BTC
-            - USD
-            - EUR
-        from:
-          type: integer
-          format: int64
-        to:
-          type: integer
-          format: int64
-        granulation:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChartPoint'
     ChartPoint:
       type: object
       properties:
@@ -1611,84 +1568,36 @@ components:
           format: int64
         'y':
           type: string
-    Activity:
+    PortfolioHistory:
       type: object
       properties:
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
-    StructureSubmit:
-      type: object
-      properties:
-        ticker:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubmitStructureElement'
-        speedType:
+        currency:
           type: string
           enum:
-            - SLOW
-            - MEDIUM
-            - FAST
-    SubmitStructureElement:
-      type: object
-      properties:
-        assetTicker:
+            - BTC
+            - USD
+            - EUR
+        period:
           type: string
-        rebalancedWeight:
-          type: number
-    Structure:
-      type: object
-      properties:
-        ticker:
-          type: string
+          enum:
+            - ONE_DAY
+            - ONE_WEEK
+            - ONE_MONTH
+            - THREE_MONTHS
+            - SIX_MONTHS
+            - ONE_YEAR
+            - ALL_TIME
         values:
           type: array
           items:
-            $ref: '#/components/schemas/StructureElement'
-        numberOfAssets:
-          type: integer
-          format: int32
-        lastRebalanced:
-          type: integer
-          format: int64
-        monthlyRebalancedCount:
-          type: integer
-          format: int64
-    StructureElement:
+            $ref: '#/components/schemas/ChartPoint'
+    TradeConfirm:
       type: object
       properties:
-        rebalancedWeight:
-          type: number
-        targetWeight:
-          type: number
-        assetTicker:
+        offerId:
           type: string
-        assetName:
-          type: string
-        assetCategory:
-          type: string
-        estimatedProfit:
-          type: number
-    StrategyBalance:
-      type: object
-      properties:
-        ticker:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/StrategyBalanceElement'
-    StrategyBalanceElement:
-      type: object
-      properties:
-        ticker:
-          type: string
-        balance:
-          type: string
+        transaction:
+          $ref: '#/components/schemas/Transaction'
     OrderOffer:
       required:
         - amount
@@ -1740,75 +1649,66 @@ components:
           type: string
         used:
           type: boolean
-    PortfolioHistory:
+    Order:
+      required:
+        - amount
+        - source_ticker
+        - target_ticker
       type: object
       properties:
-        currency:
+        amount:
+          minimum: 0
+          type: number
+        source_ticker:
+          type: string
+        target_ticker:
+          type: string
+        fitting_speed_type:
           type: string
           enum:
-            - BTC
-            - USD
-            - EUR
-        period:
-          type: string
-          enum:
-            - ONE_DAY
-            - ONE_WEEK
-            - ONE_MONTH
-            - THREE_MONTHS
-            - SIX_MONTHS
-            - ONE_YEAR
-            - ALL_TIME
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChartPoint'
-    Strategy:
+            - SLOW
+            - MEDIUM
+            - FAST
+            - OTC
+    OrderInfo:
+      required:
+        - source_amount
+        - source_ticker
+        - target_ticker
       type: object
       properties:
-        ticker:
+        id:
           type: string
-        name:
-          type: string
-        manager:
-          type: string
-        managementType:
+        status:
           type: string
           enum:
-            - ACTIVE
-            - PASSIVE
-        managementFee:
+            - created
+            - active
+            - done
+            - failed
+            - unknown
+        percentageCompleted:
           type: number
-        performanceFee:
+        source_amount:
+          minimum: 0
           type: number
-        performanceFeeCollectionPeriod:
+        source_ticker:
           type: string
-        entryFee:
+        target_amount:
           type: number
-        exitFee:
-          type: number
-        followers:
-          type: integer
-          format: int64
-    EnumMapIntervalBigDecimal:
+        target_ticker:
+          type: string
+    FittingInfo:
       type: object
       properties:
-        DAY:
+        rebalanceCompleted:
+          type: boolean
+        percentFitted:
           type: number
-        WEEK:
-          type: number
-        MONTH:
-          type: number
-        THREE_MONTH:
-          type: number
-        SIX_MONTH:
-          type: number
-        YTD:
-          type: number
-        YEAR:
-          type: number
-        ALL_TIME:
-          type: number
+        fittedPerAsset:
+          type: object
+          additionalProperties:
+            type: number
     Statistics:
       type: object
       properties:
@@ -1873,20 +1773,54 @@ components:
               type: number
             ALL_TIME:
               type: number
-    Post:
+    Chart:
       type: object
       properties:
-        id:
-          type: string
         ticker:
           type: string
-        content:
+        currency:
           type: string
-        timestamp:
+          enum:
+            - BTC
+            - USD
+            - EUR
+        from:
           type: integer
           format: int64
-        strategyName:
+        to:
+          type: integer
+          format: int64
+        granulation:
           type: string
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChartPoint'
+    Ticker:
+      type: object
+      properties:
+        ticker:
+          type: string
+        currency:
+          type: string
+        price:
+          type: number
+        change24h:
+          type: number
+        change7d:
+          type: number
+        change1m:
+          type: number
+        change3m:
+          type: number
+        change6m:
+          type: number
+        change12m:
+          type: number
+        changeAll:
+          type: number
+        aum:
+          type: number
     Posts:
       type: object
       properties:
@@ -1908,6 +1842,97 @@ components:
         totalCount:
           type: integer
           format: int32
+    Strategy:
+      type: object
+      properties:
+        ticker:
+          type: string
+        name:
+          type: string
+        manager:
+          type: string
+        managementType:
+          type: string
+          enum:
+            - ACTIVE
+            - PASSIVE
+        managementFee:
+          type: number
+        performanceFee:
+          type: number
+        performanceFeeCollectionPeriod:
+          type: string
+        entryFee:
+          type: number
+        exitFee:
+          type: number
+        followers:
+          type: integer
+          format: int64
+    Deposit:
+      type: object
+      properties:
+        currency:
+          type: string
+        address:
+          type: string
+    Balance:
+      type: object
+      properties:
+        currency:
+          type: string
+        daaList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+        assetList:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceEntry'
+    BalanceEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        ticker:
+          type: string
+        balance:
+          type: string
+        value:
+          type: string
+    Activity:
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    AssetInfo:
+      type: object
+      properties:
+        ticker:
+          type: string
+        name:
+          type: string
+    Asset:
+      type: object
+      properties:
+        ticker:
+          type: string
+        supported:
+          type: boolean
+        useInStrategy:
+          type: boolean
+        tradable:
+          type: boolean
+        status:
+          type: string
+          enum:
+            - ONLINE
+            - OFFLINE
+            - DELISTING
+            - DELISTED
+            - MAINTENANCE
   securitySchemes:
     ApiKey:
       type: apiKey
