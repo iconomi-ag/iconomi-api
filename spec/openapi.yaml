@@ -776,7 +776,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SubmitPost'
+              $ref: '#/components/schemas/UpdatePost'
         required: true
       responses:
         "401":
@@ -1348,7 +1348,7 @@ components:
           type: string
         estimatedProfit:
           type: number
-    SubmitPost:
+    UpdatePost:
       type: object
       properties:
         postToFollowerFunds:
@@ -1357,6 +1357,10 @@ components:
           type: string
         giphyId:
           type: string
+        image:
+          type: string
+        deleteImage:
+          type: boolean
     Post:
       type: object
       properties:
@@ -1376,6 +1380,19 @@ components:
           items:
             $ref: '#/components/schemas/Post'
         giphyId:
+          type: string
+        hasImage:
+          type: boolean
+    SubmitPost:
+      type: object
+      properties:
+        postToFollowerFunds:
+          type: boolean
+        content:
+          type: string
+        giphyId:
+          type: string
+        image:
           type: string
     Withdraw:
       required:
