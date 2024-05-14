@@ -1418,6 +1418,7 @@ components:
             $ref: '#/components/schemas/SubmitStructureElement'
         speedType:
           type: string
+          example: FAST
           enum:
             - SLOW
             - MEDIUM
@@ -1429,6 +1430,8 @@ components:
           type: string
         rebalancedWeight:
           type: number
+          description: Weight of the asset in structure. The value is provided as a percentage in decimal format (e.g. 0.5 means 50%). For ACTIVE DAAs this is always 0.
+          example: 0.5
     Structure:
       type: object
       properties:
@@ -1452,10 +1455,16 @@ components:
       properties:
         rebalancedWeight:
           type: number
+          description: Weight of the asset that was last set at rebalancing time. The value is provided as a percentage in decimal format (e.g. 0.5 means 50%). For ACTIVE DAAs this is always 0.
+          example: 0.5
         targetWeight:
           type: number
+          description: 'Currently targeted weight of the asset for the DAA. Because of the price change of the asset, the target weight moves up or down. This is the percentage the DAA is targeting to hold at the current time. For ACTIVE DAAs this is always'
+          example: 0.613
         assetTicker:
           type: string
+          description: Ticker of the asset
+          example: ETH
         assetName:
           type: string
         assetCategory:
@@ -1463,51 +1472,83 @@ components:
         estimatedProfit:
           type: number
     UpdatePost:
+      required:
+        - content
       type: object
       properties:
         postToFollowerFunds:
           type: boolean
+          description: Whether to also submit this post to follower funds
+          example: false
         content:
           type: string
+          description: 'The post. The content of the post uses a subset of html for formatting. Paragraphs (new lines) are created with the <p> tag <p/>, <strong> is for bold text, <em> is for italic, <u> is for underlines.'
+          example: <p><strong>bold text!</strong></p><p><em>Italic text</em></p><p><u>underlined text!</u></p>
         giphyId:
           type: string
+          description: Id of giphy image to add to the post. You can only send one of giphyId and image
+          example: Z6f7vzq3iP6Mw
         image:
           type: string
+          description: Base64 encoded image file to add to the post. You can only send one of giphyId and image.
         deleteImage:
           type: boolean
+          description: Whether to delete the image in this post
+          example: false
     Post:
       type: object
       properties:
         id:
           type: string
+          description: The post uuid.
+          example: b3fe79b3-9fed-4e91-a84e-22bd93354385
         ticker:
           type: string
+          description: The ticker for the strategy.
+          example: BLX
         content:
           type: string
+          description: The post.
+          example: BLX is awesome!
         timestamp:
           type: integer
+          description: Epoch timestamp in milliseconds.
           format: int64
         strategyName:
           type: string
+          description: The name of the strategy.
+          example: BLX
         feedback:
           type: array
+          description: Replies to this post
           items:
             $ref: '#/components/schemas/Post'
         giphyId:
           type: string
+          description: Id of giphy image
         hasImage:
           type: boolean
+          description: Whether this post has an image attached
     SubmitPost:
+      required:
+        - content
       type: object
       properties:
         postToFollowerFunds:
           type: boolean
+          description: Whether to also submit this post to follower funds
+          example: false
         content:
           type: string
+          description: 'The post. The content of the post uses a subset of html for formatting. Paragraphs (new lines) are created with the <p> tag <p/>, <strong> is for bold text, <em> is for italic, <u> is for underlines.'
+          example: <p><strong>bold text!</strong></p><p><em>Italic text</em></p><p><u>underlined text!</u></p>
         giphyId:
           type: string
+          description: Id of giphy image to add to the post. You can only send one of giphyId and image
+          example: Z6f7vzq3iP6Mw
         image:
           type: string
+          description: Base64 encoded image file to add to the post. You can only send one of giphyId and image.
     Withdraw:
       required:
         - address
@@ -1534,6 +1575,8 @@ components:
       properties:
         transactionId:
           type: string
+          description: Transaction uuid
+          example: b3fe79b3-9fed-4e91-a84e-22bd93354385
         timestamp:
           type: integer
           format: int64
@@ -1582,20 +1625,27 @@ components:
       properties:
         x:
           type: integer
+          description: Timestamp for the point in Epoch seconds format.
           format: int64
         'y':
           type: string
+          description: Price at the time point. Up to 6 decimal places of precision is possible.
+      description: Array of value point objects.
     PortfolioHistory:
       type: object
       properties:
         currency:
           type: string
+          description: Ticker of the currency in which the values are returned.
+          example: EUR
           enum:
             - BTC
             - USD
             - EUR
         period:
           type: string
+          description: The timeframe this chart represents.
+          example: ONE_WEEK
           enum:
             - ONE_DAY
             - ONE_WEEK
@@ -1606,6 +1656,7 @@ components:
             - ALL_TIME
         values:
           type: array
+          description: Array of value point objects.
           items:
             $ref: '#/components/schemas/ChartPoint'
     TradeConfirm:
@@ -1613,6 +1664,8 @@ components:
       properties:
         offerId:
           type: string
+          description: Trade uuid
+          example: b3fe79b3-9fed-4e91-a84e-22bd93354385
         transaction:
           $ref: '#/components/schemas/Transaction'
     OrderOffer:
@@ -1696,6 +1749,8 @@ components:
       properties:
         id:
           type: string
+          description: Order uuid
+          example: b3fe79b3-9fed-4e91-a84e-22bd93354385
         status:
           type: string
           enum:
@@ -1731,8 +1786,10 @@ components:
       properties:
         ticker:
           type: string
+          example: BLX
         currency:
           type: string
+          example: USD
         returns:
           type: object
           properties:
@@ -1797,20 +1854,27 @@ components:
           type: string
         currency:
           type: string
+          description: Ticker of the currency in which the prices are returned.
+          example: EUR
           enum:
             - BTC
             - USD
             - EUR
         from:
           type: integer
+          description: Timestamp for when the chart information starts in *Epoch* seconds format.
           format: int64
         to:
           type: integer
+          description: Timestamp for when the chart information ends in *Epoch* seconds format.
           format: int64
         granulation:
           type: string
+          description: Granulation for price points. See granulation enumeration section for more details.
+          example: HOURLY
         values:
           type: array
+          description: Array of price point objects.
           items:
             $ref: '#/components/schemas/ChartPoint'
     Ticker:
@@ -1818,8 +1882,12 @@ components:
       properties:
         ticker:
           type: string
+          description: The current price of the DAA in the quoted currency. Up to 6 decimal places of precision is possible.
+          example: BLX
         currency:
           type: string
+          description: Ticker of the currency that the price is quoted in
+          example: USD
         price:
           type: number
         change24h:
@@ -1843,33 +1911,51 @@ components:
       properties:
         ticker:
           type: string
+          description: The ticker for the strategy.
+          example: BLX
         posts:
           type: array
+          description: A list of posts.
           items:
             $ref: '#/components/schemas/Post'
         pageSize:
           type: integer
+          description: Page size.
           format: int32
+          example: 10
         pageNumber:
           type: integer
+          description: Page number.
           format: int32
+          example: 0
         pageCount:
           type: integer
+          description: Page count.
           format: int32
+          example: 3
         totalCount:
           type: integer
+          description: Total element count.
           format: int32
+          example: 3
     Strategy:
       type: object
       properties:
         ticker:
           type: string
+          description: Ticker
+          example: BLX
         name:
           type: string
+          example: Blockchain Index
         manager:
           type: string
+          description: Manager of DAA
+          example: John Doe
         managementType:
           type: string
+          description: Type of Strategy. See Strategy types under enumerations section for possible options.
+          example: PASSIVE
           enum:
             - ACTIVE
             - PASSIVE
@@ -1929,21 +2015,29 @@ components:
       properties:
         ticker:
           type: string
+          description: Ticker
+          example: BLX
         name:
           type: string
+          example: Blockchain Index
     Asset:
       type: object
       properties:
         ticker:
           type: string
+          example: BTC
         supported:
           type: boolean
+          description: 'Tells if asset is supported on platform, even if not publicly available for end users'
         useInStrategy:
           type: boolean
+          description: Tells if asset can be used in strategy
         tradable:
           type: boolean
+          description: Tells if asset can be directly tradable.
         status:
           type: string
+          description: Asset status
           enum:
             - ONLINE
             - OFFLINE
