@@ -1376,8 +1376,8 @@ components:
         content:
           type: string
           description: "The post. The content of the post uses a subset of html for\
-            \ formatting. Paragraphs (new lines) are created with the <p> tag <p/>,\
-            \ <strong> is for bold text, <em> is for italic, <u> is for underlines."
+            \ formatting. Paragraphs (new lines) are created with the `<p>` tag, `<strong>`\
+            \ is for bold text, `<em>` is for italic, `<u>` is for underlines."
           example: <p><strong>bold text!</strong></p><p><em>Italic text</em></p><p><u>underlined
             text!</u></p>
         giphyId:
@@ -1439,8 +1439,8 @@ components:
         content:
           type: string
           description: "The post. The content of the post uses a subset of html for\
-            \ formatting. Paragraphs (new lines) are created with the <p> tag <p/>,\
-            \ <strong> is for bold text, <em> is for italic, <u> is for underlines."
+            \ formatting. Paragraphs (new lines) are created with the `<p>` tag, `<strong>`\
+            \ is for bold text, `<em>` is for italic, `<u>` is for underlines."
           example: <p><strong>bold text!</strong></p><p><em>Italic text</em></p><p><u>underlined
             text!</u></p>
         giphyId:
